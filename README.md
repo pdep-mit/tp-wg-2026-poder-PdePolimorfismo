@@ -1,13 +1,13 @@
 # Wollok Game: Título de juego
 
-**Grupo:** Nombre de Grupo
+**Grupo:** PdePolimorfismo
 
 **Integrantes:**
-- Nombre y Apellido
-- Nombre y Apellido
-- Nombre y Apellido
-- Nombre y Apellido
-- Nombre y Apellido
+- Yair César Minaya gutiérrez
+- Agustín Aballay
+- Claudia González
+- Kamila Waigant
+- Sofía Moguilner Ribes
 
 ## Consignas
 
