@@ -1,4 +1,4 @@
-# Wollok Game: Título de juego
+# Wollok Game: Plantas vs Zoombies
 
 **Grupo:** PdePolimorfismo
 
