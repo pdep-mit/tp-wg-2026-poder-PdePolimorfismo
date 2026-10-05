@@ -1,9 +1,10 @@
 import wollok.game.*
+import abstracciones.*
 
 class Zoombie {
     var property posicion
     var estado
-    var vida 
+    var property vida 
     const daño 
 
     method estaVivo () = vida > 0
@@ -13,10 +14,7 @@ class Zoombie {
     }
 
     method recibirDaño (dañoDePlanta) {
-        vida = vida - dañoDePlanta
-        if (not(self.estaVivo())) {
-           self.morir()
-        }
+        dañoInflingido.procesarDaño(self, dañoDePlanta)
     }
 
     method dañoInfligido () = daño

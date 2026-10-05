@@ -2,7 +2,7 @@ import wollok.game.*
 import example.*
 
 program NombreDeJuego {
-	game.title("Poder de Polimorfismo")
+	game.title("Plantas vs Zoombies")
 	game.height(10)
 	game.width(10)
 
