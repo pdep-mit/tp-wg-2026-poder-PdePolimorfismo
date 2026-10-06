@@ -7,6 +7,6 @@ class Sol {
 
     method valor () = valor
 
-    method recolectar () = not(recolectado)
+    method recolectar () = recolectado
 
 }

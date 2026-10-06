@@ -26,6 +26,8 @@ class Planta {
 
     method estaPlantada () = plantada
 
+// HAY QUE CHEQUEAR ESTA PARTE - Tenemos que corregir los parámetros que va a recibir el method estaEnSuRango
+
     method estaEnSuRango (zombie) {
         return 0
     }
@@ -37,3 +39,4 @@ class Planta {
     }
 }
 
+//
