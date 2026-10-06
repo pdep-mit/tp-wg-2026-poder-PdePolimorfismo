@@ -1,7 +1,9 @@
 // Archivo de tests de referencia, borrar luego de desarrollar propios
 import example.*
 
-describe "groupo de tests" {
+
+// no instanciamos las clases para estas pruebas 
+describe "pruebas polimorfismo" {
 
   test "Payer comeinza en el centro del tabler" {
     assert.equals(game.center(), player.position())
