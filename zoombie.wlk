@@ -23,8 +23,8 @@ class Zoombie {
         estado.comer(self)
     }
 
-    method morir () {
-        estado.morir(self)
+    method morir () {                               
+        game.removeVisual(self) 
     }
 }
 

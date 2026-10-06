@@ -20,8 +20,8 @@ class Planta {
         dañoInflingido.procesarDaño(self, dañoDeZoombie)
     }
 
-    method morir () {
-        estado.morir(self)
+    method morir () {                               
+        game.removeVisual(self) 
     }
 
     method estaPlantada () = plantada
