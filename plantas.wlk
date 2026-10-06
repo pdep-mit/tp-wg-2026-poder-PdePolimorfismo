@@ -5,15 +5,15 @@ import abstracciones.*
 
 class Planta {
     var property posicion
-    var estado
     var property vida 
+    var property estaPlantada = true
+    var property ataque = ataqueBasico 
     const daño 
     const costo 
-    var plantada = false
-    var ataque = false 
+    const rangoDeAtaque = 3 // esto sería para contar la cantidad de casiilleros hacia la derecha. Creo que cuando el zoombie esté a 3 casilleros es una buena distancia para atacar, sino pueden ser 4. 
+ 
 
     method costo () = costo
-
     method estaVivo () = vida > 0
 
     method recibirDaño (dañoDeZoombie) {
@@ -24,19 +24,19 @@ class Planta {
         game.removeVisual(self)    // este method lo definimos así para que cuando, muera un personaje, desaparezca de la pamtalla 
     }
 
-    method estaPlantada () = plantada
 
-// HAY QUE CHEQUEAR ESTA PARTE - Tenemos que corregir los parámetros que va a recibir el method estaEnSuRango
 
-    method estaEnSuRango (zombie) {
-        return 0
+    method estaEnSuRango (zoombie) {
+        const mismaFila = zoombie.posicion().y() == posicion.y()
+        const distanciaEnEjeX = zoombie.posicion().x() - posicion.x()
+
+        return mismaFila && distanciaEnEjeX >= 0 && distanciaEnEjeX <= rangoDeAtaque  // esto nos devolveria true o false directamente (no sé si quedó muy largo y poco expresivo)
     }
 
-    method atacar(objetivo) {
-        if (objetivo.estaEnSuRango(true)) {
-            ataque.ejecutar(self,objetivo)
+    method atacar(zoombie) {
+        if (self.estaEnSuRango(zoombie)) {
+            ataque.ejecutar(self,zoombie)
         }
     }
 }
 
-//

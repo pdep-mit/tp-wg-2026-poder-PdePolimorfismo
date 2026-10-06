@@ -1,3 +1,4 @@
+import movimientos.*
 import wollok.game.*
 import abstracciones.*
 
@@ -10,7 +11,7 @@ class Zoombie {
     method estaVivo () = vida > 0
 
     method avanzar () {
-        estado.avanzar(self)
+        movimientoHaciaLaIzquierda.mover(self)
     }
 
     method recibirDaño (dañoDePlanta) {
