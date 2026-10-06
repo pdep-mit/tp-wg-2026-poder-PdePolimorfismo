@@ -4,7 +4,6 @@ import abstracciones.*
 
 class Zoombie {
     var property posicion
-    var estado
     var property vida 
     const daño 
 
@@ -20,8 +19,8 @@ class Zoombie {
 
     method dañoInfligido () = daño
 
-    method comer () {
-        estado.comer(self)
+    method comer (planta) {
+        planta.recibirDaño(daño)
     }
 
     method morir () {                               
