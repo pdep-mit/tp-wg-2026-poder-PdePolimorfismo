@@ -24,7 +24,7 @@ class Planta {
         estado.morir(self)
     }
 
-    method estaPlantada () = not(plantada)
+    method estaPlantada () = plantada
 
     method estaEnSuRango (zombie) {
         return 0
