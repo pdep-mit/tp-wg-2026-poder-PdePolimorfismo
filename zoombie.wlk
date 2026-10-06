@@ -28,3 +28,28 @@ class Zoombie {
     }
 }
 
+// revisar si lo siguiente esta bien implementado
+
+const oso = new Zoombie(
+    posicion = game.at(8, 2),
+    vida = 500,
+    daño = 50
+)
+
+const mono = new Zoombie(
+    posicion = game.at(8, 4),
+    vida = 200,
+    daño = 20
+)
+
+const jirafa = new Zoombie(
+    posicion = game.at(8, 6),
+    vida = 300,
+    daño = 30
+)
+
+const pinguino = new Zoombie(
+    posicion = game.at(8, 8),
+    vida = 150,
+    daño = 10
+)

@@ -1,12 +1,19 @@
 import wollok.game.*
 import example.*
+import plantas.*
+import zoombie.*
 
 program NombreDeJuego {
 	game.title("Plantas vs Zoombies")
 	game.height(10)
 	game.width(10)
 
-	game.addVisual(player)
+	// method plantarGirasol(posicion){
+	// 	const girasol = new Girasol()
+	// 	girasol.pisicion(posicion)
+	// 	game.addVisual(girasol) //falta el png de girasol
+	// }
+	//game.addVisual(player)
 
 	game.start()
 }

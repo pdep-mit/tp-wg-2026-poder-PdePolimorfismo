@@ -22,7 +22,6 @@ class Planta {
     }
 
 
-
     method estaEnSuRango (zoombie) {
         const mismaFila = zoombie.posicion().y() == posicion.y()
         const distanciaEnEjeX = zoombie.posicion().x() - posicion.x()
