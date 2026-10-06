@@ -21,7 +21,7 @@ class Planta {
     }
 
     method morir () {                               
-        game.removeVisual(self) 
+        game.removeVisual(self)    // este method lo definimos así para que cuando, muera un personaje, desaparezca de la pamtalla 
     }
 
     method estaPlantada () = plantada
