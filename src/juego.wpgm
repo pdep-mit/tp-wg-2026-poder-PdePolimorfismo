@@ -35,6 +35,7 @@ object juego {
         game.addVisual(cursor)
 	    game.whenCollideDo(pinguino, { planta => pinguino.comer(planta) })
 	}
+	
 	method configurarTeclas() {
 		keyboard.right().onPressDo({ cursor.mover(derecha) }) // movilidad del cursor
 		keyboard.left().onPressDo({ cursor.mover(izquierda) })
