@@ -1,41 +1,49 @@
+import movimientos.*
 import jugador.*
 import wollok.game.*
-import example.*
 import plantas.*
 import zoombie.*
 
-object juego {
 
-	const musicaFondo = game.sound("musica.wav")
+object juego {
+	//const musicaFondo = game.sound("musica.wav")
 
 	method iniciarJuego() {
-
-	game.title("Plantas vs Zoombies")
-	game.cellSize(88) // tamaño de cada celda del tablero
-	game.height(6)
-	game.width(8)
-
-	game.boardGround("escenario.png") // para que se vea el patio de fondo
-
-	musicaFondo.shouldLoop(true)
-    musicaFondo.volume(0.3)
-    musicaFondo.play()
-
-	const pinguino = new Zoombie(x = 10, y = 2, vida = 500, daño = 50)
-    game.addVisual(pinguino)
-
-	game.onTick(100, "zombieAvanza", {
-			pinguino.animar()
-		})
-	
-	keyboard.right().onPressDo({ cursor.moverDerecha() }) // movilidad del cursor
-	keyboard.left().onPressDo({ cursor.moverIzquierda() })
-	keyboard.up().onPressDo({ cursor.moverArriba() })
-	keyboard.down().onPressDo({ cursor.moverAbajo() })
-	keyboard.enter().onPressDo({ cursor.plantar() })
-
-	game.start()
+		self.configurarTablero()
+        //self.iniciarSoundtrack()
+        self.agregarPersonajes()
+        self.configurarTeclas()
+        game.start()
 	}
+	method configurarTablero() {
+        game.title("Plantas vs Zoombies")
+        game.cellSize(88) // tamaño de cada celda del tablero
+        game.height(6)
+        game.width(8)
+        game.boardGround("escenario.png") // para que se vea el patio de fondo
+    }
+
+	/*method iniciarSoundtrack() {
+		musicaFondo.shouldLoop(true)
+    	musicaFondo.volume(0.3)
+    	musicaFondo.play()
+	}*/
+
+	method agregarPersonajes() {
+        const pinguino = new Zoombie(position = game.at(7, 2), vida = 500, daño = 100)
+        pinguino.aparecer()
+        game.addVisual(cursor)
+	    game.whenCollideDo(pinguino, { planta => pinguino.comer(planta) })
+	}
+	method configurarTeclas() {
+		keyboard.right().onPressDo({ cursor.mover(derecha) }) // movilidad del cursor
+		keyboard.left().onPressDo({ cursor.mover(izquierda) })
+		keyboard.up().onPressDo({ cursor.mover(arriba) })
+		keyboard.down().onPressDo({ cursor.mover(abajo) })
+		keyboard.enter().onPressDo({ cursor.plantar() })
+		game.onClickDo({ posicion => cursor.irYPlantar(posicion) })
+	}
+
 }
 
 program principal {

@@ -1,6 +1,6 @@
 import wollok.game.*
 
-object dañoInflingido {
+object dañoInfligido {
 
     method procesarDaño (entidad , daño) {
 

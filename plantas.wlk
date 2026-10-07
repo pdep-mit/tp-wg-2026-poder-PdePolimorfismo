@@ -13,8 +13,12 @@ class Planta {
 
     method estaVivo () = vida > 0
 
+    method esPlanta() = true // una planta ES una planta
+
+    method enfrentar(zoombie) { zoombie.comer(self) }
+
     method recibirDaño (dañoDeZoombie) {
-        vida = vida - dañoDeZoombie
+         dañoInfligido.procesarDaño(self,dañoDeZoombie)
     }
 
     method morir () {                               
@@ -40,6 +44,24 @@ class Girasol {
     const coste = 50
     var property vida = 300
     const tiempoDeRecarga = 5
+    var property position = game.origin()
+
+    method image() = "girasol.png"
+    method esPlanta() = true
+    method enfrentar(zoombie) { zoombie.comer(self) }
+    method tiempoDeRecarga() = tiempoDeRecarga
+    method estaVivo() = vida > 0
+
+    method recibirDaño(cantidad) {
+        vida = vida - cantidad
+        if (not self.estaVivo()) {
+            self.morir()
+        }
+    }
+
+    method morir() {
+        game.removeVisual(self)
+    }
 
 }
 
