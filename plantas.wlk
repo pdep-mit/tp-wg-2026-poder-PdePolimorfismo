@@ -7,7 +7,7 @@ class Planta {
     var property posicion
     var property vida 
     var property estaPlantada = true
-    var property ataque = ataqueBasico // bueno, esto sería un objeto nuevo que tendriamos q definir. O sea, distintos tipos de ataque, les parece?
+    var property ataque  // bueno, esto sería un objeto nuevo que tendriamos q definir. O sea, distintos tipos de ataque, les parece?
    
     const rangoDeAtaque = 3 // esto sería para contar la cantidad de casiilleros hacia la derecha. Creo que cuando el zoombie esté a 3 casilleros es una buena distancia para atacar, sino pueden ser 4. 
 
@@ -38,7 +38,7 @@ class Planta {
 
 class Girasol {
     const coste = 50
-    var property durabilidad = 300
+    var property vida = 300
     const tiempoDeRecarga = 5
 
 }
@@ -46,14 +46,14 @@ class Girasol {
 class LanzaGuisantes {
     const coste = 100
     const daño = 20
-    var property durabilidad = 300
+    var property vida = 300
     const tiempoDeRecarga = 5
     const velocidadDeAtaque = 1.5
 }
 
 class Nuez {
     const coste = 50
-    var property durabilidad = 5000
+    var property vida = 5000
     const tiempoDeRecarga = 20
 }
 
@@ -67,7 +67,7 @@ class Cereza {
 class BonkChoi {
     const coste = 150
     const daño = 20
-    var property durabilidad = 300
+    var property vida = 300
     const tiempoDeRecarga = 5
     const velocidadDeAtaque = 0.36
 }

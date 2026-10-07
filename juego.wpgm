@@ -3,17 +3,35 @@ import example.*
 import plantas.*
 import zoombie.*
 
-program NombreDeJuego {
-	game.title("Plantas vs Zoombies")
-	game.height(10)
-	game.width(10)
+object juego {
 
-	// method plantarGirasol(posicion){
-	// 	const girasol = new Girasol()
-	// 	girasol.pisicion(posicion)
-	// 	game.addVisual(girasol) //falta el png de girasol
-	// }
-	//game.addVisual(player)
+	const musicaFondo = game.sound("musica.wav")
+
+	method iniciarJuego() {
+
+	game.title("Plantas vs Zoombies")
+	game.cellSize(88) // tamaño de cada celda del tablero
+	game.height(6)
+	game.width(8)
+
+	game.boardGround("escenario.png") // para que se vea el patio de fondo
+
+	musicaFondo.shouldLoop(true)
+    musicaFondo.volume(0.3)
+    musicaFondo.play()
+
+	const pinguino = new Zoombie(x = 10, y = 2, vida = 500, daño = 50)
+    game.addVisual(pinguino)
+
+	game.onTick(100, "zombieAvanza", {
+			pinguino.animar()
+		})
 
 	game.start()
+	}
 }
+
+program principal {
+	juego.iniciarJuego()
+}
+

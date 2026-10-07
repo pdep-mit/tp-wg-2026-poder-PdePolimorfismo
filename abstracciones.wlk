@@ -8,7 +8,7 @@ object dañoInflingido {
 
          entidad.vida(vidaActual)
 
-         if(not(entidad.estaVivo())) {
+         if(not entidad.estaVivo()) {
             entidad.morir()
          }
          

@@ -14,7 +14,7 @@ object movimientoHaciaLaIzquierda {
   }
 
   method llegoAlObjetivo(entidad) { 
-    game.removeVisual(entidad)   // como en el method de morir, una vez que llegó al cuidador, chau, desaparece
+  game.removeVisual(entidad)   // como en el method de morir, una vez que llegó al cuidador, chau, desaparece
   }
 }
 
