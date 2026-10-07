@@ -1,3 +1,4 @@
+import jugador.*
 import wollok.game.*
 import example.*
 import plantas.*
@@ -26,6 +27,12 @@ object juego {
 	game.onTick(100, "zombieAvanza", {
 			pinguino.animar()
 		})
+	
+	keyboard.right().onPressDo({ cursor.moverDerecha() }) // movilidad del cursor
+	keyboard.left().onPressDo({ cursor.moverIzquierda() })
+	keyboard.up().onPressDo({ cursor.moverArriba() })
+	keyboard.down().onPressDo({ cursor.moverAbajo() })
+	keyboard.enter().onPressDo({ cursor.plantar() })
 
 	game.start()
 	}
