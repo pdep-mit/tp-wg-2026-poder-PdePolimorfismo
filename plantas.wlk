@@ -14,7 +14,7 @@ class Planta {
     method estaVivo () = vida > 0
 
     method recibirDaño (dañoDeZoombie) {
-        dañoInflingido.procesarDaño(self, dañoDeZoombie)
+        vida = vida - dañoDeZoombie
     }
 
     method morir () {                               

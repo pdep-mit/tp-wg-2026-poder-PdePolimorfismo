@@ -10,10 +10,3 @@ describe "pruebas polimorfismo" {
   }
 
 }
-
-describe "checkpoint 1 (cosas elementales)"{
-
-  test "Planta se muere si su vida llega a 0"{
-    assert.equals(0,vida.Planta())
-  }
-}
