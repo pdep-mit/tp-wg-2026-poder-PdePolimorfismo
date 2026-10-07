@@ -3,6 +3,8 @@ import soles.*
 import zoombie.*
 import abstracciones.*
 
+
+
 class Planta {
     var property posicion
     var property vida 
