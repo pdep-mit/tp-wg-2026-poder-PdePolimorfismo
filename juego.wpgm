@@ -6,11 +6,11 @@ import zoombie.*
 
 
 object juego {
-	//const musicaFondo = game.sound("musica.wav")
+	const musicaFondo = game.sound("musica.wav")
 
 	method iniciarJuego() {
 		self.configurarTablero()
-        //self.iniciarSoundtrack()
+        self.iniciarSoundtrack()
         self.agregarPersonajes()
         self.configurarTeclas()
         game.start()
@@ -23,11 +23,11 @@ object juego {
         game.boardGround("escenario.png") // para que se vea el patio de fondo
     }
 
-	/*method iniciarSoundtrack() {
+	method iniciarSoundtrack() {
 		musicaFondo.shouldLoop(true)
-    	musicaFondo.volume(0.3)
+    	musicaFondo.volume(0.5)
     	musicaFondo.play()
-	}*/
+	}
 
 	method agregarPersonajes() {
         const pinguino = new Zoombie(position = game.at(7, 2), vida = 500, daño = 100)
