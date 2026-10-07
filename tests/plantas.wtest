@@ -2,6 +2,9 @@ import plantas.*
 import wollok.game.*
 
 
+
+
+
 describe "Tests de Planta" {
 
   test "Una planta con vida mayor a 0 esta viva" {

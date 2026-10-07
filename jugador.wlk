@@ -3,7 +3,7 @@ import plantas.*
 import movimientos.*
 
 class ControladorDeCooldown {
-    const nombre
+    const property nombre
     const fabrica          // bloque: posicion -> planta nueva
     var lista = true
 

@@ -41,7 +41,7 @@ class Planta {
 }
 
 class Girasol {
-    const coste = 50
+    const property  coste = 50
     var property vida = 300
     const tiempoDeRecarga = 5
     var property position = game.origin()
@@ -66,30 +66,30 @@ class Girasol {
 }
 
 class LanzaGuisantes {
-    const coste = 100
-    const daño = 20
+    const property coste = 100
+    const property daño = 20
     var property vida = 300
-    const tiempoDeRecarga = 5
-    const velocidadDeAtaque = 1.5
+    const property tiempoDeRecarga = 5
+    const property velocidadDeAtaque = 1.5
 }
 
 class Nuez {
-    const coste = 50
+    const property coste = 50
     var property vida = 5000
-    const tiempoDeRecarga = 20
+    const property tiempoDeRecarga = 20
 }
 
 
 class Cereza {
-    const coste = 150
-    const daño = 1800
-    const tiempoDeRecarga = 50
+    const property coste = 150
+    const property daño = 1800
+    const property tiempoDeRecarga = 50
 }
 
 class BonkChoi {
-    const coste = 150
-    const daño = 20
+    const property coste = 150
+    const property daño = 20
     var property vida = 300
-    const tiempoDeRecarga = 5
-    const velocidadDeAtaque = 0.36
+    const property tiempoDeRecarga = 5
+    const property velocidadDeAtaque = 0.36
 }
