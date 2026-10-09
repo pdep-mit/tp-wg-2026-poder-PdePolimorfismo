@@ -1,22 +1,23 @@
 import wollok.game.*
 import abstracciones.*
+import estadoDelJuego.*
 
 class Zoombie {
     var property position
+    var property tipoDeAtaque // queda ahi por ahora
     var property vida
     const daño
-    const intervaloMs = 2500 
+    const intervaloMs = 2500    
 
-    method image() = "pinguino zombie.png"
-
-    method esPlanta() = false
-
+    method esPlanta() = false  
     method estaVivo () = vida > 0 //el zoombie tiene la vida completa
 
     method aparecer() {
         game.addVisual(self) //aparece en el escenario
         game.onTick(intervaloMs, self.nombreDelTick(), { self.actuar() }) //cada 1 seg se va a repetir la acción actuar
     }
+
+    method image() {}
 
     method actuar() {self.loQueHayAdelante().enfrentar(self)}
     //el zoombie se hace presente a lo que sea que tenga en frente 
@@ -29,7 +30,10 @@ class Zoombie {
 
 
     method avanzar () {
-	if (position.x() == 0) { self.detener() }       // llegó a la casa (a definir que pasa luego) 
+	if (position.x() == -1) { 
+        self.detener() 
+        finDelJuego.mostrarDerrota()
+        }       // llegó a la casa (a definir que pasa luego) 
         else { position = position.left(1) }        //si no llegó, que siga caminando
     }
 
@@ -53,4 +57,21 @@ object caminoLibre {
     method enfrentar(zoombie) {
         zoombie.avanzar()
     }
+}
+
+class Pinguino inherits Zoombie{
+   override method image() = "pinguino zoombie.png"
+
+}
+
+class Jirafa inherits Zoombie{
+    override method image() = "jirafa.png"
+}
+
+class Rinoseronte inherits Zoombie{
+    override method image() = "rinoseronte.png"
+}
+
+class Mono inherits Zoombie{
+    override method image() = "mono.png"
 }

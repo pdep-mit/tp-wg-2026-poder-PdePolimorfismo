@@ -7,27 +7,36 @@ describe "Tests de Planta" {
 
   test "Una planta con vida mayor a 0 esta viva" {
     const planta = new Planta(
-      posicion = game.at(1, 1),
+      position = game.at(1, 1),
       vida = 100,
-      ataque = object { method ejecutar(p, z) {} }
+      costeDeSoles = 50,
+      tiempoDeRecarga = 5,
+      daño = 0,
+      tipoDeAtaque = object { method ejecutar(p, z) {} }
     )
     assert.that(planta.estaVivo())
   }
 
   test "Una planta con vida igual o menor a 0 no esta viva" {
     const planta = new Planta(
-      posicion = game.at(1, 1),
+      position = game.at(1, 1),
       vida = 0,
-      ataque = object { method ejecutar(p, z) {} }
+      costeDeSoles = 50,
+      tiempoDeRecarga = 5,
+      daño = 0,
+      tipoDeAtaque = object { method ejecutar(p, z) {} }
     )
     assert.notThat(planta.estaVivo())
   }
 
   test "Un zombie dentro de 3 casilleros esta en rango" {
     const planta = new Planta(
-      posicion = game.at(1, 1),
+      position = game.at(1, 1),
       vida = 100,
-      ataque = object { method ejecutar(p, z) {} }
+      costeDeSoles = 50,
+      tiempoDeRecarga = 5,
+      daño = 0,
+      tipoDeAtaque = object { method ejecutar(p, z) {} }
     )
     
     // Creamos un objeto zombie anónimo local
@@ -40,9 +49,12 @@ describe "Tests de Planta" {
 
   test "Un zombie fuera de la misma fila no esta en rango" {
     const planta = new Planta(
-      posicion = game.at(1, 1),
+      position = game.at(1, 1),
       vida = 100,
-      ataque = object { method ejecutar(p, z) {} }
+      costeDeSoles = 50,
+      tiempoDeRecarga = 5,
+      daño = 0,
+      tipoDeAtaque = object { method ejecutar(p, z) {} }
     )
 
     const zombieOtraFila = object {

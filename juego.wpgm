@@ -30,10 +30,10 @@ object juego {
 	}
 
 	method agregarPersonajes() {
-        const pinguino = new Zoombie(position = game.at(7, 2), vida = 500, daño = 100)
+        const pinguino = new Pinguino(position = game.at(8, 2), vida = 500, daño = 100,tipoDeAtaque = "corta distancia")
         pinguino.aparecer()
         game.addVisual(cursor)
-	    game.whenCollideDo(pinguino, { planta => pinguino.comer(planta) })
+	    game.whenCollideDo(pinguino, { objeto => if (objeto.esPlanta()) pinguino.comer(objeto) })
 	}
 	
 	method configurarTeclas() {
@@ -41,7 +41,7 @@ object juego {
 		keyboard.left().onPressDo({ cursor.mover(izquierda) })
 		keyboard.up().onPressDo({ cursor.mover(arriba) })
 		keyboard.down().onPressDo({ cursor.mover(abajo) })
-		keyboard.enter().onPressDo({ cursor.plantar() })
+		keyboard.space().onPressDo({ cursor.plantar() })
 		game.onClickDo({ posicion => cursor.irYPlantar(posicion) })
 	}
 
