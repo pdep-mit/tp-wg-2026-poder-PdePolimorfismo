@@ -3,7 +3,7 @@ import jugador.*
 import wollok.game.*
 import plantas.*
 import zoombie.*
-
+import ataques.*
 
 object juego {
 	const musicaFondo = game.sound("musica.wav")
@@ -30,7 +30,7 @@ object juego {
 	}
 
 	method agregarPersonajes() {
-        const pinguino = new Pinguino(position = game.at(8, 2), vida = 500, daño = 100,tipoDeAtaque = "corta distancia")
+        const pinguino = new Pinguino(position = game.at(8, 2), vida = 500, daño = 100, tipoDeAtaque = ataqueCuerpoACuerpo)
         pinguino.aparecer()
         game.addVisual(cursor)
 	    game.whenCollideDo(pinguino, { objeto => if (objeto.esPlanta()) pinguino.comer(objeto) })

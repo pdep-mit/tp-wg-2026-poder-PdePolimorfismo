@@ -1,79 +1,116 @@
 import wollok.game.*
 import soles.*
-import zoombie.*
 import abstracciones.*
-
+import ataques.*
 
 
 class Planta {
+
     var property position
-    var property vida 
-    var property costeDeSoles  
-    var property estaPlantada = true
-    var property tipoDeAtaque // bueno, esto sería un objeto nuevo que tendriamos q definir. O sea, distintos tipos de ataque
-    var property tiempoDeRecarga  
+    var property vida
+
+    const costeDeSoles
+    const tiempoDeRecarga
+    const tipoDeAtaque
     const daño
-   
-    const rangoDeAtaque = 3 // esto sería para contar la cantidad de casiilleros hacia la derecha. Creo que cuando el zoombie esté a 3 casilleros es una buena distancia para atacar, sino pueden ser 4. 
+    const rangoDeAtaque
 
-    method estaVivo () = vida > 0
+    method estaVivo() = vida > 0
 
-    method image() {}
+    method esPlanta() = true
 
-    method esPlanta() = true // una planta ES una planta
+    method dañoQueHace() = daño
 
-    method enfrentar(zoombie) { zoombie.comer(self) }
-
-    method recibirDaño (dañoDeZoombie) {
-         dañoInfligido.procesarDaño(self,dañoDeZoombie)
+    method enfrentar(zoombie) {
+        zoombie.comer(self)
     }
 
-    method morir () {                               
-        game.removeVisual(self)    // este method lo definimos así para que cuando, muera un personaje, desaparezca de la pamtalla 
+    method recibirDaño(dañoDeZoombie) {
+        dañoInfligido.procesarDaño(self, dañoDeZoombie)
     }
 
+    method morir() {
+        game.removeVisual(self)
+    }
 
-    method estaEnSuRango (zoombie) {
-        const mismaFila = zoombie.posicion().y() == position.y()
-        const distanciaEnEjeX = zoombie.posicion().x() - position.x()
+    method estaEnSuRango(zoombie) {
+        const mismaFila = zoombie.position().y() == position.y()
+        const distancia = zoombie.position().x() - position.x()
 
-        return mismaFila && distanciaEnEjeX >= 0 && distanciaEnEjeX <= rangoDeAtaque  // esto nos devolveria true o false directamente (no sé si quedó muy largo y poco expresivo)
+        return mismaFila &&
+            distancia >= 0 &&
+            distancia <= rangoDeAtaque
     }
 
     method atacar(zoombie) {
         if (self.estaEnSuRango(zoombie)) {
-            tipoDeAtaque.ejecutar(self,zoombie)
+            tipoDeAtaque.ejecutar(self, zoombie)
         }
     }
 }
 
-class Girasol inherits Planta(vida = 300,costeDeSoles = 50,tiempoDeRecarga = 5,tipoDeAtaque = "sinAtaque",daño = 0) {
 
-    override method image() = "girasol.png"
+class Girasol inherits Planta(
+    vida = 300,
+    costeDeSoles = 50,
+    tiempoDeRecarga = 5,
+    tipoDeAtaque = sinAtaque,
+    daño = 0,
+    rangoDeAtaque = 0
+) 
+{
 
-}
-
-class LanzaGuisantes inherits Planta(vida = 300,costeDeSoles = 50,tiempoDeRecarga = 5,tipoDeAtaque = "larga distancia",daño = 0) {
-  
-    override method image() = "lanzaguisantes.png"
-}
-
-class Nuez inherits Planta(vida = 300,costeDeSoles = 50,tiempoDeRecarga = 5,tipoDeAtaque = "sinAtaque",daño = 0) {
-
-    override  method image() = "nuez.png"
-    
+  method image() = "girasol.png"
 }
 
 
-class Cereza inherits Planta(vida = 500,costeDeSoles = 150,tiempoDeRecarga = 40,tipoDeAtaque = "instakill",daño = 0) {
+class LanzaGuisantes inherits Planta(
+    vida = 300,
+    costeDeSoles = 100,
+    tiempoDeRecarga = 5,
+    tipoDeAtaque = ataqueLargaDistancia,
+    daño = 50,
+    rangoDeAtaque = 3)
+{
 
-    override method image() = "cereza.png"
-   
+     method image() = "lanzaguisantes.png"
 }
 
-class BonkChoi inherits Planta(vida = 300,costeDeSoles = 150,tiempoDeRecarga = 5,tipoDeAtaque = "corta/media distancia",daño = 0) {
 
-    override method image() = "bonkChoi.png"
-    
+class BonkChoi inherits Planta(
+    vida = 400,
+    costeDeSoles = 150,
+    tiempoDeRecarga = 5,
+    tipoDeAtaque = ataqueCuerpoACuerpo,
+    daño = 100,
+    rangoDeAtaque = 1
+) {
+
+    method image() = "bonkChoi.png"
 }
 
+
+class Nuez inherits Planta(
+    vida = 800,
+    costeDeSoles = 50,
+    tiempoDeRecarga = 10,
+    tipoDeAtaque = sinAtaque,
+    daño = 0,
+    rangoDeAtaque = 0
+) {
+
+     method image() = "nuez.png"
+}
+
+
+class Cereza inherits Planta(
+    vida = 100,
+    costeDeSoles = 150,
+    tiempoDeRecarga = 40,
+    tipoDeAtaque = ataqueExplosivo,
+    daño = 0,
+    rangoDeAtaque = 1
+) {
+
+     method image() = "cereza.png"
+}

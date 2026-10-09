@@ -4,7 +4,7 @@ import estadoDelJuego.*
 
 class Zoombie {
     var property position
-    var property tipoDeAtaque // queda ahi por ahora
+   // var property tipoDeAtaque // queda ahi por ahora
     var property vida
     const daño
     const intervaloMs = 2500    
@@ -29,12 +29,14 @@ class Zoombie {
     //con la consulta objeto.esPlanta(), si no hay plantas, el camino esta libre
 
 
-    method avanzar () {
-	if (position.x() == -1) { 
-        self.detener() 
-        finDelJuego.mostrarDerrota()
-        }       // llegó a la casa (a definir que pasa luego) 
-        else { position = position.left(1) }        //si no llegó, que siga caminando
+    method avanzar() {
+
+     if (position.x() == 0) {
+            self.detener()
+            finDelJuego.mostrarDerrota()
+     } else {
+            position = position.left(1)
+        }
     }
 
     method recibirDaño(cantidad) {dañoInfligido.procesarDaño(self, cantidad)} //delego el deber de procesar el daño recibido a otro objeto
