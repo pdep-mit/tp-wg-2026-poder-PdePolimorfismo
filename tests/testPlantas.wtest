@@ -12,6 +12,7 @@ describe "Tests de Planta" {
       costeDeSoles = 50,
       tiempoDeRecarga = 5,
       daño = 0,
+      rangoDeAtaque = 0,
       tipoDeAtaque = object { method ejecutar(p, z) {} }
     )
     assert.that(planta.estaVivo())
@@ -24,6 +25,7 @@ describe "Tests de Planta" {
       costeDeSoles = 50,
       tiempoDeRecarga = 5,
       daño = 0,
+      rangoDeAtaque = 0,
       tipoDeAtaque = object { method ejecutar(p, z) {} }
     )
     assert.notThat(planta.estaVivo())
@@ -36,6 +38,7 @@ describe "Tests de Planta" {
       costeDeSoles = 50,
       tiempoDeRecarga = 5,
       daño = 0,
+      rangoDeAtaque = 0,
       tipoDeAtaque = object { method ejecutar(p, z) {} }
     )
     
@@ -54,6 +57,7 @@ describe "Tests de Planta" {
       costeDeSoles = 50,
       tiempoDeRecarga = 5,
       daño = 0,
+      rangoDeAtaque = 0,
       tipoDeAtaque = object { method ejecutar(p, z) {} }
     )
 

@@ -30,7 +30,7 @@ object juego {
 	}
 
 	method agregarPersonajes() {
-        const pinguino = new Pinguino(position = game.at(8, 2), vida = 500, daño = 100, tipoDeAtaque = ataqueCuerpoACuerpo)
+        const pinguino = new Pinguino(position = game.at(8, 2), vida = 500, daño = 100)
         pinguino.aparecer()
         game.addVisual(cursor)
 	    game.whenCollideDo(pinguino, { objeto => if (objeto.esPlanta()) pinguino.comer(objeto) })

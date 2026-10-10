@@ -67,13 +67,13 @@ class Pinguino inherits Zoombie{
 }
 
 class Jirafa inherits Zoombie{
-    override method image() = "jirafa.png"
+    override method image() = "jirafaZoombie.png"
 }
 
 class Rinoseronte inherits Zoombie{
-    override method image() = "rinoseronte.png"
+    override method image() = "rinoseronteZoombie.png"
 }
 
 class Mono inherits Zoombie{
-    override method image() = "mono.png"
+    override method image() = "monoZoombie.png"
 }
