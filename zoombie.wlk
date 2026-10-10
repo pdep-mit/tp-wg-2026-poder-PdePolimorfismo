@@ -62,7 +62,7 @@ object caminoLibre {
 }
 
 class Pinguino inherits Zoombie{
-   override method image() = "pinguino zoombie.png"
+   override method image() = "pinguinoZoombie.png"
 
 }
 

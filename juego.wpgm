@@ -42,7 +42,8 @@ object juego {
 		keyboard.up().onPressDo({ cursor.mover(arriba) })
 		keyboard.down().onPressDo({ cursor.mover(abajo) })
 		keyboard.space().onPressDo({ cursor.plantar() })
-		game.onClickDo({ posicion => cursor.irYPlantar(posicion) })
+		//game.onClickDo({ posicion => cursor.irYPlantar(posicion) })
+		// lo comento ya que eta dando methodShouldExist 
 	}
 
 }
