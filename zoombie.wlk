@@ -77,3 +77,7 @@ class Rinoseronte inherits Zoombie{
 class Mono inherits Zoombie{
     override method image() = "monoZoombie.png"
 }
+
+class Rino inherits Zoombie{
+    override method image()= "rino.png"
+}
