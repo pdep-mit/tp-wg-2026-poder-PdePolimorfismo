@@ -18,7 +18,7 @@ class Planta {
     }
 
     method morir () {                               
-        game.removeVisual(self)    // este method lo definimos así para que cuando, muera un personaje, desaparezca de la pamtalla 
+        game.removeVisual(self)    // este method lo definimos así para que cuando, muera un personaje, desaparezca de la pantalla 
     }
 
 

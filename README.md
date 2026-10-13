@@ -24,11 +24,12 @@ Recuerden que para cada checkpoint hay [expectativas mínimas](https://docs.goog
 
 ## Objetivo
 
-TODO
+El objetivo del juego es defender la casa (a definir) de zoombies que aparecen quieren atacarla, utilizando diferentes tipos de plantas, cada una con características particulares.
+
+Las plantas deben impedir que los zoombies avancen hasta el extremo izquierdo del tablero. Para lograrlo, el jugador deberá utilizar estratégicamente los recursos disponibles y aprovechar las características de cada planta.
 
 ## Controles
 
-TODO
 
 # Explicaciones
 

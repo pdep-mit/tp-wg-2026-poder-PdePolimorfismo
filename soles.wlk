@@ -5,7 +5,7 @@ class Sol {
     var property recolectado = false
     const valor = 25
 
-    method valor () = valor
+    method valor () = valor // no es redundante?
 
     method recolectar () = recolectado
 
