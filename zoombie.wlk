@@ -1,55 +1,83 @@
-import movimientos.*
 import wollok.game.*
 import abstracciones.*
+import estadoDelJuego.*
 
 class Zoombie {
-    var property posicion
-    var property vida 
-    const daño 
+    var property position
+   // var property tipoDeAtaque // queda ahi por ahora
+    var property vida
+    const daño
+    const intervaloMs = 2500    
 
-    method estaVivo () = vida > 0
+    method esPlanta() = false  
+    method estaVivo () = vida > 0 //el zoombie tiene la vida completa
 
-    method avanzar () {
-        movimientoHaciaLaIzquierda.mover(self)
+    method aparecer() {
+        game.addVisual(self) //aparece en el escenario
+        game.onTick(intervaloMs, self.nombreDelTick(), { self.actuar() }) //cada 1 seg se va a repetir la acción actuar
     }
 
-    method recibirDaño (dañoDePlanta) {
-        dañoInflingido.procesarDaño(self, dañoDePlanta)
+    method image() {}
+
+    method actuar() {self.loQueHayAdelante().enfrentar(self)}
+    //el zoombie se hace presente a lo que sea que tenga en frente 
+    //y  le pide que haga lo que tenga qu ehacer con él
+
+    method loQueHayAdelante() = game.getObjectsIn(position.left(1)).findOrDefault({ objeto => objeto.esPlanta() }, caminoLibre)
+    //se identifican a todas las entidades que se encuentren a la izquierda de la posicion actual del zoombie
+    //y me devuelve un listado de dichos objetos. Se recorre la lista y de identifica al primero que matchee 
+    //con la consulta objeto.esPlanta(), si no hay plantas, el camino esta libre
+
+
+    method avanzar() {
+
+     if (position.x() == 0) {
+            self.detener()
+            finDelJuego.mostrarDerrota()
+     } else {
+            position = position.left(1)
+        }
     }
 
-    method dañoInfligido () = daño
+    method recibirDaño(cantidad) {dañoInfligido.procesarDaño(self, cantidad)} //delego el deber de procesar el daño recibido a otro objeto
 
-    method comer (planta) {
-        planta.recibirDaño(daño)
-    }
+    method dañoQueHace () = daño
 
-    method morir () {                               
+    method comer(planta) { planta.recibirDaño(daño)}//empieza a dañar a una planta
+
+    method morir() {  
+        self.detener()                           
         game.removeVisual(self)    // este method lo definimos así para que cuando, muera un personaje, desaparezca de la pamtalla 
+    }
+
+    method detener() { game.removeTickEvent(self.nombreDelTick()) }//mato el ciclo de vida del z0ombie
+
+    method nombreDelTick() = "zoombie" + self.identity()// identificador para cada zoombie 
+}
+//no hay plantas en frente del zoombie, sigue su camino
+object caminoLibre {
+    method enfrentar(zoombie) {
+        zoombie.avanzar()
     }
 }
 
-// revisar si lo siguiente esta bien implementado
+class Pinguino inherits Zoombie{
+   override method image() = "pinguinoZoombie.png"
 
-const oso = new Zoombie(
-    posicion = game.at(8, 2),
-    vida = 500,
-    daño = 50
-)
+}
 
-const mono = new Zoombie(
-    posicion = game.at(8, 4),
-    vida = 200,
-    daño = 20
-)
+class Jirafa inherits Zoombie{
+    override method image() = "jirafaZoombie.png"
+}
 
-const jirafa = new Zoombie(
-    posicion = game.at(8, 6),
-    vida = 300,
-    daño = 30
-)
+class Rinoseronte inherits Zoombie{
+    override method image() = "rinoseronteZoombie.png"
+}
 
-const pinguino = new Zoombie(
-    posicion = game.at(8, 8),
-    vida = 150,
-    daño = 10
-)
+class Mono inherits Zoombie{
+    override method image() = "monoZoombie.png"
+}
+
+class Rino inherits Zoombie{
+    override method image()= "rino.png"
+}

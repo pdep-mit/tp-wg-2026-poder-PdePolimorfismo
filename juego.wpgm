@@ -1,11 +1,54 @@
+import movimientos.*
+import jugador.*
 import wollok.game.*
 import plantas.*
 import zoombie.*
+import ataques.*
 
-program NombreDeJuego {
-	game.title("Plantas vs Zoombies")
-	game.height(10)
-	game.width(10)
+object juego {
+	const musicaFondo = game.sound("musica.wav")
 
-	game.start()
+	method iniciarJuego() {
+		self.configurarTablero()
+        self.iniciarSoundtrack()
+        self.agregarPersonajes()
+        self.configurarTeclas()
+        game.start()
+	}
+	method configurarTablero() {
+        game.title("Plantas vs Zoombies")
+        game.cellSize(88) // tamaño de cada celda del tablero
+        game.height(6)
+        game.width(8)
+        game.boardGround("escenario.png") // para que se vea el patio de fondo
+    }
+
+	method iniciarSoundtrack() {
+		musicaFondo.shouldLoop(true)
+    	musicaFondo.volume(0.5)
+    	musicaFondo.play()
+	}
+
+	method agregarPersonajes() {
+        const pinguino = new Pinguino(position = game.at(8, 2), vida = 500, daño = 100)
+        pinguino.aparecer()
+        game.addVisual(cursor)
+	    game.whenCollideDo(pinguino, { objeto => if (objeto.esPlanta()) pinguino.comer(objeto) })
+	}
+	
+	method configurarTeclas() {
+		keyboard.right().onPressDo({ cursor.mover(derecha) }) // movilidad del cursor
+		keyboard.left().onPressDo({ cursor.mover(izquierda) })
+		keyboard.up().onPressDo({ cursor.mover(arriba) })
+		keyboard.down().onPressDo({ cursor.mover(abajo) })
+		keyboard.space().onPressDo({ cursor.plantar() })
+		//game.onClickDo({ posicion => cursor.irYPlantar(posicion) })
+		// lo comento ya que eta dando methodShouldExist 
+	}
+
 }
+
+program principal {
+	juego.iniciarJuego()
+}
+

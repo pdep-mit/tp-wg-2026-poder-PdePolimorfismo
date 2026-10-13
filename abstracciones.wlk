@@ -1,6 +1,6 @@
 import wollok.game.*
 
-object dañoInflingido {
+object dañoInfligido {
 
     method procesarDaño (entidad , daño) {
 
@@ -8,7 +8,7 @@ object dañoInflingido {
 
          entidad.vida(vidaActual)
 
-         if(not(entidad.estaVivo())) {
+         if(not entidad.estaVivo()) {
             entidad.morir()
          }
          
