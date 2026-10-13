@@ -30,6 +30,9 @@ Las plantas deben impedir que los zoombies avancen hasta el extremo izquierdo de
 
 ## Controles
 
+Flechas del teclado (↑, ↓, ←, →): permiten mover el cursor por el tablero para elegir la posición en la que se quiere plantar una planta.
+
+Barra espaciadora: permite plantar la planta seleccionada en la posición donde se encuentra el cursor.
 
 # Explicaciones
 

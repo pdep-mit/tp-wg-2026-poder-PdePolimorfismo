@@ -1,6 +1,6 @@
 # Explicaciones teóricas
 
-Encapsulamiento: 
+## Encapsulamiento: 
 
 Se aplica mediante la definición de clases y objetos que agrupan información y comportamientos.
 
@@ -8,7 +8,7 @@ Por ejemplo: la clase Zoombie contiene propiedades como posicion, vida y daño, 
 
 De esta manera, los comportamientos relacionados con los zoombies se encuentran definidos y otros objetos pueden interactuar con ellos enviándoles mensajes, sin necesidad de conocer todos los detalles de su implementación.
 
-Delegación:
+## Delegación:
 
 La delegación se utiliza cuando un objeto le encarga a otro la responsabilidad de realizar una tarea.
 
@@ -24,15 +24,13 @@ El zoombie no implementa directamente la lógica para calcular su nueva posició
 
 Otro ejemplo es el método recibirDaño(...), que delega el procesamiento del daño al objeto dañoInflingido, mediante el mensaje procesarDaño(self, daño).
 
-Polimorfismo: 
+## Polimorfismo: 
 
-Permite que distintos objetos respondan al mismo mensaje de maneras diferentes.
+La metodo atacar de la clase Planta está pensado para referenciar un objeto encargado de ejecutar un ataque.
 
-En el diseño del juego, la propiedad ataque de la clase Planta está pensada para referenciar un objeto encargado de ejecutar un ataque.
+tipoDeAtaque.ejecutar(self, zoombie) le envía el mismo mensaje (ejecutar) a diferentes objetos y cada uno define qué hacer al recibirlo.
 
-ataque.ejecutar(self, zoombie) podría permitir que diferentes objetos de ataque respondan al mensaje ejecutar con comportamientos diferentes, como lanzar un proyectil o producir daño de otra manera.
-
-Esto todavía no está implementado.
+Esto permite que diferentes objetos respondan al mensaje ejecutar con comportamientos diferentes. 
 
 # Diagramas
 
