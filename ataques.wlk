@@ -1,6 +1,7 @@
 object sinAtaque {
 
     method ejecutar(planta, zoombie) {
+        // no hace nada
     }
 }
 
@@ -8,14 +9,17 @@ object sinAtaque {
 object ataqueLargaDistancia {
 
     method ejecutar(planta, zoombie) {
-        zoombie.recibirDaño(planta.dañoQueHace())
+        if (planta.estaEnSuRango(zoombie)) {
+            zoombie.recibirDaño(planta.dañoQueHace())
     }
 }
+}
 
-
+// Solo puede atacar a un zoombie que esté al lado
 object ataqueCuerpoACuerpo {
 
     method ejecutar(planta, zoombie) {
+        if (planta.posicion().right(1) == zoombie.posicion())
         zoombie.recibirDaño(planta.dañoQueHace())
     }
 }
@@ -24,6 +28,11 @@ object ataqueCuerpoACuerpo {
 object ataqueExplosivo {
 
     method ejecutar(planta, zoombie) {
-        zoombie.recibirDaño(zoombie.vida())
+        zoombie.forEach({zombie => 
+            if (planta.estaEnSuRango(zoombie)) {
+                zoombie.morir()
+            }
+        })
+        
     }
 }

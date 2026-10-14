@@ -34,6 +34,8 @@ Flechas del teclado (↑, ↓, ←, →): permiten mover el cursor por el tabler
 
 Barra espaciadora: permite plantar la planta seleccionada en la posición donde se encuentra el cursor.
 
+(sin implementar) Teclas 1 a 5: elegir planta. 1 Girasol, 2 Lanzaguisantes, 3 Nuez, 4 Bonk Choi, 5 Cereza.
+
 # Explicaciones
 
 Las explicaciones teóricas y diagramas van a encontrarse en [explicaciones.md](explicaciones.md) a partir del Checkpoint #2.

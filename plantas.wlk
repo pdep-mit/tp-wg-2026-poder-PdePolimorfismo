@@ -42,11 +42,19 @@ class Planta {
             distancia <= rangoDeAtaque
     }
 
+    // POLIMORFISMO: la planta no sabe cómo ataca, se lo pide a su tipo de ataque.
+
     method atacar(zoombie) {
-        if (self.estaEnSuRango(zoombie)) {
+        if (zoombie.estaVivo()) {
             tipoDeAtaque.ejecutar(self, zoombie)
         }
     }
+
+    // method atacar(zoombie) {
+    //     if (self.estaEnSuRango(zoombie)) {
+    //         tipoDeAtaque.ejecutar(self, zoombie)
+    //     }
+    // }
 }
 
 
