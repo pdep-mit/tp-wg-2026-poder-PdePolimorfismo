@@ -31,7 +31,7 @@ class Zoombie {
 
     method avanzar() {
 
-     if (position.x() == 0) {
+     if (position.x() == -1) {
             self.detener()
             finDelJuego.mostrarDerrota()
      } else {

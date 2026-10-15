@@ -64,3 +64,13 @@ object cursor {
         return not game.getObjectsIn(position).any({ objeto => objeto.esPlanta() })
     }
 }
+
+object contadorDeSoles {
+
+    var solesActuales = 50
+    
+    method position() = game.at(0,game.height()-1.2)
+
+    method image() = "controlador.png"
+
+}
