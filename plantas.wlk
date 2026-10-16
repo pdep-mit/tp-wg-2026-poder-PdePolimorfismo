@@ -18,6 +18,7 @@ class Planta {
     method estaVivo() = vida > 0
 
     method esPlanta() = true
+    method esSol() = false
 
     method dañoQueHace() = daño
 

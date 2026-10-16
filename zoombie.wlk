@@ -10,6 +10,7 @@ class Zoombie {
     const intervaloMs = 2500    
 
     method esPlanta() = false  
+    method esSol() = false
     method estaVivo () = vida > 0 //el zoombie tiene la vida completa
 
     method aparecer() {
@@ -54,6 +55,7 @@ class Zoombie {
 
     method nombreDelTick() = "zoombie" + self.identity()// identificador para cada zoombie 
 }
+
 //no hay plantas en frente del zoombie, sigue su camino
 object caminoLibre {
     method enfrentar(zoombie) {

@@ -30,6 +30,7 @@ object cursor {
   method image() = "cursor.png"
 
   method esPlanta() = false
+  method esSol() = false
 
   method seleccionar(controlador) {
         seleccionActual = controlador
@@ -40,6 +41,15 @@ object cursor {
         if (tablero.contiene(siguiente)) {
             position = siguiente
         }
+    }
+
+    // Recolecta un sol únicamente si hay uno en la misma celda que el cursor.
+  method recolectarSol() {
+        const sol = game.getObjectsIn(position).findOrDefault({ objeto => objeto.esSol() }, sinSol)
+        
+        if (sol != sinSol) {
+        sol.recolectar()
+    }
     }
 
   method plantar() {
@@ -65,7 +75,11 @@ object cursor {
     }
 }
 
-object contadorDeSoles {
+object sinSol {
+    method recolectar() {}
+}
+
+object visualContadorDeSoles {
 
     var solesActuales = 50
     

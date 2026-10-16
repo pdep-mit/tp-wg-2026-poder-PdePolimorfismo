@@ -4,6 +4,7 @@ import wollok.game.*
 import plantas.*
 import zoombie.*
 import ataques.*
+import soles.*
 
 object juego {
 	const musicaFondo = game.sound("musica.wav")
@@ -13,6 +14,7 @@ object juego {
         self.iniciarSoundtrack()
         self.agregarPersonajes()
         self.configurarTeclas()
+		generadorDeSoles.iniciar()
         game.start()
 	}
 	method configurarTablero() {
@@ -22,10 +24,8 @@ object juego {
         game.width(8)
         game.boardGround("escenario.png") // para que se vea el patio de fondo
 
-    	game.addVisual(contadorDeSoles)
+    	game.addVisual(visualContadorDeSoles)
     }
-
-	
 
 	method iniciarSoundtrack() {
 		musicaFondo.shouldLoop(true)
@@ -46,11 +46,14 @@ object juego {
 		keyboard.up().onPressDo({ cursor.mover(arriba) })
 		keyboard.down().onPressDo({ cursor.mover(abajo) })
 		keyboard.space().onPressDo({ cursor.plantar() })
+		keyboard.x().onPressDo({ cursor.recolectarSol() })
 		//game.onClickDo({ posicion => cursor.irYPlantar(posicion) })
 		// lo comento ya que eta dando methodShouldExist 
 	}
 
 }
+
+// en soles.wlk, en contador de soles ver como hacer para que el nro aparezca en pantalla
 
 program principal {
 	juego.iniciarJuego()
