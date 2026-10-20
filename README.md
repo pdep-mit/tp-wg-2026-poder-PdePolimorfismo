@@ -21,18 +21,30 @@ Recuerden que para cada checkpoint hay [expectativas mínimas](https://docs.goog
 - Para la demo final, crear un nuevo tag **demo** y actualizar este README con todo lo necesario.
 
 # Cómo jugar
+Moviendo el cursor con las flechas del teclado, podés seleccionar el lugar donde vas a colocar las plantas y también podés recolectar los soles que van cayendo al tablero. Los soles te van a ayudar a poder plantarlas, dado que cada una tiene un costo medido en soles. 
+
+Para plantar las plantes tenés que utilizar las teclas de sus iniciales:
+    - para plantar un girasol, pulsás la letra "g",
+    - para plantar un lanzaguisantes, pulsás la letra "l",
+    - para plantar una nuez, pulsás la letra "n",
+    - para plantar un bonkchoi, pulsás la letra "b",
+    - para plantar una cereza, pulsás la letra "c". 
+
 
 ## Objetivo
 
-El objetivo del juego es defender la casa (a definir) de zoombies que aparecen quieren atacarla, utilizando diferentes tipos de plantas, cada una con características particulares.
-
-Las plantas deben impedir que los zoombies avancen hasta el extremo izquierdo del tablero. Para lograrlo, el jugador deberá utilizar estratégicamente los recursos disponibles y aprovechar las características de cada planta.
+El objetivo del juego es defender la casa de los cuidadores del zoológico de los zoombies que quieren atacarla para vengarse, y esto se hará mediante el uso de plantas. 
+Las plantas deben impedir que los zoombies avancen hasta el extremo izquierdo del tablero. Para lograrlo, hay que utilizar los recursos disponibles y aprovechar las características que ofrece cada tipo de planta.
 
 ## Controles
 
-Flechas del teclado (↑, ↓, ←, →): permiten mover el cursor por el tablero para elegir la posición en la que se quiere plantar una planta.
+Flechas del teclado (↑, ↓, ←, →): permiten mover el cursor por el tablero para elegir la posición en la que se quiere plantar una planta y agarrar soles 
 
-Barra espaciadora: permite plantar la planta seleccionada en la posición donde se encuentra el cursor.
+Barra espaciadora: permite recolectar los soles que caen en la posición del cursor
+
+G, L, C, B, N  para plantar las plantas 
+
+
 
 (sin implementar) Teclas 1 a 5: elegir planta. 1 Girasol, 2 Lanzaguisantes, 3 Nuez, 4 Bonk Choi, 5 Cereza.
 

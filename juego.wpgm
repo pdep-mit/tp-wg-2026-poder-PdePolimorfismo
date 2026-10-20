@@ -34,15 +34,16 @@ object juego {
 	(0..4).forEach({fila => const podar = new Podadora(position = game.at(3, fila)); game.addVisual(podar); podar.hazTuMagia()})
 
 		
-	keyboard.right().onPressDo({ cursor.mover(derecha) }) // movilidad del cursor
-	keyboard.left().onPressDo({ cursor.mover(izquierda) })		
-    keyboard.up().onPressDo({ cursor.mover(arriba) })
-	keyboard.down().onPressDo({ cursor.mover(abajo) })
-	keyboard.g().onPressDo({ cursor.plantar(new Girasol()) })
-    keyboard.l().onPressDo({ cursor.plantar(new LanzaGuisantes()) })
-    keyboard.n().onPressDo({ cursor.plantar(new Nuez()) })
-    keyboard.b().onPressDo({ cursor.plantar(new BonkChoi()) })
-    keyboard.space().onPressDo({ cursor.recolectarSol() })
+	keyboard.right().onPressDo({ cursor.mover(derecha)}) // movilidad del cursor
+	keyboard.left().onPressDo({ cursor.mover(izquierda)})		
+    keyboard.up().onPressDo({ cursor.mover(arriba)})
+	keyboard.down().onPressDo({ cursor.mover(abajo)})
+	keyboard.g().onPressDo({ cursor.plantar(new Girasol())})
+    keyboard.l().onPressDo({ cursor.plantar(new LanzaGuisantes())})
+    keyboard.n().onPressDo({ cursor.plantar(new Nuez())})
+    keyboard.b().onPressDo({ cursor.plantar(new BonkChoi())})
+    keyboard.c().onPressDo({ cursor.plantar(new Cereza())})
+    keyboard.space().onPressDo({ cursor.recolectarSol()})
 
 	game.start()
 
