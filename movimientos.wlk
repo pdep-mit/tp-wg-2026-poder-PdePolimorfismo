@@ -16,8 +16,3 @@ object arriba {
 object abajo {
     method desde(posicion) = posicion.down(1)
 }
-
-// Los límites del tablero en un solo lugar (antes cada uno comparaba por su cuenta).
-object tablero {
-    method contiene(posicion) = posicion.x().between(0, game.width() - 1) && posicion.y().between(0, game.height() - 1)
-}

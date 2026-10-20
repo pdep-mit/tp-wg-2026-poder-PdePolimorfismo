@@ -34,6 +34,7 @@ object juego {
 	}
 
 	method agregarPersonajes() {
+		generadorDeSoles.iniciar()
 	    const pinguino = new Pinguino(position = game.at(game.width() - 1, 2), vida = 500, daño = 100)
         pinguino.aparecer()
         game.addVisual(cursor)
@@ -45,10 +46,11 @@ object juego {
 		keyboard.left().onPressDo({ cursor.mover(izquierda) })
 		keyboard.up().onPressDo({ cursor.mover(arriba) })
 		keyboard.down().onPressDo({ cursor.mover(abajo) })
-		keyboard.space().onPressDo({ cursor.plantar() })
-		keyboard.x().onPressDo({ cursor.recolectarSol() })
-		//game.onClickDo({ posicion => cursor.irYPlantar(posicion) })
-		// lo comento ya que eta dando methodShouldExist 
+		keyboard.g().onPressDo({ cursor.plantar(new Girasol()) })
+        keyboard.l().onPressDo({ cursor.plantar(new LanzaGuisantes()) })
+        keyboard.n().onPressDo({ cursor.plantar(new Nuez()) })
+        keyboard.b().onPressDo({ cursor.plantar(new BonkChoi()) })
+        keyboard.space().onPressDo({ cursor.recolectarSol() })
 	}
 
 }

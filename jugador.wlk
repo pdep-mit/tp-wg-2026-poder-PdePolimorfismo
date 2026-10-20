@@ -1,6 +1,8 @@
+import abstracciones.*
 import wollok.game.*
 import plantas.*
 import movimientos.*
+import soles.*
 
 class ControladorDeCooldown {
     const property nombre
@@ -22,15 +24,11 @@ class ControladorDeCooldown {
 
 const controlDeGirasol = new ControladorDeCooldown(nombre = "Girasol", fabrica = { posicion => new Girasol(position = posicion) })
 
-object cursor {
+object cursor inherits Visual{
+
   var property position = game.center()
-  var property seleccionActual = controlDeGirasol
-  //por ahora, por defoult va a venir seleccionado el girasol para plantarse
   
   method image() = "cursor.png"
-
-  method esPlanta() = false
-  method esSol() = false
 
   method seleccionar(controlador) {
         seleccionActual = controlador
@@ -38,18 +36,21 @@ object cursor {
 
   method mover(direccion) {
         const siguiente = direccion.desde(position)
-        if (tablero.contiene(siguiente)) {
-            position = siguiente
-        }
+        if (self.posicionValida(siguientePosicion)) {
+      position = siguientePosicion
     }
+    }
+
+     method posicionValida(pos) = pos.x().between(3,game.width() - 1) && pos.y().between(0, game.height() - 2)
 
     // Recolecta un sol únicamente si hay uno en la misma celda que el cursor.
   method recolectarSol() {
-        const sol = game.getObjectsIn(position).findOrDefault({ objeto => objeto.esSol() }, sinSol)
-        
-        if (sol != sinSol) {
-        sol.recolectar()
-    }
+         game.getObjectsIn(position).filter({ objeto => objeto.esSol() }).forEach(
+      { sol =>
+        contadorDeSoles.acumularSoles(sol.valor())
+        return sol.desaparecer()
+      }
+    )
     }
 
   method plantar() {
@@ -62,29 +63,11 @@ object cursor {
     }
 
     // Click del mouse: mueve el cursor a la casilla clickeada y planta ahí.
-  method irYPlantar(posicion) {
-        if (tablero.contiene(posicion)) {
-            position = posicion
-            self.plantar()
-        }
-    }
+  method puedePlantar(planta) = (not self.hayPlantaEnCasilla()) && (contadorDeSoles.solesAhora() >= planta.coste())
 
     // El cursor comparte casilla con otros objetos, pero no con otra planta.
-  method estaCasillaLibre() {
-        return not game.getObjectsIn(position).any({ objeto => objeto.esPlanta() })
-    }
+   method hayPlantaEnCasilla() = game.getObjectsIn(posicion).any(
+    { planta => planta.esPlanta() }
+  )
 }
 
-object sinSol {
-    method recolectar() {}
-}
-
-object visualContadorDeSoles {
-
-    var solesActuales = 50
-    
-    method position() = game.at(0, game.height() - 1)
-
-    method image() = "controlador.png"
-
-}

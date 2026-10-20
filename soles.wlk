@@ -1,26 +1,31 @@
+import abstracciones.*
 import wollok.game.*
+import movimientos.*
 
-class Sol {
-    var property position
-    var property recolectado = false
+class Sol inherits Visual{
+    var position = game.at(
+    4.randomUpTo(game.width() - 1).truncate(0),
+    game.height() - 1
+  )
+    var recolectado = false
     const valorDelSol = 25
+    var cayendo = true
+    const tiempoEnPiso = 4000
 
     method image() = "sol.png"
-    method esSol() = true
+
+    override method esSol() = true
+
     method valor () = valorDelSol
 
-    //method recolectar () = recolectado
-    method recolectar() {
-        if (not recolectado) {
-            recolectado = true
-            self.detener()
-            contadorDeSoles.sumar(self.valor())
-            game.removeVisual(self)
-        }
+    method aparecerCayendo() {
+       game.addVisual(self)
+       game.onTick(1500, "crearSol" + self.identity(), { self.descender() })
     }
-    method aparecer() {
-        game.addVisual(self)
-        game.onTick(1800, self.nombreDelTick(), { self.desplazarseEnEjeY() })
+
+    method aparecerEnLaCasilla() {
+       game.addVisual(self)
+       self.esperarYDesaparecer()
     }
 
     method desaparecer() {
@@ -28,59 +33,67 @@ class Sol {
         game.removeVisual(self)
     }
 
-    method desplazarseEnEjeY() {
-        if (recolectado) {
-            self.detener()
-        } else if (position.y() > 0) {
-            position = position.down(1)
-        } else {
-            self.desaparecer()
-        }
+    method descender() {
+       if (position.y() == 0) {
+      self.detener()
+    } else {
+      position = abajo.desde(position)
+    }
     }
 
     method detener() {
-        game.removeTickEvent(self.nombreDelTick())
+        if (cayendo) {
+            cayendo = false
+            game.removeTickEvent("crearSol" + self.identity())
+            self.esperarYDesaparecer()
+        }
     }
 
-    method nombreDelTick() = "sol" + self.identity()
+    method esperarYDesaparecer() {
+    game.schedule(tiempoEnPiso, { self.desaparecer() })
+  }
 
 }
 
  object contadorDeSoles {
-    var cantidad = 0
-
-    method total() = cantidad
-
-    method sumar(valor) {
-        cantidad = cantidad + valor
-        self.actualizar()
-    }
-
-    method actualizar() {
-        //// ver como arreglar para que se vea en el contador de la pantalla
-        game.title("Plantas vs Zoombies - Soles: " + cantidad)
-    }
+     var solesActuales = 25
+  
+     method solesAhora() = solesActuales
+  
+     method position() = game.at(0, game.height() - 1)
+  
+     method image() = "controlador.png"
+  
+     method acumularSoles(cantidad) {
+       solesActuales += cantidad
+     }
+  
+     method gastarSoles(cantidad) {
+       solesActuales -= cantidad
+     }
 }
 
 object generadorDeSoles {
+
+    var property frecuencia = 8000
+    var activo = false
+
     method iniciar() {
-        //// Aparece un sol nuevo cada 6 segundos.
-        game.onTick(6000, "generadorDeSoles", {self.generar() })
+       if (not activo) {
+      activo = true
+      game.onTick(frecuencia, "lluviaDeSoles", { self.generarSol() })
+    }
     }
 
-    method generar() {
-    
-        // Se usa la cantidad de columnas como límite, y truncate(0) para obtener entero.
-        const columnaAleatoria = 0.randomUpTo(game.width()).truncate(0)
-        // Si randomUpTo devuelve el límite superior, lo ajustamos a la última columna válida.
-        var columna = columnaAleatoria
+    method generarSol() {
+    new Sol().aparecerCayendo()
+  }
 
-        if (columna >= game.width()) {
-            columna = game.width() - 1
-        }
-        const sol = new Sol(
-            position = game.at(columna, game.height() - 1))
-        sol.aparecer()
+    method detener() {
+    if (activo) {
+      activo = false
+      game.removeTickEvent("lluviaDeSoles")
     }
+  }
 }
 
