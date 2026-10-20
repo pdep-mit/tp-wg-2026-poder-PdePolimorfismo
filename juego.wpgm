@@ -8,7 +8,7 @@ import soles.*
 import podadora.*
 
 object juego {
-	const musicaFondo = game.sound("musica.wav")
+	const musicaFondo = game.sound("soundtrack.mp3")
 
 	method iniciarJuego() {
 
@@ -16,7 +16,7 @@ object juego {
     game.cellSize(120)
     game.height(6)
     game.width(12)
-    game.boardGround("wasteland_pixelart_2px.png")
+    game.boardGround("escenario.png")
 		
 	musicaFondo.shouldLoop(true)
     musicaFondo.volume(0.5)
