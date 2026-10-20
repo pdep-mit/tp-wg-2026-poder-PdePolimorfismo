@@ -3,7 +3,7 @@ import wollok.game.*
 import movimientos.*
 
 class Sol inherits Visual{
-    var position = game.at(
+    var property posicion = game.at(
     4.randomUpTo(game.width() - 1).truncate(0),
     game.height() - 1
   )
@@ -13,6 +13,8 @@ class Sol inherits Visual{
     const tiempoEnPiso = 4000
 
     method image() = "sol.png"
+
+    method position() = posicion
 
     override method esSol() = true
 
@@ -36,10 +38,10 @@ class Sol inherits Visual{
     }
 
     method descender() {
-       if (position.y() == 0) {
+       if (posicion.y() == 0) {
       self.detener()
     } else {
-      position = abajo.desde(position)
+      posicion = abajo.desde(posicion)
     }
     }
 
@@ -98,4 +100,3 @@ object generadorDeSoles {
     }
   }
 }
-

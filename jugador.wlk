@@ -22,7 +22,7 @@ class ControladorDeCooldown {
     }
 }
 
-const controlDeGirasol = new ControladorDeCooldown(nombre = "Girasol", fabrica = { posicion => new Girasol(position = posicion) })
+const controlDeGirasol = new ControladorDeCooldown(nombre = "Girasol", fabrica = { posicion_ => new Girasol(position = posicion_) })
 
 object cursor inherits Visual{
 
@@ -66,4 +66,3 @@ object cursor inherits Visual{
     { planta => planta.esPlanta() }
   )
 }
-

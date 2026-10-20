@@ -101,7 +101,7 @@ class Girasol inherits Planta (
   costeDeSoles = 50,
   tiempoDeRecarga = 10
 ) {
-  method image() = "girasol1.png"
+  method image() = "girasol.png"
   
   override method aparecer() {
     super()
@@ -112,7 +112,7 @@ class Girasol inherits Planta (
     game.onTick(
       8000,
       "generarSol" + self.identity(),
-      { new Sol(position = self.position()).aparecerEnLaCasilla() }
+      { new Sol(posicion = self.position()).aparecerEnLaCasilla() }
     )
   }
 
