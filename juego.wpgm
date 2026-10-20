@@ -23,7 +23,9 @@ object juego {
     musicaFondo.play()
 
 	generadorDeSoles.iniciar()
-    game.onTick(15000, "crearZoombie", {new Mono().aparecer()})    
+    game.onTick(15000, "crearZoombie", {new Mono().aparecer()}) 
+    game.onTick(25000, "crearZoombie", {new Pinguino().aparecer()})
+    game.onTick(30000, "crearZoombie", {new Jirafa().aparecer()})   
     game.addVisual(contadorDeSoles)
     game.addVisual(cursor)
 
