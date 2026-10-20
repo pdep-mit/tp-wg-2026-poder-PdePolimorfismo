@@ -30,12 +30,8 @@ object cursor inherits Visual{
   
   method image() = "cursor.png"
 
-  method seleccionar(controlador) {
-        seleccionActual = controlador
-    }
-
   method mover(direccion) {
-        const siguiente = direccion.desde(position)
+        const siguientePosicion = direccion.desde(position)
         if (self.posicionValida(siguientePosicion)) {
       position = siguientePosicion
     }
@@ -53,20 +49,20 @@ object cursor inherits Visual{
     )
     }
 
-  method plantar() {
+  method plantar(planta) {
         // Consultamos ambos estados de forma limpia con un booleano
-        if (self.estaCasillaLibre() && seleccionActual.puedePlantar()) {
-            seleccionActual.plantarEn(position)
-        } else {
-            game.say(self, "¡Planta no recargada!")
-        }
+        if (self.puedePlantar(planta)) {
+            contadorDeSoles.gastarSoles(planta.coste())
+            planta.position(position)
+            planta.aparecer()
+    }
     }
 
     // Click del mouse: mueve el cursor a la casilla clickeada y planta ahí.
   method puedePlantar(planta) = (not self.hayPlantaEnCasilla()) && (contadorDeSoles.solesAhora() >= planta.coste())
-
+  
     // El cursor comparte casilla con otros objetos, pero no con otra planta.
-   method hayPlantaEnCasilla() = game.getObjectsIn(posicion).any(
+   method hayPlantaEnCasilla() = game.getObjectsIn(position).any(
     { planta => planta.esPlanta() }
   )
 }

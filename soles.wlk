@@ -29,8 +29,10 @@ class Sol inherits Visual{
     }
 
     method desaparecer() {
-        self.detener()
-        game.removeVisual(self)
+        if (not recolectado) {
+           recolectado = true
+           game.removeVisual(self)
+        }
     }
 
     method descender() {

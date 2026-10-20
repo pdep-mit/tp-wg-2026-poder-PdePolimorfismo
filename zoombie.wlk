@@ -1,60 +1,70 @@
 import wollok.game.*
 import abstracciones.*
 import estadoDelJuego.*
+import movimientos.*
+class Zoombie inherits Visual{
+  var property vida
+  const daño
+  var property position = game.at(game.width() - 1, (0 .. (game.height() - 2)).anyOne())
+  const tipoDeAtaque
+  var activo = true
+  
+  override method esZoombie() = true
+  
+  method dañoQueHace() = daño
+  
+  method estaVivo() = vida > 0
+  
+  method aparecer() {
+    game.addVisual(self)
+    game.onTick(3000, "movimientoZoombie" + self.identity(), { self.actuar() })
+  }
 
-class Zoombie {
-    var property position
-   // var property tipoDeAtaque // queda ahi por ahora
-    var property vida
-    const daño
-    const intervaloMs = 2500    
-
-    method esPlanta() = false  
-    method esSol() = false
-    method estaVivo () = vida > 0 //el zoombie tiene la vida completa
-
-    method aparecer() {
-        game.addVisual(self) //aparece en el escenario
-        game.onTick(intervaloMs, self.nombreDelTick(), { self.actuar() }) //cada 1 seg se va a repetir la acción actuar
+  method actuar() {
+    const planta = self.plantaEnMiCasilla()
+    if (planta != null) {
+      self.comer(planta)
+    } else {
+      self.avanzar()
     }
+  }
 
-    method image() {}
+  method plantaEnMiCasilla() {
+    return game.getObjectsIn(position).findOrDefault({ elemento => elemento.esPlanta() }, null)
+  }
+  
+  method comer(planta) {
+    planta.recibirDaño(daño)
+  }
 
-    method actuar() {self.loQueHayAdelante().enfrentar(self)}
-    //el zoombie se hace presente a lo que sea que tenga en frente 
-    //y  le pide que haga lo que tenga qu ehacer con él
-
-    method loQueHayAdelante() = game.getObjectsIn(position.left(1)).findOrDefault({ objeto => objeto.esPlanta() }, caminoLibre)
-    //se identifican a todas las entidades que se encuentren a la izquierda de la posicion actual del zoombie
-    //y me devuelve un listado de dichos objetos. Se recorre la lista y de identifica al primero que matchee 
-    //con la consulta objeto.esPlanta(), si no hay plantas, el camino esta libre
-
-
-    method avanzar() {
-
-     if (position.x() == -1) {
-            self.detener()
-            finDelJuego.mostrarDerrota()
-     } else {
-            position = position.left(1)
-        }
+  method recibirDaño(cantidad) {
+    vida = 0.max(vida - cantidad)
+    if (not self.estaVivo()) {
+      self.morir()
     }
-
-    method recibirDaño(cantidad) {dañoInfligido.procesarDaño(self, cantidad)} //delego el deber de procesar el daño recibido a otro objeto
-
-    method dañoQueHace () = daño
-
-    method comer(planta) { planta.recibirDaño(daño)}//empieza a dañar a una planta
-
-    method morir() {  
-        self.detener()                           
-        game.removeVisual(self)    // este method lo definimos así para que cuando, muera un personaje, desaparezca de la pamtalla 
+  }
+  
+  method avanzar() {
+    if (position.x() <= 2) {
+      self.detenerse()
+    } else {
+      position = izquierda.desde(position)
     }
-
-    method detener() { game.removeTickEvent(self.nombreDelTick()) }//mato el ciclo de vida del z0ombie
-
-    method nombreDelTick() = "zoombie" + self.identity()// identificador para cada zoombie 
+  }
+  
+  method detenerse() {
+    if (activo) {
+      activo = false
+      game.removeTickEvent("movimientoZoombie" + self.identity())
+    }
+  }
+  
+  method morir() {
+    self.detenerse()
+    game.removeVisual(self)
+  }
 }
+
 
 //no hay plantas en frente del zoombie, sigue su camino
 object caminoLibre {
@@ -63,23 +73,46 @@ object caminoLibre {
     }
 }
 
-class Pinguino inherits Zoombie{
-   override method image() = "pinguinoZoombie.png"
-
+class Pinguino inherits Zoombie (
+  vida = 200,
+  daño = 80,
+  tipoDeAtaque = "normal"
+) {
+  method image() = "pinguino.png"
 }
 
-class Jirafa inherits Zoombie{
-    override method image() = "jirafaZoombie.png"
+class Oso inherits Zoombie (
+  vida = 3600,
+  daño = 5000,
+  tipoDeAtaque = "especial"
+) {
+  method image() = "oso.png"
 }
 
-class Rinoseronte inherits Zoombie{
-    override method image() = "rinoseronteZoombie.png"
+class Jirafa inherits Zoombie (
+  vida = 1000,
+  daño = 80,
+  tipoDeAtaque = "especial"
+) {
+  method image() = "jirafaZoombie.png"
 }
 
-class Mono inherits Zoombie{
-    override method image() = "monoZoombie.png"
+class Rinoceronte inherits Zoombie (
+  vida = 1300,
+  daño = 80,
+  tipoDeAtaque = "especial"
+) {
+  method image() = "rinoZoombie.png"
 }
 
-class Rino inherits Zoombie{
-    override method image()= "rino.png"
+class Mono inherits Zoombie (vida = 560, daño = 80, tipoDeAtaque = "normal") {
+  method image() = "monoZoombie.png"
+}
+
+class PerroSalchicha inherits Zoombie (
+  vida = 10000,
+  daño = 9999,
+  tipoDeAtaque = "???"
+) {
+  method image() = "perroSalchichaZoombie.png"
 }

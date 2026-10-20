@@ -2,124 +2,161 @@ import wollok.game.*
 import soles.*
 import abstracciones.*
 import ataques.*
+import movimientos.*
 
 
-class Planta {
 
-    var property position
+class Planta inherits Visual{
+
     var property vida
+    const property costeDeSoles
+    const property tiempoDeRecarga = 10
+    const property daño = 0
+    const property velocidadDeAtaque = 0
+    var property position = game.at(0, 0)
 
-    const costeDeSoles
-    const tiempoDeRecarga
-    const tipoDeAtaque
-    const daño
-    const rangoDeAtaque
-
-    method estaVivo() = vida > 0
-
-    method esPlanta() = true
-    method esSol() = false
-
-    method dañoQueHace() = daño
-
-    method enfrentar(zoombie) {
-        zoombie.comer(self)
+    override method esPlanta() = true
+  
+  method coste() = costeDeSoles
+  
+  method dañoQueHace() = daño
+  
+  method estaVivo() = vida > 0
+  
+  method aparecer() {
+    game.addVisual(self)
+  }
+  
+  method recibirDaño(cantidad) {
+    vida = 0.max(vida - cantidad)
+    if (not self.estaVivo()) {
+      self.morir()
     }
+  }
 
-    method recibirDaño(dañoDeZoombie) {
-        dañoInfligido.procesarDaño(self, dañoDeZoombie)
-    }
-
-    method morir() {
-        game.removeVisual(self)
-    }
-
-    method estaEnSuRango(zoombie) {
-        const mismaFila = zoombie.position().y() == position.y()
-        const distancia = zoombie.position().x() - position.x()
-
-        return mismaFila &&
-            distancia >= 0 &&
-            distancia <= rangoDeAtaque
-    }
-
-    // POLIMORFISMO: la planta no sabe cómo ataca, se lo pide a su tipo de ataque.
-
-    method atacar(zoombie) {
-        if (zoombie.estaVivo()) {
-            tipoDeAtaque.ejecutar(self, zoombie)
-        }
-    }
-
-    // method atacar(zoombie) {
-    //     if (self.estaEnSuRango(zoombie)) {
-    //         tipoDeAtaque.ejecutar(self, zoombie)
-    //     }
-    // }
+  method morir() {
+    game.removeVisual(self)
+  }
 }
 
 
-class Girasol inherits Planta(
-    vida = 300,
-    costeDeSoles = 50,
-    tiempoDeRecarga = 5,
-    tipoDeAtaque = sinAtaque,
-    daño = 0,
-    rangoDeAtaque = 0
-) 
-{
 
-  method image() = "girasol.png"
+class PlantaLargaDistancia inherits Planta {
+  override method aparecer() {
+    super()
+    game.onTick(velocidadDeAtaque, "ataque" + self.identity(), { self.intentarDisparar() })
+  }
+
+  method intentarDisparar() {
+    if (self.hayZoombieEnFila()) {
+      self.disparar()
+    }
+  }
+
+  method disparar() {
+    const p = new Proyectil(position = self.position(), daño = self.dañoQueHace())
+    p.aparecer()
+  }
+
+  method hayZoombieEnFila() {
+    return game.allVisuals().any({ visual =>
+      visual.esZoombie() &&
+      visual.position().y() == self.position().y() &&
+      visual.position().x() >= self.position().x()
+    })
+  }
+
+  override method morir() {
+    game.removeTickEvent("ataque" + self.identity())
+    super()
+  }
+}
+
+class PlantaCortaDistancia inherits Planta {
+  override method aparecer() {
+    super()
+    game.onTick(velocidadDeAtaque, "golpe" + self.identity(), { self.golpear() })
+  }
+
+  method golpear() {
+    const objetivo = game.getObjectsIn(derecha.desde(self.position())).findOrDefault(
+      { obj => obj.esZoombie() },
+      null
+    )
+    if (objetivo != null) {
+      objetivo.recibirDaño(self.dañoQueHace())
+    }
+  }
+
+  override method morir() {
+    game.removeTickEvent("golpe" + self.identity())
+    super()
+  }
 }
 
 
-class LanzaGuisantes inherits Planta(
-    vida = 300,
-    costeDeSoles = 100,
-    tiempoDeRecarga = 5,
-    tipoDeAtaque = ataqueLargaDistancia,
-    daño = 50,
-    rangoDeAtaque = 3)
-{
 
-     method image() = "lanzaguisantes.png"
-}
-
-
-class BonkChoi inherits Planta(
-    vida = 400,
-    costeDeSoles = 150,
-    tiempoDeRecarga = 5,
-    tipoDeAtaque = ataqueCuerpoACuerpo,
-    daño = 100,
-    rangoDeAtaque = 1
+class Girasol inherits Planta (
+  vida = 300,
+  costeDeSoles = 50,
+  tiempoDeRecarga = 10
 ) {
+  method image() = "girasol1.png"
+  
+  override method aparecer() {
+    super()
+    self.producirSoles()
+  }
 
-    method image() = "bonkChoi.png"
+  method producirSoles() {
+    game.onTick(
+      8000,
+      "generarSol" + self.identity(),
+      { new Sol(position = self.position()).aparecerEnLaCasilla() }
+    )
+  }
+
+  override method morir() {
+    game.removeTickEvent("generarSol" + self.identity())
+    super()
+  }
 }
 
 
-class Nuez inherits Planta(
-    vida = 800,
-    costeDeSoles = 50,
-    tiempoDeRecarga = 10,
-    tipoDeAtaque = sinAtaque,
-    daño = 0,
-    rangoDeAtaque = 0
-) {
 
-     method image() = "nuez.png"
+class LanzaGuisantes inherits PlantaLargaDistancia (
+  vida = 300,
+  daño = 70,
+  costeDeSoles = 100,
+  tiempoDeRecarga = 15,
+  velocidadDeAtaque = 2000
+) {
+  method image() = "lanzaGuisantes.png"
 }
 
-
-class Cereza inherits Planta(
-    vida = 100,
-    costeDeSoles = 150,
-    tiempoDeRecarga = 40,
-    tipoDeAtaque = ataqueExplosivo,
-    daño = 0,
-    rangoDeAtaque = 1
+class Nuez inherits Planta (
+  vida = 4800,
+  costeDeSoles = 75,
+  tiempoDeRecarga = 10
 ) {
+  method image() = "nuez.png"
+}
 
-     method image() = "cereza.png"
+class Cereza inherits Planta (
+  vida = 600,
+  daño = 1800,
+  costeDeSoles = 150,
+  tiempoDeRecarga = 30
+) {
+  method image() = "cereza.png"
+}
+
+class BonkChoi inherits PlantaCortaDistancia (
+  vida = 300,
+  daño = 60,
+  costeDeSoles = 175,
+  tiempoDeRecarga = 10,
+  velocidadDeAtaque = 1500
+) {
+  method image() = "bonkChoi.png"
 }

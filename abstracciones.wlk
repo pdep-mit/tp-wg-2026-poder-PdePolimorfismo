@@ -1,4 +1,5 @@
 import wollok.game.*
+import movimientos.*
 
 object gestionarDañoYVida {
 
@@ -15,5 +16,59 @@ class Visual {
   
   method esSol() = false
   
+}
+
+class Proyectil inherits Visual {
+  var property position
+  const velocidad = 200
+  const daño
+  var activo = true
+  
+  method dañoQueHace() = daño
+  
+  method image() = "guisante.png"
+  
+  method aparecer() {
+    game.addVisual(self)
+    game.onTick(velocidad, "dispararse" + self.identity(), { self.avanzar() })
+    game.onCollideDo(
+      self,
+      { entidad => if (entidad.esZoombie() and activo) self.impactar(entidad) }
+    )
+    self.chequeoImpactoInmediato()
+  }
+  
+  method chequeoImpactoInmediato() {
+    const zombie = game.getObjectsIn(position).findOrDefault(
+      { e => e.esZoombie() },
+      null
+    )
+    if ((zombie != null) and activo) self.impactar(zombie)
+  }
+  
+  method impactar(zombie) {
+    if (activo) {
+      gestionarDañoYVida.procesarDaño(self, zombie)
+      self.detenerse()
+    }
+  }
+  
+  method avanzar() {
+    if (activo) {
+      if (position.x() >= (game.width() - 2)) {
+        self.detenerse()
+      } else {
+        position = derecha.desde(position)
+      }
+    }
+  }
+  
+  method detenerse() {
+    if (activo) {
+      activo = false
+      game.removeTickEvent("dispararse" + self.identity())
+      game.removeVisual(self)
+    }
+  }
 }
 
