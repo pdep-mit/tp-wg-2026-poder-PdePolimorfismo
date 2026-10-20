@@ -2,16 +2,18 @@ import wollok.game.*
 
 object dañoInfligido {
 
-    method procesarDaño (entidad , daño) {
-
-         const vidaActual = entidad.vida() - daño
-
-         entidad.vida(vidaActual)
-
-         if(not entidad.estaVivo()) {
-            entidad.morir()
-         }
-         
+    method procesarDaño (victima , atacante) {
+         victima.recibirDaño(atacante.dañoQueHace()) 
     }
+}
+
+class Visual {
+
+  method esPlanta() = false
+  
+  method esZoombie() = false
+  
+  method esSol() = false
+  
 }
 

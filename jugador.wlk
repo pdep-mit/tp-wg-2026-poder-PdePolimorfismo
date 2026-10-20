@@ -83,7 +83,7 @@ object visualContadorDeSoles {
 
     var solesActuales = 50
     
-    method position() = game.at(0,game.height()-1.2)
+    method position() = game.at(0, game.height() - 1)
 
     method image() = "controlador.png"
 
