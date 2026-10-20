@@ -1,4 +1,5 @@
 import wollok.game.*
+import soles.*
 
 object finDelJuego {
 	var perdido = false
@@ -6,6 +7,8 @@ object finDelJuego {
 	method mostrarDerrota() {
 		if (not perdido) {
 			perdido = true
+			game.removeTickEvent("crearZoombie")
+			generadorDeSoles.detener()
 			game.addVisual(pantallaDerrota)
 		}
 	}

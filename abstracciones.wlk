@@ -31,10 +31,6 @@ class Proyectil inherits Visual {
   method aparecer() {
     game.addVisual(self)
     game.onTick(velocidad, "dispararse" + self.identity(), { self.avanzar() })
-    game.onCollideDo(
-      self,
-      { entidad => if (entidad.esZoombie() and activo) self.impactar(entidad) }
-    )
     self.chequeoImpactoInmediato()
   }
   
@@ -48,17 +44,21 @@ class Proyectil inherits Visual {
   
   method impactar(zombie) {
     if (activo) {
-      gestionarDañoYVida.procesarDaño(self, zombie)
+      gestionarDañoYVida.procesarDaño(zombie, self)
       self.detenerse()
     }
   }
   
   method avanzar() {
     if (activo) {
-      if (position.x() >= (game.width() - 2)) {
-        self.detenerse()
-      } else {
-        position = derecha.desde(position)
+      self.chequeoImpactoInmediato()
+      if (activo) {
+        if (position.x() >= (game.width() - 2)) {
+          self.detenerse()
+        } else {
+          position = derecha.desde(position)
+          self.chequeoImpactoInmediato()
+        }
       }
     }
   }
@@ -71,4 +71,3 @@ class Proyectil inherits Visual {
     }
   }
 }
-

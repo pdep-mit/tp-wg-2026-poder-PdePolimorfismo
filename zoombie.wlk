@@ -47,6 +47,8 @@ class Zoombie inherits Visual{
   method avanzar() {
     if (position.x() <= 2) {
       self.detenerse()
+      game.removeVisual(self)
+      finDelJuego.mostrarDerrota()
     } else {
       position = izquierda.desde(position)
     }

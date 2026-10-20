@@ -37,7 +37,7 @@ object cursor inherits Visual{
     }
     }
 
-     method posicionValida(pos) = pos.x().between(3,game.width() - 1) && pos.y().between(0, game.height() - 2)
+     method posicionValida(pos) = pos.x().between(4,game.width() - 1) && pos.y().between(0, game.height() - 2)
 
     // Recolecta un sol únicamente si hay uno en la misma celda que el cursor.
   method recolectarSol() {

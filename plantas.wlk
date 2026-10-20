@@ -59,10 +59,9 @@ class PlantaLargaDistancia inherits Planta {
   }
 
   method hayZoombieEnFila() {
-    return game.allVisuals().any({ visual =>
-      visual.esZoombie() &&
-      visual.position().y() == self.position().y() &&
-      visual.position().x() >= self.position().x()
+    return (self.position().x() .. (game.width() - 1)).any({ x =>
+      game.getObjectsIn(game.at(x, self.position().y()))
+        .any({ objeto => objeto.esZoombie() })
     })
   }
 
@@ -131,7 +130,7 @@ class LanzaGuisantes inherits PlantaLargaDistancia (
   tiempoDeRecarga = 15,
   velocidadDeAtaque = 2000
 ) {
-  method image() = "lanzaGuisantes.png"
+  method image() = "lanzaguisantes.png"
 }
 
 class Nuez inherits Planta (

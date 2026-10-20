@@ -33,6 +33,8 @@ class Sol inherits Visual{
     method desaparecer() {
         if (not recolectado) {
            recolectado = true
+           cayendo = false
+           game.removeTickEvent("crearSol" + self.identity())
            game.removeVisual(self)
         }
     }
@@ -59,7 +61,7 @@ class Sol inherits Visual{
 
 }
 
- object contadorDeSoles {
+object contadorDeSoles inherits Visual {
      var solesActuales = 25
   
      method solesAhora() = solesActuales
