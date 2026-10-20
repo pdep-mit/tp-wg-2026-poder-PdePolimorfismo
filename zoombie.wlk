@@ -80,7 +80,7 @@ class Pinguino inherits Zoombie (
   daño = 80,
   tipoDeAtaque = "normal"
 ) {
-  method image() = "pinguino.png"
+  method image() = "pinguinoZoombie.png"
 }
 
 class Oso inherits Zoombie (

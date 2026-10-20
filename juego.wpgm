@@ -23,9 +23,11 @@ object juego {
     musicaFondo.play()
 
 	generadorDeSoles.iniciar()
-    game.onTick(15000, "crearZoombie", {new Mono().aparecer()}) 
-    game.onTick(25000, "crearZoombie", {new Pinguino().aparecer()})
-    game.onTick(30000, "crearZoombie", {new Jirafa().aparecer()})   
+    game.onTick(15000, "crearZoombie", {
+        const tipos = [new Mono(), new Pinguino(), new Jirafa()]
+        const elegido = tipos.anyOne()
+        elegido.aparecer()
+    })
     game.addVisual(contadorDeSoles)
     game.addVisual(cursor)
 
@@ -33,7 +35,8 @@ object juego {
 
 		
 	keyboard.right().onPressDo({ cursor.mover(derecha) }) // movilidad del cursor
-	keyboard.left().onPressDo({ cursor.mover(izquierda) })		keyboard.up().onPressDo({ cursor.mover(arriba) })
+	keyboard.left().onPressDo({ cursor.mover(izquierda) })		
+    keyboard.up().onPressDo({ cursor.mover(arriba) })
 	keyboard.down().onPressDo({ cursor.mover(abajo) })
 	keyboard.g().onPressDo({ cursor.plantar(new Girasol()) })
     keyboard.l().onPressDo({ cursor.plantar(new LanzaGuisantes()) })
