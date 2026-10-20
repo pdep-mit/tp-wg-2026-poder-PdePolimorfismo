@@ -1,6 +1,6 @@
 import wollok.game.*
 
-object dañoInfligido {
+object gestionarDañoYVida {
 
     method procesarDaño (victima , atacante) {
          victima.recibirDaño(atacante.dañoQueHace()) 
