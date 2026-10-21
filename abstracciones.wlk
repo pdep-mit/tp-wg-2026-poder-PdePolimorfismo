@@ -77,7 +77,7 @@ class ExplosionCelda inherits Visual{
   var property position
   var frameActual = 1
 
-  method image() = "secuenciaExploion-frame" + frameActual + ".png"
+  method image() = "secuenciaExplocion-frame" + frameActual + ".png"
 
   method avanzarFrame() {
     frameActual += 1

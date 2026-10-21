@@ -252,10 +252,10 @@ class PlantaCarnivora inherits Planta (
 
 class BonkChoi inherits PlantaCortaDistancia (
   vida = 300,
-  daño = 60,
+  daño = 80,
   costeDeSoles = 100,
   tiempoDeRecarga = 10,
-  velocidadDeAtaque = 1500
+  velocidadDeAtaque = 1000
 ) {
   var frameActual = 0
 
@@ -271,7 +271,7 @@ class BonkChoi inherits PlantaCortaDistancia (
   override method aparecer() {
     super()
     game.onTick(
-      150,
+      50,
       "animarBonkChoi" + self.identity(),
       { self.actualizarAnimacion() }
     )
