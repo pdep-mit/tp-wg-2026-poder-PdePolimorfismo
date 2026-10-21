@@ -62,7 +62,7 @@ class Sol inherits Visual{
 }
 
 object contadorDeSoles inherits Visual {
-     var solesActuales = 25
+     var solesActuales = 50
   
      method solesAhora() = solesActuales
   
