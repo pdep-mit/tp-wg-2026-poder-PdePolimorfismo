@@ -111,8 +111,8 @@ class Buitre inherits Zoombie (
 }
 
 class Oso inherits Zoombie (
-  vida = 3600,
-  daño = 300,
+  vida = 3000,
+  daño = 200,
   tipoDeAtaque = "especial"
 ) {
   method image() = "osoZoombie.png"
