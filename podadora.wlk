@@ -16,7 +16,7 @@ class Podadora inherits Visual {
       self,
       { entidad => if (entidad.esZoombie()) {
           self.activar()
-          gestionarDañoYVida.procesarDaño(self, entidad)
+          gestionarDañoYVida.procesarDaño(entidad, self)
         } }
     )
   }
