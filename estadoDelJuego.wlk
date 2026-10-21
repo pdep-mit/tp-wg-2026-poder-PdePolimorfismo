@@ -16,6 +16,6 @@ object finDelJuego{
 }
 
 object pantallaDerrota inherits Visual{
-	method position() = game.center()
-	method image() = "perdiste.png"
+	method position() = game.at(0,0)
+	method image() = "gameOver.png"
 }
