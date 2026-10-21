@@ -1,3 +1,4 @@
+import soles.*
 import plantas.*
 import jugador.*
 import wollok.game.*
@@ -73,5 +74,24 @@ describe "Test de cursor" {
   
   test "prueba de cursor" {
     assert.equals("cursor.png", cursor.image())
+  }
+}
+
+
+describe "Tests del contador de soles" {
+  test "El contador arranca en un valor inicial de 25 soles" {
+    assert.equals(25, contadorDeSoles.solesAhora())
+  }
+
+  test "El contador acumula correctamente" {
+    contadorDeSoles.acumularSoles(25)
+    assert.equals(50, contadorDeSoles.solesAhora())
+  }
+
+
+  test "El contador descuenta los soles correctamente" {
+    contadorDeSoles.acumularSoles(125)
+    contadorDeSoles.gastarSoles(50)
+    assert.equals(100, contadorDeSoles.solesAhora())
   }
 }
