@@ -5,24 +5,43 @@ import movimientos.*
 import soles.*
 
 class ControladorDeCooldown {
-    const property nombre
-    const fabrica          // bloque: posicion -> planta nueva
-    var lista = true
+  const fabrica
+  var disponible = true
 
-    method puedePlantar() = lista
+  method puedePlantar() = disponible
 
-    method plantarEn(posicion) {
-        if (lista){
-        const planta = fabrica.apply(posicion)
-        game.addVisual(planta)
-        lista = false
-        // Cada planta sabe cuánto tarda en recargarse.
-        game.schedule(planta.tiempoDeRecarga() * 1000, { lista = true })
-        }
-    }
+  method crearEn(posicion) = fabrica.apply(posicion)
+
+  method iniciar(tiempoDeRecarga) {
+    disponible = false
+    game.schedule(tiempoDeRecarga, { disponible = true })
+  }
 }
 
-const controlDeGirasol = new ControladorDeCooldown(nombre = "Girasol", fabrica = { posicion_ => new Girasol(position = posicion_) })
+const controlGirasol = new ControladorDeCooldown(
+  fabrica = { posicion_ => new Girasol(position = posicion_) }
+)
+
+const controlLanzaGuisantes = new ControladorDeCooldown(
+  fabrica = { posicion_ => new LanzaGuisantes(position = posicion_) }
+)
+
+const controlNuez = new ControladorDeCooldown(
+  fabrica = { posicion_ => new Nuez(position = posicion_) }
+)
+
+const controlBonkChoi = new ControladorDeCooldown(
+  fabrica = { posicion_ => new BonkChoi(position = posicion_) }
+)
+
+const controlCereza = new ControladorDeCooldown(
+  fabrica = { posicion_ => new Cereza(position = posicion_) }
+)
+
+const controlCarnivora = new ControladorDeCooldown(
+  fabrica = { posicion_ => new PlantaCarnivora(position = posicion_) }
+)
+
 
 object cursor inherits Visual{
 
@@ -49,14 +68,23 @@ object cursor inherits Visual{
     )
     }
 
-  method plantar(planta) {
-        // Consultamos ambos estados de forma limpia con un booleano
-        if (self.puedePlantar(planta)) {
-            contadorDeSoles.gastarSoles(planta.coste())
-            planta.position(position)
-            planta.aparecer()
+method plantar(controlador) {
+  if (not controlador.puedePlantar()) {
+    game.say(self, "Planta no recargada")
+  } else {
+    if (not self.hayPlantaEnCasilla()) {
+      const planta = controlador.crearEn(position)
+
+      if (contadorDeSoles.solesAhora() >= planta.coste()) {
+        contadorDeSoles.gastarSoles(planta.coste())
+        planta.aparecer()
+        controlador.iniciar(planta.tiempoDeRecarga())
+      } else {
+        game.say(self, "No hay suficientes soles")
+      }
     }
-    }
+  }
+}
 
     // Click del mouse: mueve el cursor a la casilla clickeada y planta ahí.
   method puedePlantar(planta) = (not self.hayPlantaEnCasilla()) && (contadorDeSoles.solesAhora() >= planta.coste())

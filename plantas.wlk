@@ -119,7 +119,7 @@ class PlantaCortaDistancia inherits Planta {
 class Girasol inherits Planta (
   vida = 300,
   costeDeSoles = 50,
-  tiempoDeRecarga = 10
+  tiempoDeRecarga = 5000
 ) {
   method image() = "girasol.png"
   
@@ -142,13 +142,11 @@ class Girasol inherits Planta (
   }
 }
 
-
-
 class LanzaGuisantes inherits PlantaLargaDistancia (
   vida = 300,
   daño = 70,
   costeDeSoles = 100,
-  tiempoDeRecarga = 15,
+  tiempoDeRecarga = 5000,
   velocidadDeAtaque = 2000
 ) {
   method image() = "lanzaguisantes.png"
@@ -157,7 +155,7 @@ class LanzaGuisantes inherits PlantaLargaDistancia (
 class Nuez inherits Planta (
   vida = 4800,
   costeDeSoles = 50,
-  tiempoDeRecarga = 10
+  tiempoDeRecarga = 15000
 ) {
   method image() = "nuez1.png"
 }
@@ -166,7 +164,7 @@ class Cereza inherits Planta (
   vida = 600,
   daño = 1800,
   costeDeSoles = 150,
-  tiempoDeRecarga = 30
+  tiempoDeRecarga = 25000
 ) {
   method image() = "cereza1.png"
 
@@ -200,9 +198,9 @@ class Cereza inherits Planta (
 class PlantaCarnivora inherits Planta (
   vida = 300,
   costeDeSoles = 200,
-  tiempoDeRecarga = 10
+  tiempoDeRecarga = 10000
 ) {
-  const tiempoDeMasticacion = 2500
+  const tiempoMasticando = 2500
   var objetivoMasticando = null
 
   method image() = "plantaCarnivora1.png"
@@ -222,7 +220,7 @@ class PlantaCarnivora inherits Planta (
       if (presa != null) {
         objetivoMasticando = presa
         presa.detenerse()
-        game.schedule(tiempoDeMasticacion, { self.tragar(presa) })
+        game.schedule(tiempoMasticando, { self.tragar(presa) })
       }
     }
   }
@@ -254,7 +252,7 @@ class BonkChoi inherits PlantaCortaDistancia (
   vida = 300,
   daño = 80,
   costeDeSoles = 100,
-  tiempoDeRecarga = 10,
+  tiempoDeRecarga = 5000,
   velocidadDeAtaque = 1000
 ) {
   var frameActual = 0

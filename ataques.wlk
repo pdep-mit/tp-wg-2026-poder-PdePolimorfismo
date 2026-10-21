@@ -26,15 +26,3 @@ object ataqueCuerpoACuerpo {
     }
 }
 
-
-object ataqueExplosivo {
-
-    method ejecutar(planta, zoombie) {
-        zoombie.forEach({zombie => 
-            if (planta.estaEnSuRango(zoombie)) {
-                zoombie.morir()
-            }
-        })
-        
-    }
-}
