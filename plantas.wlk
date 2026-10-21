@@ -156,10 +156,10 @@ class LanzaGuisantes inherits PlantaLargaDistancia (
 
 class Nuez inherits Planta (
   vida = 4800,
-  costeDeSoles = 75,
+  costeDeSoles = 50,
   tiempoDeRecarga = 10
 ) {
-  method image() = "nuez.png"
+  method image() = "nuez1.png"
 }
 
 class Cereza inherits Planta (
@@ -168,7 +168,7 @@ class Cereza inherits Planta (
   costeDeSoles = 150,
   tiempoDeRecarga = 30
 ) {
-  method image() = "cereza.png"
+  method image() = "cereza1.png"
 
   override method aparecer() {
     super()
@@ -196,13 +196,13 @@ class Cereza inherits Planta (
 
 class PlantaCarnivora inherits Planta (
   vida = 300,
-  costeDeSoles = 150,
+  costeDeSoles = 200,
   tiempoDeRecarga = 10
 ) {
   const tiempoDeMasticacion = 2500
   var objetivoMasticando = null
 
-  method image() = "carnivora.png"
+  method image() = "plantaCarnivora1.png"
 
   override method aparecer() {
     super()
@@ -250,7 +250,7 @@ class PlantaCarnivora inherits Planta (
 class BonkChoi inherits PlantaCortaDistancia (
   vida = 300,
   daño = 60,
-  costeDeSoles = 175,
+  costeDeSoles = 100,
   tiempoDeRecarga = 10,
   velocidadDeAtaque = 1500
 ) {
@@ -258,9 +258,9 @@ class BonkChoi inherits PlantaCortaDistancia (
 
   method image() {
     if (frameActual == 0) {
-      return "bonkChoi.png"
+      return "bonkChoiFrame1.png"
     }
-    return "bonkChoi" + frameActual + ".png"
+    return "bonkChoiFrame" + frameActual + ".png"
   }
 
   override method alcanceDeAtaque() = 2
