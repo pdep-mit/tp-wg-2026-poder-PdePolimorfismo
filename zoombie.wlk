@@ -6,7 +6,7 @@ class Zoombie inherits Visual{
   var property vida
   const daño
   var property position = game.at(game.width() - 1, (0 .. (game.height() - 2)).anyOne())
-  const tipoDeAtaque
+  const property tipoDeAtaque
   var activo = true
   
   override method esZoombie() = true
@@ -114,7 +114,7 @@ class Mono inherits Zoombie (vida = 560, daño = 80, tipoDeAtaque = "normal") {
 class PerroSalchicha inherits Zoombie (
   vida = 10000,
   daño = 9999,
-  tipoDeAtaque = "???"
+  tipoDeAtaque = "???"   // tenemos q definirlo 
 ) {
   method image() = "perroSalchichaZoombie.png"
 }

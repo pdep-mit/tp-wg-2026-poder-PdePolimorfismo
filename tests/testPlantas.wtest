@@ -12,10 +12,10 @@ describe "Tests de Planta" {
       vida = 100,
       costeDeSoles = 50,
       tiempoDeRecarga = 5,
-      daño = 0,
-      rangoDeAtaque = 0,
-      tipoDeAtaque = object { method ejecutar(p, z) {} }
-    )
+      daño = 0 )
+      //rangoDeAtaque = 0,
+      //tipoDeAtaque = object { method ejecutar(p, z) {} }
+  
     assert.that(planta.estaVivo())
   }
 
@@ -25,10 +25,10 @@ describe "Tests de Planta" {
       vida = 0,
       costeDeSoles = 50,
       tiempoDeRecarga = 5,
-      daño = 0,
-      rangoDeAtaque = 0,
-      tipoDeAtaque = object { method ejecutar(p, z) {} }
-    )
+      daño = 0)
+      //rangoDeAtaque = 0,
+      //tipoDeAtaque = object { method ejecutar(p, z) {} }
+   
     assert.notThat(planta.estaVivo())
   }
 
@@ -38,10 +38,10 @@ describe "Tests de Planta" {
       vida = 100,
       costeDeSoles = 50,
       tiempoDeRecarga = 5,
-      daño = 0,
-      rangoDeAtaque = 0,
-      tipoDeAtaque = object { method ejecutar(p, z) {} }
-    )
+      daño = 0)
+      //rangoDeAtaque = 0,
+      //tipoDeAtaque = object { method ejecutar(p, z) {} }
+    
     
     // Creamos un objeto zombie anónimo local
     const zombieCerca = object {
@@ -57,10 +57,10 @@ describe "Tests de Planta" {
       vida = 100,
       costeDeSoles = 50,
       tiempoDeRecarga = 5,
-      daño = 0,
-      rangoDeAtaque = 0,
-      tipoDeAtaque = object { method ejecutar(p, z) {} }
-    )
+      daño = 0)
+      //rangoDeAtaque = 0,
+      //tipoDeAtaque = object { method ejecutar(p, z) {} }
+    
 
     const zombieOtraFila = object {
       method posicion() = game.at(3, 2)
