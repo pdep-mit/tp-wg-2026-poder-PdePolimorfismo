@@ -1,7 +1,8 @@
+import abstracciones.*
 import wollok.game.*
 import soles.*
 
-object finDelJuego {
+object finDelJuego{
 	var perdido = false
 
 	method mostrarDerrota() {
@@ -14,7 +15,7 @@ object finDelJuego {
 	}
 }
 
-object pantallaDerrota {
+object pantallaDerrota inherits Visual{
 	method position() = game.center()
 	method image() = "perdiste.png"
 }

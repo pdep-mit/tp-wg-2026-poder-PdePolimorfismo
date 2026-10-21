@@ -23,6 +23,26 @@ class Planta inherits Visual{
   
   method estaVivo() = vida > 0
   
+  method zombieEn(posicion) {
+    return game.getObjectsIn(posicion).findOrDefault(
+      { objeto => objeto.esZoombie() },
+      null
+    )
+  }
+
+  method primerZombieEnRango(distancia, distanciaMaxima) {
+    if (distancia > distanciaMaxima) {
+      return null
+    }
+
+    const zombie = self.zombieEn(self.position().right(distancia))
+    if (zombie != null) {
+      return zombie
+    }
+
+    return self.primerZombieEnRango(distancia + 1, distanciaMaxima)
+  }
+
   method aparecer() {
     game.addVisual(self)
   }
@@ -72,18 +92,19 @@ class PlantaLargaDistancia inherits Planta {
 }
 
 class PlantaCortaDistancia inherits Planta {
+  method alcanceDeAtaque() = 1
+
+  method objetivoDeAtaque() = self.primerZombieEnRango(1, self.alcanceDeAtaque())
+
   override method aparecer() {
     super()
     game.onTick(velocidadDeAtaque, "golpe" + self.identity(), { self.golpear() })
   }
 
   method golpear() {
-    const objetivo = game.getObjectsIn(derecha.desde(self.position())).findOrDefault(
-      { obj => obj.esZoombie() },
-      null
-    )
+    const objetivo = self.objetivoDeAtaque()
     if (objetivo != null) {
-      objetivo.recibirDaño(self.dañoQueHace())
+      gestionarDañoYVida.procesarDaño(objetivo, self)
     }
   }
 
@@ -148,6 +169,82 @@ class Cereza inherits Planta (
   tiempoDeRecarga = 30
 ) {
   method image() = "cereza.png"
+
+  override method aparecer() {
+    super()
+    game.schedule(1000, { self.explotar() })
+  }
+
+  method explotar() {
+    if (self.estaVivo()) {
+      self.zombiesEnElArea().forEach({ zombie =>
+        gestionarDañoYVida.procesarDaño(zombie, self)
+      })
+      vida = 0
+      self.morir()
+    }
+  }
+
+  method zombiesEnElArea() {
+    return game.allVisuals().filter({ visual =>
+      visual.esZoombie() &&
+      visual.position().x().between(self.position().x() - 1, self.position().x() + 1) &&
+      visual.position().y().between(self.position().y() - 1, self.position().y() + 1)
+    })
+  }
+}
+
+class PlantaCarnivora inherits Planta (
+  vida = 300,
+  costeDeSoles = 150,
+  tiempoDeRecarga = 10
+) {
+  const tiempoDeMasticacion = 2500
+  var objetivoMasticando = null
+
+  method image() = "carnivora.png"
+
+  override method aparecer() {
+    super()
+    game.onTick(250, "buscarPresa" + self.identity(), { self.buscarPresa() })
+  }
+
+  method buscarPresa() {
+    if (objetivoMasticando != null && not objetivoMasticando.estaVivo()) {
+      objetivoMasticando = null
+    }
+
+    if (self.estaVivo() && objetivoMasticando == null) {
+      const presa = self.primeraPresaAlAlcance()
+      if (presa != null) {
+        objetivoMasticando = presa
+        presa.detenerse()
+        game.schedule(tiempoDeMasticacion, { self.tragar(presa) })
+      }
+    }
+  }
+
+  method primeraPresaAlAlcance() {
+    return self.primerZombieEnRango(0, 1)
+  }
+
+  method tragar(presa) {
+    if (self.estaVivo() && objetivoMasticando == presa) {
+      if (presa.estaVivo()) {
+        presa.morir()
+      }
+      objetivoMasticando = null
+    }
+  }
+
+  override method morir() {
+    game.removeTickEvent("buscarPresa" + self.identity())
+    if (objetivoMasticando != null && objetivoMasticando.estaVivo()) {
+      objetivoMasticando.reanudar()
+      objetivoMasticando = null
+    }
+    super()
+  }
 }
 
 class BonkChoi inherits PlantaCortaDistancia (
@@ -157,5 +254,45 @@ class BonkChoi inherits PlantaCortaDistancia (
   tiempoDeRecarga = 10,
   velocidadDeAtaque = 1500
 ) {
-  method image() = "bonkChoi.png"
+  var frameActual = 0
+
+  method image() {
+    if (frameActual == 0) {
+      return "bonkChoi.png"
+    }
+    return "bonkChoi" + frameActual + ".png"
+  }
+
+  override method alcanceDeAtaque() = 2
+
+  override method aparecer() {
+    super()
+    game.onTick(
+      150,
+      "animarBonkChoi" + self.identity(),
+      { self.actualizarAnimacion() }
+    )
+  }
+
+  method actualizarAnimacion() {
+    if (self.objetivoDeAtaque() == null) {
+      frameActual = 0
+    } else {
+      self.avanzarFrame()
+    }
+  }
+
+  method avanzarFrame() {
+    if (frameActual >= 8) {
+      frameActual = 1
+    } else {
+      frameActual += 1
+    }
+  }
+
+  override method morir() {
+    game.removeTickEvent("animarBonkChoi" + self.identity())
+    super()
+  }
+
 }

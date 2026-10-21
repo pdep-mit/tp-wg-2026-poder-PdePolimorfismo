@@ -21,7 +21,7 @@ class Zoombie inherits Visual{
   }
 
   method actuar() {
-    const planta = self.plantaEnMiCasilla()
+    const planta = self.plantaEnFrente()
     if (planta != null) {
       self.comer(planta)
     } else {
@@ -29,8 +29,12 @@ class Zoombie inherits Visual{
     }
   }
 
-  method plantaEnMiCasilla() {
-    return game.getObjectsIn(position).findOrDefault({ elemento => elemento.esPlanta() }, null)
+  method plantaEnFrente() {
+    const casillaAdelante = izquierda.desde(position)
+    return game.getObjectsIn(casillaAdelante).findOrDefault(
+      { elemento => elemento.esPlanta() },
+      null
+    )
   }
   
   method comer(planta) {
@@ -60,6 +64,13 @@ class Zoombie inherits Visual{
       game.removeTickEvent("movimientoZoombie" + self.identity())
     }
   }
+
+  method reanudar() {
+    if (self.estaVivo() && not activo) {
+      activo = true
+      game.onTick(3000, "movimientoZoombie" + self.identity(), { self.actuar() })
+    }
+  }
   
   method morir() {
     self.detenerse()
@@ -83,12 +94,20 @@ class Pinguino inherits Zoombie (
   method image() = "pinguinoZoombie.png"
 }
 
+class Buitre inherits Zoombie (
+  vida = 300,
+  daño = 80,
+  tipoDeAtaque = "normal"
+) {
+  method image() = "buitreZoombie.png"
+}
+
 class Oso inherits Zoombie (
   vida = 3600,
-  daño = 5000,
+  daño = 300,
   tipoDeAtaque = "especial"
 ) {
-  method image() = "oso.png"
+  method image() = "osoZoombie.png"
 }
 
 class Jirafa inherits Zoombie (
@@ -107,8 +126,52 @@ class Rinoceronte inherits Zoombie (
   method image() = "rinoZoombie.png"
 }
 
-class Mono inherits Zoombie (vida = 560, daño = 80, tipoDeAtaque = "normal") {
-  method image() = "monoZoombie.png"
+class Mono inherits Zoombie (vida = 560, daño = 80, tipoDeAtaque = "normal") {var frameActual = 1
+
+  var animacionActiva = false
+
+  method image() = "monoframe_" + frameActual + ".png"
+
+  override method actuar() {
+  if (self.plantaEnFrente() == null) {
+    self.iniciarAnimacion()
+  } else {
+    self.detenerAnimacion()
+  }
+  super()
+}
+
+method iniciarAnimacion() {
+    if (not animacionActiva) {
+      animacionActiva = true
+      game.onTick(
+        350,
+        "animarMono" + self.identity(),
+        { self.cambiarFrame() }
+      )
+    }
+  }
+
+  method cambiarFrame() {
+    if (frameActual == 8) {
+      frameActual = 1
+    } else {
+      frameActual += 1
+    }
+  }
+
+  method detenerAnimacion() {
+    if (animacionActiva) {
+      animacionActiva = false
+      game.removeTickEvent("animarMono" + self.identity())
+      frameActual = 1
+    }
+  }
+
+  override method detenerse() {
+    self.detenerAnimacion()
+    super()
+  }
 }
 
 class PerroSalchicha inherits Zoombie (

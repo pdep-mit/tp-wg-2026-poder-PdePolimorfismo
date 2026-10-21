@@ -24,7 +24,7 @@ object juego {
 
 	generadorDeSoles.iniciar()
     game.onTick( 15000, "crearZoombie", {
-        const tipos = [new Mono(), new Pinguino(), new Jirafa()]
+        const tipos = [new Mono(), new Pinguino(), new Jirafa(), new Oso(), new Rinoceronte(), new Buitre()]
         const elegido = tipos.anyOne()
         elegido.aparecer()
     })
@@ -43,7 +43,8 @@ object juego {
     keyboard.n().onPressDo({ cursor.plantar(new Nuez())})
     keyboard.b().onPressDo({ cursor.plantar(new BonkChoi())})
     keyboard.c().onPressDo({ cursor.plantar(new Cereza())})
-    keyboard.space().onPressDo({ cursor.recolectarSol()})
+	keyboard.v().onPressDo({ cursor.plantar(new PlantaCarnivora())})
+	keyboard.space().onPressDo({ cursor.recolectarSol()})
 
     game.onTick(200, "actualizarSoles", {game.say(contadorDeSoles, "Soles: " + contadorDeSoles.solesAhora())})   // con esto podemos hacer que aparezca en pantalla la cantidad de soles   
     
@@ -57,4 +58,3 @@ object juego {
 program principal {
 	juego.iniciarJuego()
 }
-
