@@ -44,7 +44,7 @@ object cursor inherits Visual{
          game.getObjectsIn(position).filter({ objeto => objeto.esSol() }).forEach(
       { sol =>
         contadorDeSoles.acumularSoles(sol.valor())
-        return sol.desaparecer()
+        sol.desaparecer()
       }
     )
     }

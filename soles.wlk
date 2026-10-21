@@ -68,7 +68,7 @@ object contadorDeSoles inherits Visual {
   
      method position() = game.at(0, game.height() - 1)
   
-     method image() = "controlador.png"
+     //method image() = "controlador.png"
   
      method acumularSoles(cantidad) {
        solesActuales += cantidad
