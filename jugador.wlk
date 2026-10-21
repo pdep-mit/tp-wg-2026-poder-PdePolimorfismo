@@ -14,7 +14,7 @@ class ControladorDeCooldown {
 
   method iniciar(tiempoDeRecarga) {
     disponible = false
-    game.schedule(tiempoDeRecarga, { disponible = true })
+    game.schedule(tiempoDeRecarga * 1000, { disponible = true })
   }
 }
 
