@@ -119,7 +119,7 @@ class PlantaCortaDistancia inherits Planta {
 class Girasol inherits Planta (
   vida = 300,
   costeDeSoles = 50,
-  tiempoDeRecarga = 5000
+  tiempoDeRecarga = 15000
 ) {
   method image() = "girasol.png"
   
@@ -146,7 +146,7 @@ class LanzaGuisantes inherits PlantaLargaDistancia (
   vida = 300,
   daño = 70,
   costeDeSoles = 100,
-  tiempoDeRecarga = 5000,
+  tiempoDeRecarga = 8000,
   velocidadDeAtaque = 2000
 ) {
   method image() = "lanzaguisantes.png"
@@ -252,7 +252,7 @@ class BonkChoi inherits PlantaCortaDistancia (
   vida = 300,
   daño = 80,
   costeDeSoles = 100,
-  tiempoDeRecarga = 5000,
+  tiempoDeRecarga = 8000,
   velocidadDeAtaque = 1000
 ) {
   var frameActual = 0
