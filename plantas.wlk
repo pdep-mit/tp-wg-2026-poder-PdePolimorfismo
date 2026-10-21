@@ -176,14 +176,17 @@ class Cereza inherits Planta (
   }
 
   method explotar() {
-    if (self.estaVivo()) {
-      self.zombiesEnElArea().forEach({ zombie =>
-        gestionarDañoYVida.procesarDaño(zombie, self)
-      })
-      vida = 0
-      self.morir()
-    }
+  if (self.estaVivo()) {
+    self.zombiesEnElArea().forEach({ zombie =>
+      gestionarDañoYVida.procesarDaño(zombie, self)
+    })
+
+    new ExplosionArea(centro = self.position()).iniciar()
+
+    vida = 0
+    self.morir()
   }
+}
 
   method zombiesEnElArea() {
     return game.allVisuals().filter({ visual =>

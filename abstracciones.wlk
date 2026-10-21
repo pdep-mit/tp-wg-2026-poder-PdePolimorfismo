@@ -71,3 +71,59 @@ class Proyectil inherits Visual {
     }
   }
 }
+
+class ExplosionCelda inherits Visual{
+
+  var property position
+  var frameActual = 1
+
+  method image() = "secuenciaExplocion-frame" + frameActual + ".png"
+
+  method avanzarFrame() {
+    frameActual += 1
+  }
+
+  method estaEnUltimoFrame() = frameActual == 7
+}
+
+class ExplosionArea {
+  const property centro
+  const celdas = []
+
+  method iniciar() {
+    self.crearCeldas()
+    game.onTick(
+      120,
+      "animarExplosion" + self.identity(),
+      { self.avanzarAnimacion() }
+    )
+  }
+
+  method crearCeldas() {
+    (-1..1).forEach({ desplazamientoX =>
+      (-1..1).forEach({ desplazamientoY =>
+        const x = centro.x() + desplazamientoX
+        const y = centro.y() + desplazamientoY
+
+        if (x.between(0, game.width() - 1) and y.between(0, game.height() - 1)) {
+          const celda = new ExplosionCelda(position = game.at(x, y))
+          celdas.add(celda)
+          game.addVisual(celda)
+        }
+      })
+    })
+  }
+
+  method avanzarAnimacion() {
+    if (celdas.all({ celda => celda.estaEnUltimoFrame() })) {
+      self.finalizar()
+    } else {
+      celdas.forEach({ celda => celda.avanzarFrame() })
+    }
+  }
+
+  method finalizar() {
+    game.removeTickEvent("animarExplosion" + self.identity())
+    celdas.forEach({ celda => game.removeVisual(celda) })
+  }
+}

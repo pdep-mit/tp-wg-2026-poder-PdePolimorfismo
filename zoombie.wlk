@@ -21,22 +21,30 @@ class Zoombie inherits Visual{
   }
 
   method actuar() {
-    const planta = self.plantaEnFrente()
+    const planta = self.plantaQuePuedeAtacar()
     if (planta != null) {
       self.comer(planta)
     } else {
       self.avanzar()
     }
   }
+  method plantaQuePuedeAtacar() {
+  const plantaEnMiCasilla = game.getObjectsIn(position).findOrDefault(
+    { objeto => objeto.esPlanta() },
+    null
+  )
 
-  method plantaEnFrente() {
-    const casillaAdelante = izquierda.desde(position)
-    return game.getObjectsIn(casillaAdelante).findOrDefault(
-      { elemento => elemento.esPlanta() },
-      null
-    )
+  if (plantaEnMiCasilla != null) {
+    return plantaEnMiCasilla
   }
-  
+
+  const casillaAdelante = izquierda.desde(position)
+  return game.getObjectsIn(casillaAdelante).findOrDefault(
+    { objeto => objeto.esPlanta() },
+    null
+  )
+}
+
   method comer(planta) {
     planta.recibirDaño(daño)
   }
@@ -114,8 +122,54 @@ class Jirafa inherits Zoombie (
   vida = 1000,
   daño = 80,
   tipoDeAtaque = "especial"
-) {
-  method image() = "jirafaZoombie.png"
+) {var frameActual = 0
+
+  method image() {
+    if (frameActual == 0) {
+      return "jirafa_frame_1.png"
+    }
+    return "jirafa_frame_" + frameActual + ".png"
+  }
+
+  override method actuar() {
+    if (self.plantaQuePuedeAtacar() == null) {
+      self.iniciarAnimacion()
+    } else {
+      self.detenerAnimacion()
+    }
+    super()
+  }
+
+  method iniciarAnimacion() {
+    if (frameActual == 0) {
+      frameActual = 1
+      game.onTick(
+        350,
+        "animarJirafa" + self.identity(),
+        { self.cambiarFrame() }
+      )
+    }
+  }
+
+  method cambiarFrame() {
+    if (frameActual == 5) {
+      frameActual = 1
+    } else {
+      frameActual += 1
+    }
+  }
+
+  method detenerAnimacion() {
+    if (frameActual != 0) {
+      game.removeTickEvent("animarJirafa" + self.identity())
+      frameActual = 0
+    }
+  }
+
+  override method detenerse() {
+    self.detenerAnimacion()
+    super()
+  }
 }
 
 class Rinoceronte inherits Zoombie (
@@ -133,7 +187,7 @@ class Mono inherits Zoombie (vida = 560, daño = 80, tipoDeAtaque = "normal") {v
   method image() = "monoframe_" + frameActual + ".png"
 
   override method actuar() {
-  if (self.plantaEnFrente() == null) {
+  if (self.plantaQuePuedeAtacar() == null) {
     self.iniciarAnimacion()
   } else {
     self.detenerAnimacion()
