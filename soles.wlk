@@ -81,7 +81,7 @@ object contadorDeSoles inherits Visual {
 
 object generadorDeSoles {
 
-    var property frecuencia = 8000
+    var property frecuencia = 10000
     var activo = false
 
     method iniciar() {

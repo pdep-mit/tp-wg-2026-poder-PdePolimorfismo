@@ -22,7 +22,7 @@ class Podadora inherits Visual {
   }
   
   method activar() {
-    game.onTick(800, "destruirTodo" + self.identity(), { self.avanzar() })
+    game.onTick(600, "destruirTodo" + self.identity(), { self.avanzar() })
   }
   
   method avanzar() {
