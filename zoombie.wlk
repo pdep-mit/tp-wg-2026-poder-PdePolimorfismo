@@ -86,14 +86,6 @@ class Zoombie inherits Visual{
   }
 }
 
-
-//no hay plantas en frente del zoombie, sigue su camino
-object caminoLibre {
-    method enfrentar(zoombie) {
-        zoombie.avanzar()
-    }
-}
-
 class Pinguino inherits Zoombie (
   vida = 200,
   daño = 80,
