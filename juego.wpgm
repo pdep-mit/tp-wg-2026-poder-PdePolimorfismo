@@ -23,7 +23,7 @@ object juego {
     musicaFondo.play()
 
 	generadorDeSoles.iniciar()
-    game.onTick( 25000, "crearZoombie", {
+    game.onTick( 15000, "crearZoombie", {
         const tipos = [new Mono(), new Pinguino(), new Jirafa()]
         const elegido = tipos.anyOne()
         elegido.aparecer()
