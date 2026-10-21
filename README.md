@@ -42,12 +42,8 @@ Las plantas deben impedir que los zoombies avancen hasta el extremo izquierdo de
 Flechas del teclado (↑, ↓, ←, →): permiten mover el cursor por el tablero para elegir la posición en la que se quiere plantar una planta y agarrar soles 
 
 Barra espaciadora: permite recolectar los soles que caen en la posición del cursor
-
-G, L, C, B, N  para plantar las plantas 
-
-
-
-(sin implementar) Teclas 1 a 5: elegir planta. 1 Girasol, 2 Lanzaguisantes, 3 Nuez, 4 Bonk Choi, 5 Cereza.
+ 
+Teclas 1 a 6: elegir planta. 1 Girasol, 2 Lanzaguisantes, 3 Nuez, 4 Bonk Choi, 5 Cereza, 6 Planta Carnivora
 
 # Explicaciones
 
