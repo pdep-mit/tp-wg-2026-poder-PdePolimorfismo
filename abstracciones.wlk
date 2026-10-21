@@ -93,15 +93,14 @@ class ExplosionArea {
   method iniciar() {
     self.crearCeldas()
     game.onTick(
-      120,
+      100,
       "animarExplosion" + self.identity(),
       { self.avanzarAnimacion() }
     )
   }
 
   method crearCeldas() {
-    (-1..1).forEach({ desplazamientoX =>
-      (-1..1).forEach({ desplazamientoY =>
+    (-1..1).forEach({ desplazamientoX => (-1..1).forEach({ desplazamientoY =>
         const x = centro.x() + desplazamientoX
         const y = centro.y() + desplazamientoY
 

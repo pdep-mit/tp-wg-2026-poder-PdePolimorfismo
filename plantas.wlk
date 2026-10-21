@@ -180,11 +180,11 @@ class Cereza inherits Planta (
       self.zombiesEnElArea().forEach({ zombie =>
         gestionarDañoYVida.procesarDaño(zombie, self)
       })
+      new ExplosionArea(centro = self.position()).iniciar()
       vida = 0
       self.morir()
     }
   }
-
   method zombiesEnElArea() {
     return game.allVisuals().filter({ visual =>
       visual.esZoombie() &&
@@ -268,7 +268,7 @@ class BonkChoi inherits PlantaCortaDistancia (
   override method aparecer() {
     super()
     game.onTick(
-      150,
+      50,
       "animarBonkChoi" + self.identity(),
       { self.actualizarAnimacion() }
     )
