@@ -38,12 +38,12 @@ object juego {
 	keyboard.left().onPressDo({ cursor.mover(izquierda)})		
     keyboard.up().onPressDo({ cursor.mover(arriba)})
 	keyboard.down().onPressDo({ cursor.mover(abajo)})
-	keyboard.g().onPressDo({ cursor.plantar(new Girasol())})
-    keyboard.l().onPressDo({ cursor.plantar(new LanzaGuisantes())})
-    keyboard.n().onPressDo({ cursor.plantar(new Nuez())})
-    keyboard.b().onPressDo({ cursor.plantar(new BonkChoi())})
-    keyboard.c().onPressDo({ cursor.plantar(new Cereza())})
-	keyboard.v().onPressDo({ cursor.plantar(new PlantaCarnivora())})
+	keyboard.num1().onPressDo({ cursor.plantar(new Girasol())})
+    keyboard.num2().onPressDo({ cursor.plantar(new LanzaGuisantes())})
+    keyboard.num3().onPressDo({ cursor.plantar(new Nuez())})
+    keyboard.num4().onPressDo({ cursor.plantar(new BonkChoi())})
+    keyboard.num5().onPressDo({ cursor.plantar(new Cereza())})
+	keyboard.num6().onPressDo({ cursor.plantar(new PlantaCarnivora())})
 	keyboard.space().onPressDo({ cursor.recolectarSol()})
 
     game.onTick(200, "actualizarSoles", {game.say(contadorDeSoles, "Soles: " + contadorDeSoles.solesAhora())})   // con esto podemos hacer que aparezca en pantalla la cantidad de soles   
