@@ -1,104 +1,88 @@
-import abstracciones.*
 import wollok.game.*
+import entidades.*
 import movimientos.*
+//import animaciones.*
+import patio.*
 
-class Sol inherits Visual{
-    var property posicion = game.at(
-    4.randomUpTo(game.width() - 1).truncate(0),
-    game.height() - 1
-  )
-    var recolectado = false
-    const valorDelSol = 25
-    var cayendo = true
-    const tiempoEnPiso = 4000
-
-    method image() = "sol.png"
-
-    method position() = posicion
-
-    override method esSol() = true
-
-    method valor () = valorDelSol
-
-    method aparecerCayendo() {
-       game.addVisual(self)
-       game.onTick(1500, "crearSol" + self.identity(), { self.descender() })
-    }
-
-    method aparecerEnLaCasilla() {
-       game.addVisual(self)
-       self.esperarYDesaparecer()
-    }
-
-    method desaparecer() {
-        if (not recolectado) {
-           recolectado = true
-           cayendo = false
-           game.removeTickEvent("crearSol" + self.identity())
-           game.removeVisual(self)
-        }
-    }
-
-    method descender() {
-       if (posicion.y() == 0) {
-      self.detener()
-    } else {
-      posicion = abajo.desde(posicion)
-    }
-    }
-
-    method detener() {
-        if (cayendo) {
-            cayendo = false
-            game.removeTickEvent("crearSol" + self.identity())
-            self.esperarYDesaparecer()
-        }
-    }
-
-    method esperarYDesaparecer() {
-    game.schedule(tiempoEnPiso, { self.desaparecer() })
-  }
-
+object cayendo {
+  method actuarSobre(sol) { sol.descender() }
 }
 
-object contadorDeSoles inherits Visual {
-     var solesActuales = 50
-  
-     method solesAhora() = solesActuales
-  
-     method position() = game.at(0, game.height() - 1)
-  
-     //method image() = "controlador.png"
-  
-     method acumularSoles(cantidad) {
-       solesActuales += cantidad
-     }
-  
-     method gastarSoles(cantidad) {
-       solesActuales -= cantidad
-     }
+object quieto {
+  method actuarSobre(sol) { }        
+}
+
+class Sol inherits Entidad{
+	
+	const valor = 25
+	var estado = cayendo
+	const tiempoEnPiso = 8000
+	
+	override method image() = "sol.png"
+	
+	method valor() = valor
+	
+	override method actuar() { estado.actuarSobre(self) }
+	
+	method recolectar() {
+        contadorDeSoles.agregarSoles(valor) 
+        self.desaparecer()
+    }
+	
+	method descender(){
+		position = abajo.desde(self.position())
+		if(self.position().y() == 1) self.detenerse()
+	}
+	
+	override method detenerse(){
+		estado = quieto
+		game.schedule(tiempoEnPiso, { self.desaparecer() })
+	}
+	
+	override method desaparecer(){
+		super()
+		patio.quitarSol(self)
+	}
+	
 }
 
 object generadorDeSoles {
 
-    var property frecuencia = 10000
-    var activo = false
-
-    method iniciar() {
-       if (not activo) {
-      activo = true
-      game.onTick(frecuencia, "lluviaDeSoles", { self.generarSol() })
-    }
-    }
-
-    method generarSol() {
-    new Sol().aparecerCayendo()
+  method generarSolAleatorio() {
+    const sol = new Sol(position = game.at((4 .. game.width() - 1).anyOne(), game.height() - 1))
+    patio.agregarSol(sol)
+    sol.aparecer()
   }
-
-    method detener() {
-    if (activo) {
-      activo = false
-      game.removeTickEvent("lluviaDeSoles")
-    }
+  
+  method generarSolEnCasilla(posicion){
+    const sol = new Sol(position = posicion.up(1))
+    patio.agregarSol(sol)
+    sol.aparecer()
+    sol.detenerse()
   }
+}
+
+object contadorDeSoles {
+    var cantidad = 50 
+
+    const property position = game.at(1, game.height() + 1)
+
+    method cantidad() = cantidad
+
+    method agregarSoles(monto) {
+        cantidad += monto
+    }
+
+    method quitarSoles(monto) {
+        if (cantidad < monto) {
+            self.error("No tienes suficientes soles") 
+        }
+        cantidad -= monto
+    }
+
+    method tieneSuficientesSoles(monto) = cantidad >= monto
+
+    method image() = "bloqueBlanco.png"
+    method textColor() = "000000FF"
+    method text() = "\n\n\n\n Soles: " + cantidad.toString() + " "
 }

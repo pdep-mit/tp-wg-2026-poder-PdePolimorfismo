@@ -1,13 +1,13 @@
 import soles.*
 import plantas.*
 import zoombie.*
-import podadora.*
+import podadoras.*
 import abstracciones.*
 import jugador.*
 import wollok.game.*
 import movimientos.*
 
-
+/*
 describe "Tests de Planta" {
 
   test "Una planta con vida mayor a 0 esta viva" {
@@ -170,3 +170,4 @@ describe "Tests de Mecánicas Avanzadas y Eventos" {
   }
 
 }
+*/

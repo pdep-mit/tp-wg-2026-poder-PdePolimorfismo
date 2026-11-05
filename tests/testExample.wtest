@@ -7,6 +7,6 @@ import jugador.*
 describe "pruebas polimorfismo" {
 
   test "prueba de cursor" {
-    assert.equals("cursor.png", cursor.image())
+    assert.equals("cursor.png", jugador.image())
   }
 }

@@ -9,13 +9,8 @@ object finDelJuego{
 		if (not perdido) {
 			perdido = true
 			game.removeTickEvent("crearZoombie")
-			generadorDeSoles.detener()
-			game.addVisual(pantallaDerrota)
+			//generadorDeSoles.detener()
+			//game.addVisual(pantallaDerrota)
 		}
 	}
-}
-
-object pantallaDerrota inherits Visual{
-	method position() = game.at(0,0)
-	method image() = "gameOver.png"
 }

@@ -1,11 +1,17 @@
-import movimientos.*
-import jugador.*
 import wollok.game.*
-import plantas.*
-import zoombie.*
-import ataques.*
 import soles.*
-import podadora.*
+import cursor.*
+import movimientos.*
+import patio.*
+import podadoras.*
+import plantas.*
+import jugador.*
+import pala.*
+
+class Casilla {
+    var property position
+    method image() = "casillaDia.png" 
+}
 
 object juego {
 	const musicaFondo = game.sound("soundtrack.mp3")
@@ -14,45 +20,60 @@ object juego {
 
     game.title("PLantas vs Zoombies")
     game.cellSize(120)
-    game.height(6)
+    game.height(7)
     game.width(12)
-    game.boardGround("escenario.png")
+    game.boardGround("escenarioDia.png")
+
+    (4 .. game.width() - 1).forEach({ x =>
+            (1 .. game.height() - 2).forEach({ y =>
+                game.addVisual(new Casilla(position = game.at(x, y)))
+            })
+        })
 		
 	musicaFondo.shouldLoop(true)
     musicaFondo.volume(0.2)
     musicaFondo.play()
 
-	generadorDeSoles.iniciar()
-    game.onTick( 15000, "crearZoombie", {
+    game.addVisual(jugador)
+    game.addVisual(contadorDeSoles)   
+
+	game.onTick(10000, "lluviaDeSoles", { generadorDeSoles.generarSolAleatorio() })
+    game.onTick(1500, "movimientoSoles", { 
+    	patio.soles().forEach({ sol => sol.actuar() }) 
+})
+
+    /*game.onTick( 15000, "crearZoombie", {
         const tipos = [new Mono(), new Pinguino(), new Jirafa(), new Oso(), new Rinoceronte(), new Buitre()]
         const elegido = tipos.anyOne()
         elegido.aparecer()
     })
-    game.addVisual(contadorDeSoles)
-    game.addVisual(cursor)
+    */
 
-	(0..4).forEach({fila => const podar = new Podadora(position = game.at(3, fila)); game.addVisual(podar); podar.hazTuMagia()})
+	(1..5).forEach({fila => const podar = new Podadora(position = game.at(3, fila))
+     podar.aparecer()
+     podar.actuar()})
 
 		
-	keyboard.right().onPressDo({ cursor.mover(derecha)}) // movilidad del cursor
-	keyboard.left().onPressDo({ cursor.mover(izquierda)})		
-    keyboard.up().onPressDo({ cursor.mover(arriba)})
-	keyboard.down().onPressDo({ cursor.mover(abajo)})
-	keyboard.num1().onPressDo({ cursor.plantar(controlGirasol) })
-    keyboard.num2().onPressDo({ cursor.plantar(controlLanzaGuisantes) })
-    keyboard.num3().onPressDo({ cursor.plantar(controlNuez) })
-    keyboard.num4().onPressDo({ cursor.plantar(controlBonkChoi) })
-    keyboard.num5().onPressDo({ cursor.plantar(controlCereza) })
-    keyboard.num6().onPressDo({ cursor.plantar(controlCarnivora) })
-	keyboard.space().onPressDo({ cursor.recolectarSol()})
+	keyboard.right().onPressDo({ jugador.moverse(derecha)}) // movilidad del cursor
+	keyboard.left().onPressDo({ jugador.moverse(izquierda)})		
+    keyboard.up().onPressDo({ jugador.moverse(arriba)})
+	keyboard.down().onPressDo({ jugador.moverse(abajo)})
 
-    game.onTick(200, "actualizarSoles", {game.say(contadorDeSoles, "Soles: " + contadorDeSoles.solesAhora())})   // con esto podemos hacer que aparezca en pantalla la cantidad de soles   
-    
+	keyboard.num1().onPressDo({ jugador.plantar(new Girasol()) })
+    keyboard.num2().onPressDo({ jugador.plantar(new Lanzaguisantes()) })
+
+    keyboard.num4().onPressDo({ jugador.plantar(new BonkChoi()) })
+
+    keyboard.p().onPressDo({ jugador.equipar(pala) }) 
+    keyboard.c().onPressDo({ jugador.equipar(cursor) })
+
+    keyboard.x().onPressDo({ jugador.remover() })
+
+	keyboard.space().onPressDo({ jugador.recolectarSol()})
 
 	game.start()
 
 	}
-
 }
 
 program principal {
