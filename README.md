@@ -37,6 +37,39 @@ Para plantar las plantes tenés que utilizar las teclas de sus iniciales:
 El objetivo del juego es defender la casa de los cuidadores del zoológico de los zoombies que quieren atacarla para vengarse, y esto se hará mediante el uso de plantas. 
 Las plantas deben impedir que los zoombies avancen hasta el extremo izquierdo del tablero. Para lograrlo, hay que utilizar los recursos disponibles y aprovechar las características que ofrece cada tipo de planta.
 
+## Almanaque
+
+###  Herramientas
+
+| Imagen | Descripción |
+|--------|-------------|
+| ![Pala](./assets/pala.png) | Remueve cualquier planta del patio (excepto a las plantas de uso instantáneo) |
+| ![Cursor](./assets/cursor.png) | Permite plantar tus defensas en el patio y recolectar los soles que caen del cielo, al igual que los generados por los Girasoles |
+### Plantas
+
+| Imagen | Descripción |
+|--------|-------------|
+| ![Girasol](./assets/girasol.png) | Coste = 50<br>Vida = 300<br> |
+| ![Lanzaguisantes](./assets/lanzaguisantes.png) | Coste = 100<br>Daño = 30<br>Vida = 300<br>Ataque = cuerpo a cuerpo |
+| ![Bonkchoi](./assets/bonkChoiFrame1.png) | Coste = 150<br>Daño = 30<br>Vida = 300<br>Ataque = larga distancia|
+| ![Nuez](./assets/nuez.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
+| ![Cereza](./assets/cereza1.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
+| ![Planta Carnivora](./assets/plantaCarnivora1.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
+### Zoombis
+
+| Imagen | Descripción |
+|--------|-------------|
+| ![Pinguino Zoombi](./assets/pinguinoZoombie.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
+| ![Mono Zoombi](./assets/monoframe_1.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
+| ![Buitre Zoombi](./assets/buitreZoombie.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
+| ![Jirafa Zoombi](./assets/jirafa_frame_1.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
+| ![Rinoceronte Zoombi](./assets/rinoZoombie.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
+| ![Oso Zoombi](./assets/osoZoombie.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
+| ![Perro Salchicha Zoombi](./assets/perroSalchichaZoombie.png) | Vida : ???<br>Daño : ???<br>Velocidad de movimiento : media<br> |
+
+
+
+
 ## Controles
 
 Flechas del teclado (↑, ↓, ←, →): permiten mover el cursor por el tablero para elegir la posición en la que se quiere plantar una planta y agarrar soles 
