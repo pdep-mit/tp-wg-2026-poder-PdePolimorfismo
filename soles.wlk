@@ -55,10 +55,23 @@ object generadorDeSoles {
   }
   
   method generarSolEnCasilla(posicion){
-    const sol = new Sol(position = posicion.up(1))
+    const sol = new Sol(position = posicion)
     patio.agregarSol(sol)
     sol.aparecer()
-    sol.detenerse()
+  }
+
+  method programarLluviaDeSoles() {
+    game.schedule((6000 .. 12000).anyOne(), {
+      self.generarSolAleatorio()
+      self.programarLluviaDeSoles()
+    })
+  }
+
+  method programarSolesDeGirasol(posicion) {
+    game.schedule((6000 .. 12000).anyOne(), {
+      self.generarSolEnCasilla(posicion)
+      self.programarSolesDeGirasol(posicion)
+    })
   }
 }
 

@@ -27,7 +27,8 @@ object jugador{
     	
     }
 	method plantar(planta) { 
-        herramientaActiva.plantar(planta) 
+        herramientaActiva.plantar(planta)
+		planta.actuar() 
     }
 
   method remover() {

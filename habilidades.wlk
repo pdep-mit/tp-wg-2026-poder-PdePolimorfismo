@@ -1,9 +1,24 @@
 import wollok.game.*
 import patio.*
 import movimientos.*
+import abstracciones.*
 
 
-object disparo { method ejecutar(planta) { } }   
+object disparo { 
+    method ejecutar(planta) {
+        if (patio.hayZoombieDelanteDe(planta)) {
+            self.generarProyectil(planta)
+        }
+    }
+
+    method generarProyectil(planta) {
+        const proyectil = new Proyectil(position = derecha.desde(planta.position()),
+        plantaQueLoDispara = planta)
+        
+        patio.agregarProyectil(proyectil)
+        proyectil.aparecer()
+    }
+}   
 object golpeCuerpoACuerpo   { method ejecutar(planta) { } }   
 object sinAtaque { method ejecutar(planta) { /* no hace nada */ } }
 

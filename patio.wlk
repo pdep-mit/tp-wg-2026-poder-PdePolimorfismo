@@ -29,8 +29,9 @@ object patio{
  	 		pla.position() == pos
  	 })
  	 
- 	 method hayZoombieEnFila(fila) = zoombies.any({zoo => 
- 	 		zoo.position().y() == fila
+ 	 method hayZoombieDelanteDe(planta) = zoombies.any({zoo => 
+ 	 		zoo.position().y() == planta.position().y() &&
+ 	 		zoo.position().x() > planta.position().x()
  	 })
 
     method hayZoombieEnCasilla(pos) = zoombies.any({zoo => 

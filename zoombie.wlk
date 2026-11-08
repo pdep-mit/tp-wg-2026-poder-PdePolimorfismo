@@ -74,4 +74,11 @@ object generarZoombis {
         patio.agregarZoombie(nuevoZombie)
         nuevoZombie.aparecer()
     }
+  
+  method programarAparicion() {
+    game.schedule((6000 .. 14000).anyOne(), {
+      self.generarZombieAleatorio()
+      self.programarAparicion()
+    })
+  }
 }

@@ -32,7 +32,7 @@ class Girasol inherits Planta (
 	
 	override method image() = "girasol.png"
 	
-	method generarSol() {
+	override method actuar() {
 		generadorDeSoles.generarSolEnCasilla(position)
 	}
 	
