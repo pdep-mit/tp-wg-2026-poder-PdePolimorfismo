@@ -1,6 +1,6 @@
 import wollok.game.*
 import patio.*
-import plantas.*
+import planta.*
 import cursor.*
 import jugador.*
 

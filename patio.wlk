@@ -3,9 +3,9 @@ import soles.*
 
 object patio{
 	 const property soles = []
-     const zoombies = []
+     const property zoombies = []
      const property plantas = []
-     const podadoras = []
+     const property podadoras = []
      const proyectiles = []
  
 	 method agregarSol(sol)           { soles.add(sol) }
@@ -49,4 +49,3 @@ object patio{
  	 		sol.position() == pos
      })
 }
-

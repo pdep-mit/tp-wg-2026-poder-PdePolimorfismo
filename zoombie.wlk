@@ -9,7 +9,10 @@ class Zoombie inherits SerVivo{
 	
 	override method avanzar() {
 		position = izquierda.desde(position)
-		if(position.x() == 12) self.detenerse()
+		if(position.x() == 1) {
+			self.detenerse()
+			self.desaparecer()
+		}
 	}
 	
 	override method morir(){
@@ -18,13 +21,21 @@ class Zoombie inherits SerVivo{
   }
 }
 
-class Pinguino inherits Zoombie{
+class Pinguino inherits Zoombie (
+  habilidad = comer,  
+  danio = 23, 
+  vida = 300)
+{
 	
-	override method image() = "pinguino.png"
+	override method image() = "pinguinoZoombie.png"
 	
 }
 
-class Buitre inherits Zoombie{
+class Buitre inherits Zoombie (
+  habilidad = comer,  
+  danio = 23, 
+  vida = 300)
+{
 	
 	var plantasSobrevoladas = 0
 	
@@ -34,12 +45,33 @@ class Buitre inherits Zoombie{
 		if(plantasSobrevoladas >= 2) habilidad = comer
 	}
 	
-	override method image() = "buitre.png"
+	override method image() = "buitreZoombie.png"
 	
 }
 
-class Rinoceronte inherits Zoombie {
+class Rinoceronte inherits Zoombie (
+  habilidad = comer,  
+  danio = 23, 
+  vida = 300)
+{
+	override method image() = "rinoZoombie.png"	
 	
-	
-	
+}
+
+object generarZoombis {
+	const tipos = [
+        { pos => new Pinguino(position = pos) },
+        { pos => new Rinoceronte(position = pos) },
+        { pos => new Buitre(position = pos) }
+    ]
+
+	method generarZombieAleatorio() {
+        
+        const filaAleatoria = (1 .. 4).anyOne()
+        const posicionAparicion = game.at(game.width() - 1, filaAleatoria)
+        const nuevoZombie = tipos.anyOne().apply(posicionAparicion)
+
+        patio.agregarZoombie(nuevoZombie)
+        nuevoZombie.aparecer()
+    }
 }

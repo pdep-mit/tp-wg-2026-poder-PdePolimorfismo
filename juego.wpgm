@@ -4,9 +4,11 @@ import cursor.*
 import movimientos.*
 import patio.*
 import podadoras.*
-import plantas.*
+import planta.*
+import zoombie.*
 import jugador.*
 import pala.*
+import abstracciones.*
 
 class Casilla {
     var property position
@@ -14,7 +16,7 @@ class Casilla {
 }
 
 object juego {
-	const musicaFondo = game.sound("soundtrack.mp3")
+	const musicaFondo = game.sound("musica.wav")
 
 	method iniciarJuego() {
 
@@ -40,18 +42,22 @@ object juego {
 	game.onTick(10000, "lluviaDeSoles", { generadorDeSoles.generarSolAleatorio() })
     game.onTick(1500, "movimientoSoles", { 
     	patio.soles().forEach({ sol => sol.actuar() }) 
-})
-
-    /*game.onTick( 15000, "crearZoombie", {
-        const tipos = [new Mono(), new Pinguino(), new Jirafa(), new Oso(), new Rinoceronte(), new Buitre()]
-        const elegido = tipos.anyOne()
-        elegido.aparecer()
     })
-    */
+    game.onTick(12000, "crearZoombie", { 
+        generarZoombis.generarZombieAleatorio() 
+    })
+    game.onTick(5000, "moverZombies", { 
+        patio.zoombies().forEach({ zoombie => zoombie.actuar() })
+    })
+    game.onTick(2000, "moverPodadoras", { 
+        patio.podadoras().forEach({ podadora => podadora.actuar() })
+    })
+    
 
 	(1..5).forEach({fila => const podar = new Podadora(position = game.at(3, fila))
+     patio.agregarPodadora(podar)
      podar.aparecer()
-     podar.actuar()})
+    })
 
 		
 	keyboard.right().onPressDo({ jugador.moverse(derecha)}) // movilidad del cursor

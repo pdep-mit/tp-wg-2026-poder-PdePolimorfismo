@@ -25,16 +25,17 @@ object ataqueCuerpoACuerpo {
     }
 }
 
-object embestir { 
-	method ejecutar(zoombie) {
-		const casillaAdelante = izquierda.desde(zoombie.position())
-		const objetivo = patio.hayPlantaEnCasilla(casillaAdelante)
-		
-		if(patio.hayPlantaEnCasilla(casillaAdelante)) 
-			objetivo.recibirDanio(9999)
-			zoombie.avanzar()	
-	}
-}   
+object embestir {
+    method ejecutar(zoombie) {
+        const pos = zoombie.position()
+        if (patio.hayPlantaEnCasilla(pos)) {
+            const planta = patio.plantaEnCasilla(pos)
+            planta.recibirDanio(9000)
+        } else {
+            zoombie.avanzar()
+        }
+    }
+}
 object aplastar  { 
 	method ejecutar(zoombie) {
 		

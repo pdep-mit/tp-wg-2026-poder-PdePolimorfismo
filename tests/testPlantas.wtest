@@ -1,5 +1,5 @@
 import soles.*
-import plantas.*
+import planta.*
 import zoombie.*
 import podadoras.*
 import abstracciones.*

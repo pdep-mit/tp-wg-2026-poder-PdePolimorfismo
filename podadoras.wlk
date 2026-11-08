@@ -19,6 +19,11 @@ class Podadora inherits Entidad {
         estado.actuar(self)
     }
 
+    override method avanzar() {
+		position = derecha.desde(position)
+		if(position.x() == 12) self.detenerse()
+	}
+
     method daniarZoombiesASuPaso() {
         if (patio.hayZoombieEnCasilla(position)) {
             const zoombie = patio.zoombieEnCasilla(position)
@@ -40,6 +45,7 @@ object apagada {
     method actuar(podadora) {
         if (patio.hayZoombieEnCasilla(podadora.position())) {
             podadora.activar()
+            podadora.actuar()
         }
     }
 }
