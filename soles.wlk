@@ -58,6 +58,7 @@ object generadorDeSoles {
     const sol = new Sol(position = posicion)
     patio.agregarSol(sol)
     sol.aparecer()
+    sol.detenerse()
   }
 
   method programarLluviaDeSoles() {

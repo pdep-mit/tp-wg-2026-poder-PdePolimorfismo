@@ -54,6 +54,5 @@ object activada {
     method actuar(podadora) {
         podadora.daniarZoombiesASuPaso()
         podadora.avanzar()
-        podadora.detenerse()
     }
 }

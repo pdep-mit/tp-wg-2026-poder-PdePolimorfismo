@@ -3,13 +3,6 @@ import movimientos.*
 import patio.*
 import entidades.*
 
-object gestionarDañoYVida {
-
-    method procesarDaño (victima , atacante) {
-         victima.recibirDaño(atacante.dañoQueHace()) 
-    }
-}
-
 object rinoCargando {
     method actuar(rino) {
         if(patio.hayPlantaEnCasilla(rino.position())) {
@@ -24,9 +17,10 @@ class Proyectil inherits Entidad {
 
     var property plantaQueLoDispara
 
-    override method image() = "proyectil.png"
+    override method image() = "guisante.png"
 
     override method actuar() {
+        self.impactar()
         self.avanzar()
         self.impactar()
     }
@@ -37,11 +31,10 @@ class Proyectil inherits Entidad {
     }
 
     method impactar() {
-        if(patio.hayZoombieEnCasilla(position)) {
-            const zoombie = patio.zoombieEnCasilla(position)
-            zoombie.recibirDanio(23)
-            self.desaparecer()
-        }         
+	    if (game.hasVisual(self) && patio.hayZoombieEnCasilla(position)) {
+		    patio.zoombieEnCasilla(position).recibirDanio(plantaQueLoDispara.danioQueHace())
+		    self.desaparecer()
+	    }
     }
 
     override method desaparecer() {

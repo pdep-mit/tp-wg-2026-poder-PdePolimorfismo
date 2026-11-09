@@ -38,6 +38,12 @@ object juego {
     
     game.addVisual(jugador)
     game.addVisual(contadorDeSoles)
+
+    game.onTick(
+    2000, 
+    "actuarPlantas", 
+    { patio.plantas().forEach({ planta => planta.actuar() }) }
+)
     
     generadorDeSoles.programarLluviaDeSoles()
 
@@ -58,15 +64,19 @@ object juego {
       "moverPodadoras",
       { patio.podadoras().forEach({ podadora => podadora.actuar() }) }
     )
-    
-    
-    (1 .. 5).forEach(
-      { fila =>
-        const podar = new Podadora(position = game.at(3, fila))
-        patio.agregarPodadora(podar)
-        return podar.aparecer()
-      }
+
+    game.onTick(
+      100,
+      "moverProyectiles", 
+      { patio.proyectiles().forEach({ proyectil => proyectil.actuar() }) }
     )
+    
+    
+  (1 .. game.height() - 2).forEach({ fila =>
+	  const podar = new Podadora(position = game.at(3, fila))
+	  patio.agregarPodadora(podar)
+	  podar.aparecer()
+  })
     
     
     keyboard.right().onPressDo({ jugador.moverse(derecha) })
@@ -83,9 +93,7 @@ object juego {
     keyboard.p().onPressDo({ jugador.equipar(pala) })
     keyboard.c().onPressDo({ jugador.equipar(cursor) })
     
-    keyboard.x().onPressDo({ jugador.remover() })
-    
-    keyboard.space().onPressDo({ jugador.recolectarSol() })
+    keyboard.space().onPressDo({ jugador.accionar() })
     
     game.start()
   }

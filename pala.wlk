@@ -12,7 +12,7 @@ object pala{
 	
 	method siguiente() = cursor
 	
-	method quitar() {
+	method accionar(posicion) {
         const pos = self.position()
         if (patio.hayPlantaEnCasilla(pos)) {
             const plantaAQuitar = patio.plantas().find({ p => p.position() == pos })
@@ -23,5 +23,4 @@ object pala{
 
     method plantar(planta) { }
 
-    method intentarRecolectarSol(posicion) { }
 }

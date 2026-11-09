@@ -25,13 +25,10 @@ object cursor{
         }  
     }
 
-    method intentarRecolectarSol(posicion) {
+    method accionar(posicion) {
         if (patio.haySolEnCasilla(posicion)) {
             const sol = patio.solEnCasilla(posicion)
-            contadorDeSoles.agregarSoles(sol.valor())
-            sol.desaparecer()
+            sol.recolectar()
         }
     }
-
-    method remover() { }
 }

@@ -6,7 +6,7 @@ object patio{
      const property zoombies = []
      const property plantas = []
      const property podadoras = []
-     const proyectiles = []
+     const property proyectiles = []
  
 	 method agregarSol(sol)           { soles.add(sol) }
      method quitarSol(sol)            { soles.remove(sol) }
@@ -33,6 +33,11 @@ object patio{
  	 		zoo.position().y() == planta.position().y() &&
  	 		zoo.position().x() > planta.position().x()
  	 })
+
+	 method zoombieDelanteDe(planta) = zoombies.find({ zoo => 
+        zoo.position().y() == planta.position().y() &&
+        zoo.position().x() >= planta.position().x()
+    })
 
     method hayZoombieEnCasilla(pos) = zoombies.any({zoo => 
  	 	    zoo.position() == pos

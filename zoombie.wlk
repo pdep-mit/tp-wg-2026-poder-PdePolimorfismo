@@ -4,18 +4,16 @@ import entidades.*
 import patio.*
 import movimientos.*
 import habilidades.*
+import estadoDelJuego.*
 
 class Zoombie inherits SerVivo{
 	
 	override method avanzar() {
 		position = izquierda.desde(position)
-		if(position.x() == 1) {
-			self.detenerse()
-			self.desaparecer()
-		}
+		if(position.x() == 1) finDelJuego.mostrarDerrota()
 	}
 	
-	override method morir(){
+	override method desaparecer(){
 		super()
   		patio.quitarZoombie(self)
   }
@@ -32,7 +30,7 @@ class Pinguino inherits Zoombie (
 }
 
 class Buitre inherits Zoombie (
-  habilidad = comer,  
+  habilidad = volar,  
   danio = 23, 
   vida = 300)
 {
@@ -50,7 +48,7 @@ class Buitre inherits Zoombie (
 }
 
 class Rinoceronte inherits Zoombie (
-  habilidad = comer,  
+  habilidad = embestir,  
   danio = 23, 
   vida = 300)
 {
@@ -67,7 +65,7 @@ object generarZoombis {
 
 	method generarZombieAleatorio() {
         
-        const filaAleatoria = (1 .. 4).anyOne()
+        const filaAleatoria = (1 .. game.height() - 2).anyOne()
         const posicionAparicion = game.at(game.width() - 1, filaAleatoria)
         const nuevoZombie = tipos.anyOne().apply(posicionAparicion)
 
@@ -76,7 +74,7 @@ object generarZoombis {
     }
   
   method programarAparicion() {
-    game.schedule((6000 .. 14000).anyOne(), {
+    game.schedule((8000 .. 14000).anyOne(), {
       self.generarZombieAleatorio()
       self.programarAparicion()
     })

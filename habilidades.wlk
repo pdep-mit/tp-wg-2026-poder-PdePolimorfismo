@@ -2,6 +2,7 @@ import wollok.game.*
 import patio.*
 import movimientos.*
 import abstracciones.*
+import soles.*
 
 
 object disparo { 
@@ -12,32 +13,30 @@ object disparo {
     }
 
     method generarProyectil(planta) {
-        const proyectil = new Proyectil(position = derecha.desde(planta.position()),
+        const proyectil = new Proyectil(position = planta.position(),
         plantaQueLoDispara = planta)
-        
+
         patio.agregarProyectil(proyectil)
         proyectil.aparecer()
     }
-}   
-object golpeCuerpoACuerpo   { method ejecutar(planta) { } }   
-object sinAtaque { method ejecutar(planta) { /* no hace nada */ } }
+}  
 
-object ataqueLargaDistancia {
-
-    method ejecutar(planta, zoombie) {
-        if (planta.estaEnSuRango(zoombie)) {
-            zoombie.recibirDaño(planta.dañoQueHace())
+object golpeCuerpoACuerpo   { 
+    method ejecutar(planta) {
+        const posAdelante = derecha.desde(planta.position())
+        if (patio.hayZoombieEnCasilla(posAdelante)) {
+            const zoombie = patio.zoombieEnCasilla(posAdelante)
+            zoombie.recibirDanio(planta.danioQueHace())
+        }
     }
 }
+
+object producirSol {
+	method ejecutar(planta) { generadorDeSoles.generarSolEnCasilla(planta.position()) }
 }
 
-// Solo puede atacar a un zoombie que esté al lado
-object ataqueCuerpoACuerpo {
-
-    method ejecutar(planta, zoombie) {
-        if (planta.posicion().right(1) == zoombie.posicion())
-        zoombie.recibirDaño(planta.dañoQueHace())
-    }
+object sinAtaque { 
+    method ejecutar(planta) { /* no hace nada */ } 
 }
 
 object embestir {
@@ -51,6 +50,7 @@ object embestir {
         }
     }
 }
+
 object aplastar  { 
 	method ejecutar(zoombie) {
 		
@@ -75,6 +75,7 @@ object volar {
 			zoombie.registrarPlantaSobrevolada()
 	} 
 }
+
 object ladrar{ method ejecutar(zoombie) { } }
 
 object aullar{ method ejecutar(zoombie) { } }

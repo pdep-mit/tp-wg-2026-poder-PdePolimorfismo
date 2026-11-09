@@ -18,10 +18,7 @@ class SerVivo inherits Entidad{
     
     method recibirDanio(cantidad){
     	vida = 0.max(vida - cantidad)
-    	if(not self.estaVivo()) self.morir()
+    	if(not self.estaVivo()) self.desaparecer()
     }
-    
-    method morir() {
-    	self.desaparecer()
-    }
+
 }

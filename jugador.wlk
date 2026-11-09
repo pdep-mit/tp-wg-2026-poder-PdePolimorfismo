@@ -13,10 +13,7 @@ object jugador{
     }
 	
 	method image() = herramientaActiva.image()
-	
-	method recolectarSol() { 
-        herramientaActiva.intentarRecolectarSol(position)
-    }
+
 	
 	method posicionValida(pos) = pos.x().between(4,game.width() - 1) &&
     	pos.y().between(1,game.height() - 2) 
@@ -27,11 +24,10 @@ object jugador{
     	
     }
 	method plantar(planta) { 
-        herramientaActiva.plantar(planta)
-		planta.actuar() 
+        herramientaActiva.plantar(planta) 
     }
 
-  method remover() {
-      herramientaActiva.quitar()
-  }
+	method accionar() {
+		herramientaActiva.accionar(position)
+	}
 }
