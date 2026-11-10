@@ -49,7 +49,7 @@ class Sol inherits Entidad{
 object generadorDeSoles {
 
   method generarSolAleatorio() {
-    const sol = new Sol(position = game.at((4 .. game.width() - 1).anyOne(), game.height() - 1))
+    const sol = new Sol(position = game.at((4 .. game.width() - 1).anyOne(), game.height()))
     patio.agregarSol(sol)
     sol.aparecer()
   }
@@ -62,14 +62,14 @@ object generadorDeSoles {
   }
 
   method programarLluviaDeSoles() {
-    game.schedule((6000 .. 12000).anyOne(), {
+    game.schedule((10000 .. 16000).anyOne(), {
       self.generarSolAleatorio()
       self.programarLluviaDeSoles()
     })
   }
 
   method programarSolesDeGirasol(posicion) {
-    game.schedule((6000 .. 12000).anyOne(), {
+    game.schedule((10000 .. 16000).anyOne(), {
       self.generarSolEnCasilla(posicion)
       self.programarSolesDeGirasol(posicion)
     })

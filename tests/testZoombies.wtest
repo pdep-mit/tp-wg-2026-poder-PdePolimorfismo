@@ -1,0 +1,51 @@
+import wollok.game.*
+import patio.*
+import planta.*
+import zoombie.*
+
+describe "Comportamiento de los zoombies" {
+
+    test "Un pinguino avanza una casilla cuando no tiene una planta adelante" {
+        const pinguino = new Pinguino(position = game.at(6, 2))
+
+        pinguino.actuar()
+
+        assert.equals(game.at(5, 2), pinguino.position())
+    }
+
+    test "Un rinoceronte buscando avanza una casilla si no encuentra plantas" {
+        const rinoceronte = new Rinoceronte(position = game.at(6, 3))
+
+        rinoceronte.actuar()
+
+        assert.equals(game.at(5, 3), rinoceronte.position())
+        assert.equals(rinoBuscando, rinoceronte.estado())
+    }
+
+    test "La embestida daña la planta alcanzada y aturde al rinoceronte" {
+        const rinoceronte = new Rinoceronte(position = game.at(6, 4))
+        const nuez = new Nuez(position = game.at(5, 4))
+        patio.agregarPlanta(nuez)
+
+        rinoCargando.actuar(rinoceronte)
+
+        assert.equals(game.at(5, 4), rinoceronte.position())
+        assert.notThat(nuez.estaVivo())
+        assert.equals(rinoAturdido, rinoceronte.estado())
+    }
+
+    test "La embestida cuadruplica la velocidad y luego recupera el intervalo normal" {
+        const rinoceronte = new Rinoceronte(position = game.at(8, 5))
+        rinoceronte.aparecer()
+
+        rinoceronte.iniciarEmbestida()
+
+        assert.equals(875, rinoceronte.velocidadDeMovimiento())
+        assert.equals(rinoCargando, rinoceronte.estado())
+
+        rinoAturdido.actuar(rinoceronte)
+
+        assert.equals(3500, rinoceronte.velocidadDeMovimiento())
+        rinoceronte.desaparecer()
+    }
+}

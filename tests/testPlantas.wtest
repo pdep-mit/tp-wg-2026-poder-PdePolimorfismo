@@ -1,173 +1,112 @@
-import soles.*
 import planta.*
 import zoombie.*
-import podadoras.*
-import abstracciones.*
-import jugador.*
 import wollok.game.*
-import movimientos.*
+import patio.*
+import cursor.*
+import pala.*
+import jugador.*
+import soles.*
 
-/*
-describe "Tests de Planta" {
+describe "Comportamiento de las plantas" {
 
-  test "Una planta con vida mayor a 0 esta viva" {
-    const planta = new Planta(
-      position = game.at(1, 1),
-      vida = 100,
-      costeDeSoles = 50,
-      tiempoDeRecarga = 5,
-      daño = 0 )
-      //rangoDeAtaque = 0,
-      //tipoDeAtaque = object { method ejecutar(p, z) {} }
-  
-    assert.that(planta.estaVivo())
-  }
+    test "El girasol produce un sol al actuar" {
+        const posicion = game.at(4, 1)
+        const girasol = new Girasol(position = posicion)
 
-  test "Una planta con vida igual o menor a 0 no esta viva" {
-    const planta = new Planta(
-      position = game.at(1, 1),
-      vida = 0,
-      costeDeSoles = 50,
-      tiempoDeRecarga = 5,
-      daño = 0)
-      //rangoDeAtaque = 0,
-      //tipoDeAtaque = object { method ejecutar(p, z) {} }
-   
-    assert.notThat(planta.estaVivo())
-  }
+        girasol.actuar()
 
+        assert.that(patio.haySolEnCasilla(posicion))
+        patio.solEnCasilla(posicion).desaparecer()
+    }
+
+    test "El lanzaguisantes crea un proyectil si hay un zombie delante" {
+        const lanzaguisantes = new Lanzaguisantes(position = game.at(4, 2))
+        const zombie = new Pinguino(position = game.at(6, 2))
+        patio.agregarZoombie(zombie)
+
+        lanzaguisantes.actuar()
+
+        assert.that(patio.proyectiles().any({
+            proyectil => proyectil.plantaQueLoDispara() == lanzaguisantes
+        }))
+
+        patio.proyectiles()
+            .filter({ proyectil => proyectil.plantaQueLoDispara() == lanzaguisantes })
+            .forEach({ proyectil => proyectil.desaparecer() })
+        patio.quitarZoombie(zombie)
+    }
+
+    test "BonkChoi daña al zombie en la casilla de adelante" {
+        const bonkChoi = new BonkChoi(position = game.at(4, 3))
+        const zombie = new Pinguino(position = game.at(5, 3), vida = 30)
+        patio.agregarZoombie(zombie)
+
+        bonkChoi.actuar()
+
+        assert.notThat(zombie.estaVivo())
+        patio.quitarZoombie(zombie)
+    }
+
+    test "La nuez pierde vida al recibir daño y sigue viva si le queda vida" {
+        const nuez = new Nuez(position = game.at(4, 4))
+
+        nuez.recibirDanio(1000)
+
+        assert.that(nuez.estaVivo())
+
+        nuez.recibirDanio(3000)
+
+        assert.notThat(nuez.estaVivo())
+    }
+
+    test "Distintas plantas responden polimorficamente al mensaje actuar" {
+        const girasol = new Girasol(position = game.at(4, 1))
+        const lanzaguisantes = new Lanzaguisantes(position = game.at(4, 2))
+        const bonkChoi = new BonkChoi(position = game.at(4, 3))
+        const zombieParaDisparo = new Pinguino(position = game.at(6, 2))
+        const zombieParaGolpe = new Pinguino(position = game.at(5, 3), vida = 30)
+        const plantas = [girasol, lanzaguisantes, bonkChoi]
+
+        patio.agregarZoombie(zombieParaDisparo)
+        patio.agregarZoombie(zombieParaGolpe)
+        plantas.forEach({ planta => planta.actuar() })
+
+        assert.that(patio.haySolEnCasilla(girasol.position()))
+        assert.that(patio.proyectiles().any({
+            proyectil => proyectil.plantaQueLoDispara() == lanzaguisantes
+        }))
+        assert.notThat(zombieParaGolpe.estaVivo())
+
+        patio.solEnCasilla(girasol.position()).desaparecer()
+        patio.proyectiles()
+            .filter({ proyectil => proyectil.plantaQueLoDispara() == lanzaguisantes })
+            .forEach({ proyectil => proyectil.desaparecer() })
+        patio.quitarZoombie(zombieParaDisparo)
+    }
+
+    test "El jugador delega accionar a la herramienta equipada" {
+        const posicionOriginal = jugador.position()
+        const posicion = game.at(4, 5)
+        jugador.position(posicion)
+
+        const nuez = new Nuez(position = posicion)
+        patio.agregarPlanta(nuez)
+        jugador.equipar(pala)
+        jugador.accionar()
+
+        assert.notThat(patio.hayPlantaEnCasilla(posicion))
+
+        const solesAntes = contadorDeSoles.cantidad()
+        const sol = new Sol(position = posicion)
+        patio.agregarSol(sol)
+        sol.aparecer()
+        jugador.equipar(cursor)
+        jugador.accionar()
+
+        assert.notThat(patio.haySolEnCasilla(posicion))
+        assert.equals(solesAntes + sol.valor(), contadorDeSoles.cantidad())
+
+        jugador.equipar(cursor)
+        jugador.position(posicionOriginal)
+    }
 }
-
-test "Una planta busca correctamente zombies en su celda o a la derecha" {
-    const planta = new Planta(
-      position = game.at(1, 1),
-      vida = 100,
-      costeDeSoles = 50,
-      tiempoDeRecarga = 5,
-      daño = 0
-    )
-    
-    // Al no haber zombies agregados al juego en esa celda, no encuentra ninguno
-    assert.equals(null, planta.zombieEn(game.at(1, 1)))
-  }
-
-  test "Búsqueda en rango retorna null si no hay zombies en la distancia solicitada" {
-    const planta = new Planta(
-      position = game.at(1, 1),
-      vida = 100,
-      costeDeSoles = 50,
-      tiempoDeRecarga = 5,
-      daño = 0
-    )
-    
-    // Buscando desde distancia 1 hasta 3
-    assert.equals(null, planta.primerZombieEnRango(1, 3))
-  }
-
-describe "Test de cursor" {
-  
-  test "prueba de cursor" {
-    assert.equals("cursor.png", cursor.image())
-  }
-}
-  test "El cursor arranca en el centro de la pantalla" {
-    assert.equals(game.center(), cursor.position())
-  }
-
-  test "El cursor respeta los límites del mapa y no se mueve fuera del área jugable" {
-    // Posicionamos el cursor en el borde superior derecho permitido
-    cursor.position(game.at(game.width() - 1, game.height() - 2))
-    
-    // Intentamos moverlo hacia arriba (fuera de la posición válida)
-    cursor.mover(arriba)
-    
-    // La posición se mantiene intacta
-    assert.equals(game.at(game.width() - 1, game.height() - 2), cursor.position())
-  }
-
-  test "El cursor identifica cuando ya hay una planta en su casillero" {
-    cursor.position(game.at(5, 2))
-    const girasol = new Girasol(position = cursor.position())
-    game.addVisual(girasol)
-
-    assert.that(cursor.hayPlantaEnCasilla())
-  }
-
-
-describe "Tests del contador de soles" {
-  test "El contador arranca en un valor inicial de 50 soles" {
-    assert.equals(50, contadorDeSoles.solesAhora())
-  }
-
-  test "El contador acumula correctamente" {
-    contadorDeSoles.acumularSoles(25)
-    assert.equals(75, contadorDeSoles.solesAhora())
-  }
-
-
-  test "El contador descuenta los soles correctamente" {
-    contadorDeSoles.acumularSoles(125)
-    contadorDeSoles.gastarSoles(50)
-    assert.equals(125, contadorDeSoles.solesAhora())
-  }
-}
-
-
-describe "Tests de Mecánicas Avanzadas y Eventos" {
-
-  test "Cereza inflige daño en área de 3x3 a múltiples zombies" {
-    const cereza = new Cereza(position = game.at(2, 2))
-    
-    // Un zombie al lado y otro fuera del rango de explosión
-    const zombieCerca = new Pinguino(position = game.at(3, 2), vida = 2000)
-    const zombieLejos = new Pinguino(position = game.at(5, 2), vida = 2000)
-    
-    game.addVisual(zombieCerca)
-    game.addVisual(zombieLejos)
-
-    // Ejecutamos la explosión manualmente
-    cereza.explotar()
-
-    // El zombie cerca recibe 1800 de daño (2000 - 1800 = 200)
-    assert.equals(200, zombieCerca.vida())
-    // El zombie lejos no recibe daño
-    assert.equals(2000, zombieLejos.vida())
-  }
-
-
-  test "Si la PlantaCarnivora muere masticando, reanuda al zombie" {
-    const carnivora = new PlantaCarnivora(position = game.at(1, 1))
-    const zombie = new Pinguino(position = game.at(2, 1))
-    
-    game.addVisual(carnivora)
-    game.addVisual(zombie)
-
-    // Asignamos la presa manualmente para simular el masticado
-    carnivora.buscarPresa()
-    
-    // Al morir la planta carnívora, libera la presa
-    carnivora.morir()
-
-    // El zombie sigue con vida para reanudar su camino
-    assert.that(zombie.estaVivo())
-  }
-
-  test "BonkChoi actualiza su animación cuando detecta un zombie en rango" {
-    const bonkChoi = new BonkChoi(position = game.at(1, 1))
-    
-    // Sin objetivos, la imagen arranca en el frame de reposo
-    assert.equals("bonkChoiFrame1.png", bonkChoi.image())
-
-    // Agregamos un zombie a 2 casilleros de distancia (al alcance de BonkChoi)
-    const zombie = new Pinguino(position = game.at(3, 1))
-    game.addVisual(zombie)
-
-    // Actualizamos animación
-    bonkChoi.actualizarAnimacion()
-
-    // La imagen cambia a la secuencia animada (frame 1)
-    assert.equals("bonkChoiFrame1.png", bonkChoi.image())
-  }
-
-}
-*/

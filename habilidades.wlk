@@ -3,6 +3,8 @@ import patio.*
 import movimientos.*
 import abstracciones.*
 import soles.*
+import zoombie.*
+import rinoZoombie.*
 
 
 object disparo { 
@@ -39,14 +41,15 @@ object sinAtaque {
     method ejecutar(planta) { /* no hace nada */ } 
 }
 
+
 object embestir {
-    method ejecutar(zoombie) {
-        const pos = zoombie.position()
-        if (patio.hayPlantaEnCasilla(pos)) {
-            const planta = patio.plantaEnCasilla(pos)
-            planta.recibirDanio(9000)
-        } else {
-            zoombie.avanzar()
+    method ejecutar(rino) {
+        rino.avanzar()
+
+        if (patio.hayPlantaEnCasilla(rino.position())) {
+            const planta = patio.plantaEnCasilla(rino.position())
+            rino.embestirPlanta(planta)
+            game.schedule(2000, { rino.estado(rinoCaminando) })
         }
     }
 }
@@ -69,6 +72,9 @@ object comer {
  } 
  
 object volar { 
+
+    method image() = "buitreVolando.png"
+
 	method ejecutar(zoombie) {
 		zoombie.avanzar()
 		if(patio.hayPlantaEnCasilla(zoombie.position()))

@@ -3,15 +3,7 @@ import movimientos.*
 import patio.*
 import entidades.*
 
-object rinoCargando {
-    method actuar(rino) {
-        if(patio.hayPlantaEnCasilla(rino.position())) {
-            const planta = patio.plantaEnCasilla(rino.position())
-            planta.recibirDanio(9999)
-        } else
-        rino.avanzar()
-    }
-}
+//hay que renombrar este archivo (puse esto aca para no sobrecargar otros archivos)
 
 class Proyectil inherits Entidad {
 
@@ -40,5 +32,20 @@ class Proyectil inherits Entidad {
     override method desaparecer() {
         super()
         patio.quitarProyectil(self)
+    }
+}
+
+object musica {
+
+    const musicaFondo = game.sound("musica.wav")
+
+    method iniciarMusica(){
+        musicaFondo.shouldLoop(true)
+		musicaFondo.volume(0.2)
+		musicaFondo.play()
+    }
+
+    method detenerMusica() {
+        musicaFondo.stop()
     }
 }

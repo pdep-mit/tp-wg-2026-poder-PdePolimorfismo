@@ -7,6 +7,7 @@ object patio{
      const property plantas = []
      const property podadoras = []
      const property proyectiles = []
+     const property casillas = []
  
 	 method agregarSol(sol)           { soles.add(sol) }
      method quitarSol(sol)            { soles.remove(sol) }
@@ -18,6 +19,7 @@ object patio{
  	 method quitarPodadora(podadora)  { podadoras.remove(podadora) }
  	 method agregarProyectil(proyectil) {proyectiles.add(proyectil)}
  	 method quitarProyectil(proyectil) {proyectiles.remove(proyectil)}
+     method agregarCasilla(casilla) { casillas.add(casilla) }
  	 
  	 method entidades() = soles + plantas + zoombies + podadoras + proyectiles 
  	 
@@ -38,6 +40,11 @@ object patio{
         zoo.position().y() == planta.position().y() &&
         zoo.position().x() >= planta.position().x()
     })
+
+	method hayPlantaEnFilaAdelanteDe(zoombie) = plantas.any({ p => 
+    	p.position().y() == zoombie.position().y() && 
+    	p.position().x() <= zoombie.position().x()
+	})
 
     method hayZoombieEnCasilla(pos) = zoombies.any({zoo => 
  	 	    zoo.position() == pos
