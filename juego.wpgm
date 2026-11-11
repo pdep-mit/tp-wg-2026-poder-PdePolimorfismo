@@ -70,7 +70,6 @@ object juego {
     
     
     keyboard.right().onPressDo({ jugador.moverse(derecha) })
-    // movilidad del cursor
     keyboard.left().onPressDo({ jugador.moverse(izquierda) })
     keyboard.up().onPressDo({ jugador.moverse(arriba) })
     keyboard.down().onPressDo({ jugador.moverse(abajo) })

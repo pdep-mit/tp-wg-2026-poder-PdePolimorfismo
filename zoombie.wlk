@@ -11,7 +11,9 @@ object generarZoombis {
 	const tipos = [
         { pos => new Pinguino(position = pos) },
         { pos => new Rinoceronte(position = pos) },
-        { pos => new Buitre(position = pos) }
+        { pos => new Buitre(position = pos) },
+        { pos => new Jirafa(position = pos) },
+        { pos => new Mono(position = pos) }
     ]
 
 	method generarZombieAleatorio() {
@@ -97,11 +99,33 @@ class Buitre inherits Zoombie (
 	
 }
 
-class PerroSalchicha inherits Zoombie (
+class Jirafa inherits Zoombie (
   habilidad = comer,  
   danio = 100, 
-  vida = 200,
+  vida = 540,
   velocidadDeMovimiento = 2000)
+{
+    
+    override method image() = "jirafaZoombi.png"
+    
+}
+
+class Mono inherits Zoombie (
+  habilidad = aullar,  
+  danio = 100, 
+  vida = 300,
+  velocidadDeMovimiento = 2000)
+{
+    
+    override method image() = "monoZoombi.png"
+    
+}
+
+class PerroSalchicha inherits Zoombie (
+  habilidad = comer,  
+  danio = 150, 
+  vida = 10000,
+  velocidadDeMovimiento = 900)
 {
     
     override method image() = "perroSalchichaZoombie.png"
