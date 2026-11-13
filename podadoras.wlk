@@ -25,10 +25,9 @@ class Podadora inherits Entidad {
 	}
 
     method daniarZoombiesASuPaso() {
-        if (patio.hayZoombieEnCasilla(position)) {
-            const zoombie = patio.zoombieEnCasilla(position)
+        patio.zombiesEnCasilla(position).forEach({ zoombie =>
             zoombie.recibirDanio(self.danioQueHace())
-        }
+        })
     }
 
     override method detenerse() {
@@ -45,7 +44,7 @@ object apagada {
     method actuar(podadora) {
         if (patio.hayZoombieEnCasilla(podadora.position())) {
             podadora.activar()
-            podadora.actuar()
+            podadora.daniarZoombiesASuPaso()
         }
     }
 }

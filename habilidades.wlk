@@ -25,11 +25,17 @@ object disparo {
 
 object golpeCuerpoACuerpo   { 
     method ejecutar(planta) {
-        const posAdelante = derecha.desde(planta.position())
-        if (patio.hayZoombieEnCasilla(posAdelante)) {
-            const zoombie = patio.zoombieEnCasilla(posAdelante)
-            zoombie.recibirDanio(planta.danioQueHace())
-        }
+        const posicionesAfectadas = [
+            planta.position(),
+            izquierda.desde(planta.position()),
+            derecha.desde(planta.position())
+        ]
+
+        posicionesAfectadas.forEach({ posicion =>
+            if (patio.hayZoombieEnCasilla(posicion)) {
+                patio.zoombieEnCasilla(posicion).recibirDanio(planta.danioQueHace())
+            }
+        })
     }
 }
 

@@ -21,6 +21,6 @@ object pala{
         }
     }
 
-    method plantar(planta) { }
+    method plantar(cartaPlanta) { }
 
 }

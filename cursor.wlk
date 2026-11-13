@@ -13,17 +13,10 @@ object cursor{
     method position() = jugador.position()
     
     method siguiente() = pala
-    
-    method puedePlantar(casilla) = not patio.hayPlantaEnCasilla(casilla)
-    
-	method plantar(planta) {
-        if (self.puedePlantar(self.position()) && contadorDeSoles.tieneSuficientesSoles(planta.coste())) {
-            contadorDeSoles.quitarSoles(planta.coste())
-            planta.position(self.position())
-            patio.agregarPlanta(planta)
-            planta.aparecer()
-        }  
-    }
+
+    method plantar(cartaPlanta) {
+    cartaPlanta.intentarPlantar(self.position())
+}
 
     method accionar(posicion) {
         if (patio.haySolEnCasilla(posicion)) {

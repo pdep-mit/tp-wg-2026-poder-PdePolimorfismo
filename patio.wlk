@@ -46,13 +46,13 @@ object patio{
     	p.position().x() <= zoombie.position().x()
 	})
 
-    method hayZoombieEnCasilla(pos) = zoombies.any({zoo => 
- 	 	    zoo.position() == pos
-     })
-
-     method zoombieEnCasilla(pos) = zoombies.find({zoo => 
+    method zombiesEnCasilla(pos) = zoombies.filter({zoo => 
  	 		zoo.position() == pos
      })
+
+    method hayZoombieEnCasilla(pos) = not self.zombiesEnCasilla(pos).isEmpty()
+
+     method zoombieEnCasilla(pos) = self.zombiesEnCasilla(pos).first()
  	 
  	 method haySolEnCasilla(pos) = soles.any({sol => 
  	 		sol.position() == pos

@@ -7,24 +7,16 @@ import jugador.*
 import habilidades.*  
 
 class Planta inherits SerVivo{
-	
-	const costeDeSoles
-	
-	const cooldown
-	
-	method coste() = costeDeSoles
 
 	override method desaparecer() {
     	super()
     	patio.quitarPlanta(self)
-    }
+  }
 
 }
 
 class Girasol inherits Planta (
-  habilidad = producirSol, 
-  cooldown = 10, 
-  costeDeSoles = 50, 
+  habilidad = producirSol,  
   danio = 0, 
   vida = 300, 
   position = jugador.position())
@@ -46,9 +38,7 @@ override method desaparecer() {
 }
 
 class Lanzaguisantes inherits Planta (
-  habilidad = disparo, 
-  cooldown = 10, 
-  costeDeSoles = 100, 
+  habilidad = disparo,  
   danio = 30, 
   vida = 300, 
   position = jugador.position())
@@ -60,7 +50,7 @@ class Lanzaguisantes inherits Planta (
 
 override method aparecer() {
     super()
-    game.onTick(1000, tickId, { self.actuar() })
+    game.onTick(2500, tickId, { self.actuar() })
 }
 
 override method desaparecer() {
@@ -71,9 +61,7 @@ override method desaparecer() {
 }
 
 class Nuez inherits Planta (
-  habilidad = sinAtaque, 
-  cooldown = 10, 
-  costeDeSoles = 50, 
+  habilidad = sinAtaque,  
   danio = 0, 
   vida = 4000, 
   position = jugador.position())
@@ -84,9 +72,7 @@ class Nuez inherits Planta (
 }
 
 class BonkChoi inherits Planta (
-  habilidad = golpeCuerpoACuerpo, 
-  cooldown = 12, 
-  costeDeSoles = 150, 
+  habilidad = golpeCuerpoACuerpo,  
   danio = 30, 
   vida = 300, 
   position = jugador.position())

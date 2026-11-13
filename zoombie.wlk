@@ -8,13 +8,14 @@ import estadoDelJuego.*
 import rinoZoombie.*
 
 object generarZoombis {
-	const tipos = [
+    const tipos = [
         { pos => new Pinguino(position = pos) },
         { pos => new Rinoceronte(position = pos) },
         { pos => new Buitre(position = pos) },
         { pos => new Jirafa(position = pos) },
         { pos => new Mono(position = pos) }
     ]
+    const tickId = "generarZoombis"
 
 	method generarZombieAleatorio() {
         
@@ -27,7 +28,8 @@ object generarZoombis {
     }
   
   method programarAparicion() {
-    game.schedule((10000 .. 16000).anyOne(), {
+    game.removeTickEvent(tickId)
+    game.onTick((10000 .. 16000).anyOne(), tickId, {
       self.generarZombieAleatorio()
       self.programarAparicion()
     })
@@ -111,7 +113,7 @@ class Jirafa inherits Zoombie (
 }
 
 class Mono inherits Zoombie (
-  habilidad = aullar,  
+  habilidad = comer,  
   danio = 100, 
   vida = 300,
   velocidadDeMovimiento = 2000)
@@ -121,8 +123,8 @@ class Mono inherits Zoombie (
     
 }
 
-class PerroSalchicha inherits Zoombie (
-  habilidad = comer,  
+/*class PerroSalchicha inherits Zoombie (
+  habilidad = ???,  
   danio = 150, 
   vida = 10000,
   velocidadDeMovimiento = 900)
@@ -131,4 +133,17 @@ class PerroSalchicha inherits Zoombie (
     override method image() = "perroSalchichaZoombie.png"
     
 }
+Perro salchicha gordo bachicha
 
+1-revisar todos los ticks, arreglarlos o buscarles la vuelta para evitar el lag
+
+2-llamar a podadora en caso recursivo que elimine los zoombies de la casilla actual.
+
+3-objects y clases en general delegarles más comportamientos.
+
+4-Revisar los forEach y delegar algunos existentes
+
+5-Bonkchoi tiene que pegar para adelante y para detras, aún manteniendose en si misma casilla, inclyendo al zoombie que la ocupe.
+
+6-Por favor, hacerlo.
+*/

@@ -6,6 +6,7 @@ import cursor.*
 import pala.*
 import jugador.*
 import soles.*
+import movimientos.*
 
 describe "Comportamiento de las plantas" {
 
@@ -45,6 +46,27 @@ describe "Comportamiento de las plantas" {
 
         assert.notThat(zombie.estaVivo())
         patio.quitarZoombie(zombie)
+    }
+
+    test "BonkChoi daña a los zombies en la casilla actual, adelante y atrás" {
+        const bonkChoi = new BonkChoi(position = game.at(4, 2))
+        const zombieActual = new Pinguino(position = bonkChoi.position(), vida = 30)
+        const zombieDelante = new Pinguino(position = derecha.desde(bonkChoi.position()), vida = 30)
+        const zombieDetras = new Pinguino(position = izquierda.desde(bonkChoi.position()), vida = 30)
+
+        patio.agregarZoombie(zombieActual)
+        patio.agregarZoombie(zombieDelante)
+        patio.agregarZoombie(zombieDetras)
+
+        bonkChoi.actuar()
+
+        assert.notThat(zombieActual.estaVivo())
+        assert.notThat(zombieDelante.estaVivo())
+        assert.notThat(zombieDetras.estaVivo())
+
+        patio.quitarZoombie(zombieActual)
+        patio.quitarZoombie(zombieDelante)
+        patio.quitarZoombie(zombieDetras)
     }
 
     test "La nuez pierde vida al recibir daño y sigue viva si le queda vida" {

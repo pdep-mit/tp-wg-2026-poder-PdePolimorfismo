@@ -23,8 +23,8 @@ object jugador{
     	if(self.posicionValida(siguientePosicion)) position = siguientePosicion
     	
     }
-	method plantar(planta) { 
-        herramientaActiva.plantar(planta) 
+	method plantar(cartaPlanta) { 
+        herramientaActiva.plantar(cartaPlanta) 
     }
 
 	method accionar() {

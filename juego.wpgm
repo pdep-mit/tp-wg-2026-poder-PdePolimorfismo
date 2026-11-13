@@ -10,6 +10,7 @@ import jugador.*
 import pala.*
 import abstracciones.*
 import estadoDelJuego.*
+import cartaPlanta.*
 
 class Casilla {
   var property position
@@ -38,6 +39,11 @@ object juego {
         ) }
     )
 
+    game.addVisual(cartaGirasol)
+    game.addVisual(cartaLanzaguisantes)
+    game.addVisual(cartaNuez)
+    game.addVisual(cartaBonkChoi)
+
     game.addVisual(jugador)
     game.addVisual(contadorDeSoles)
     generadorDeSoles.programarLluviaDeSoles()
@@ -56,7 +62,7 @@ object juego {
     )
 
     game.onTick(
-      250,
+      300,
       "moverProyectiles", 
       { patio.proyectiles().forEach({ proyectil => proyectil.actuar() }) }
     )
@@ -74,10 +80,10 @@ object juego {
     keyboard.up().onPressDo({ jugador.moverse(arriba) })
     keyboard.down().onPressDo({ jugador.moverse(abajo) })
     
-    keyboard.num1().onPressDo({ jugador.plantar(new Girasol()) })
-    keyboard.num2().onPressDo({ jugador.plantar(new Lanzaguisantes()) })
-    keyboard.num3().onPressDo({ jugador.plantar(new Nuez()) })
-    keyboard.num4().onPressDo({ jugador.plantar(new BonkChoi()) })
+    keyboard.num1().onPressDo({ jugador.plantar(cartaGirasol) })
+    keyboard.num2().onPressDo({ jugador.plantar(cartaLanzaguisantes) })
+    keyboard.num3().onPressDo({ jugador.plantar(cartaNuez) })
+    keyboard.num4().onPressDo({ jugador.plantar(cartaBonkChoi) })
     
     keyboard.p().onPressDo({ jugador.equipar(pala) })
     keyboard.c().onPressDo({ jugador.equipar(cursor) })
