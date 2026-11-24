@@ -16,13 +16,13 @@ class Oleada {
     const property intervaloMaximo
     const siguienteOleada = ultimaOleada
     const momentoDelDia = dia
-    const soundtrack = "oleada1.wav"
+    const property soundtrack = "oleada1.wav"
     var pendientes = 0
 
     method iniciar() {
         pendientes = cantidadDeZoombis
         patio.cambiarMomentoDelDia(momentoDelDia)
-        sonido.reproducirMusica(soundtrack)
+        sonido.cambiarMusica(soundtrack)
         indicadorDeOleada.mostrar(numeroDeOleada)
         directorDeOleadas.activarSpawneo(self)
     }
@@ -87,8 +87,8 @@ object configuracionDeOleadas {
     const oleada4 = new Oleada(
         numeroDeOleada = 4,
         cantidadDeZoombis = 15,
-        intervaloMinimo = 8000,
-        intervaloMaximo = 15000,
+        intervaloMinimo = 6000,
+        intervaloMaximo = 10000,
         siguienteOleada = oleada5,
         momentoDelDia = noche,
         constructoresDeZoombis = [
@@ -103,10 +103,11 @@ object configuracionDeOleadas {
     const oleada3 = new Oleada(
         numeroDeOleada = 3,
         cantidadDeZoombis = 12,
-        intervaloMinimo = 10000,
-        intervaloMaximo = 18000,
+        intervaloMinimo = 8000,
+        intervaloMaximo = 12000,
         siguienteOleada = oleada4,
         momentoDelDia = noche,
+        soundtrack = new PistaMusical(archivo = "oleada3y4.wav"),
         constructoresDeZoombis = [
             { pos => new Buitre(position = pos) },
             { pos => new Jirafa(position = pos) },
@@ -118,9 +119,10 @@ object configuracionDeOleadas {
     const oleada2 = new Oleada(
         numeroDeOleada = 2,
         cantidadDeZoombis = 8,
-        intervaloMinimo = 12000,
-        intervaloMaximo = 20000,
+        intervaloMinimo = 8000,
+        intervaloMaximo = 15000,
         siguienteOleada = oleada3,
+        soundtrack = new PistaMusical(archivo = "oleada2.wav"),
         constructoresDeZoombis = [
             { pos => new Jirafa(position = pos) },
             { pos => self.crearPinguino(pos) },
@@ -131,12 +133,12 @@ object configuracionDeOleadas {
     const property inicial = new Oleada(
         numeroDeOleada = 1,
         cantidadDeZoombis = 5,
-        intervaloMinimo = 15000,
-        intervaloMaximo = 20000,
+        intervaloMinimo = 10000,
+        intervaloMaximo = 18000,
         siguienteOleada = oleada2,
+        soundtrack = new PistaMusical(archivo = "oleada1.wav"),
         constructoresDeZoombis = [
-            { pos => new Mono(position = pos)},
-            { pos => self.crearPinguino(pos)}
+            { pos => new Jirafa(position = pos)}
         ]
     )
 }

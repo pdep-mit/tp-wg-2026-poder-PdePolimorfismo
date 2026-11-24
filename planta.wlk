@@ -59,7 +59,7 @@ class BonkChoi inherits Planta (
 			"bonkChoiFrame5.png",
 			"bonkChoiFrame6.png"
 		],
-		intervalo = 120
+		intervalo = 80
 	)
 
 	override method initialize() {

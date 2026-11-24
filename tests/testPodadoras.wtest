@@ -18,7 +18,7 @@ describe "Comportamiento de las podadoras" {
     test "La podadora daña a un zombie cuando lo alcanza" {
         const posicion = game.at(4, 2)
         const podadora = new Podadora(position = posicion)
-        const pinguino = new Pinguino(position = posicion, vida = 200)
+        const pinguino = new Mono(position = posicion, vida = 200)
         patio.agregarZoombie(pinguino)
 
         podadora.actuar()

@@ -3,11 +3,12 @@ import patio.*
 import planta.*
 import zoombie.*
 import rinoZoombie.*
+import jirafaZoombie.*
 
 describe "Comportamiento de los zoombies" {
 
     test "Un pinguino avanza una casilla cuando no tiene una planta adelante" {
-        const pinguino = new Pinguino(position = game.at(6, 2))
+        const pinguino = new Mono(position = game.at(6, 2))
 
         pinguino.actuar()
 
@@ -67,5 +68,35 @@ describe "Comportamiento de los zoombies" {
 
         maquinista.pasarTiempo(1)
         assert.equals(cantidadInicial + 1, patio.cantidadDeZoombies())
+    }
+
+    test "La jirafa cambia de imagen al aplastar exactamente dos plantas" {
+        const jirafa = new Jirafa(position = game.at(8, 3))
+        const nuezCercana = new Nuez(position = game.at(7, 3))
+        const nuezLejana = new Nuez(position = game.at(6, 3))
+        patio.agregarPlanta(nuezCercana)
+        patio.agregarPlanta(nuezLejana)
+
+        jirafa.actuar()
+        assert.equals("jirafaPreparada.png", jirafa.image())
+
+        jirafa.iniciarAplastamiento()
+        assert.equals("jirafaAplastando.png", jirafa.image())
+
+        jirafa.ejecutarAtaqueEspecial()
+        assert.notThat(nuezCercana.estaVivo())
+        assert.notThat(nuezLejana.estaVivo())
+        assert.equals("jirafaZoombi.png", jirafa.image())
+    }
+
+    test "La jirafa come una sola planta en su casilla sin iniciar el aplastamiento" {
+        const jirafa = new Jirafa(position = game.at(8, 3))
+        const nuez = new Nuez(position = game.at(8, 3), vida = 100)
+        patio.agregarPlanta(nuez)
+
+        jirafa.actuar()
+
+        assert.notThat(nuez.estaVivo())
+        assert.equals("jirafaZoombi.png", jirafa.image())
     }
 }

@@ -33,12 +33,12 @@ class Podadora inherits Entidad (temporizador = new Temporizador(intervalo = 200
 		if (position.x() < game.width() - 1) {
 			self.programarSiguientePaso()
 		} else {
-			game.schedule(100, { self.desaparecer() })
+			game.schedule(300, { self.desaparecer() })
 		}
 	}
 
 	method programarSiguientePaso() {
-		game.schedule(100, {
+		game.schedule(300, {
 			position = derecha.desde(position)
 			self.limpiarFilaRecursivo()
 		})

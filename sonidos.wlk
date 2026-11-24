@@ -1,33 +1,41 @@
 import wollok.game.*
 
 object sinMusica {
-	method archivo() = ""
-	method detener() {}
+    method cambiarA(pista) = pista.reproducir()
+    method detener() {}
 }
 
 class PistaEnCurso {
-	const property archivo
-	const sonido
+    const audio
 
-	method detener() {
-		sonido.stop()
-	}
+    method cambiarA(pista) {
+        self.detener()
+        return pista.reproducir()
+    }
+
+    method detener() {
+        audio.stop()
+    }
 }
 
+class PistaMusical {
+    const archivo
+
+    method reproducir() {
+        const audio = game.sound(archivo)
+        audio.shouldLoop(true)
+        audio.volume(0.2)
+        audio.play()
+        return new PistaEnCurso(audio = audio)
+    }
+}
 object sonido {
 	var musicaActual = sinMusica
 	const sonidosActivos = []
 	var estadoMordisco = canalMordiscoLibre
 
-	method reproducirMusica(archivoAudio) {
-		if (musicaActual.archivo() != archivoAudio) {
-			musicaActual.detener()
-			const nuevaMusica = game.sound(archivoAudio)
-			nuevaMusica.shouldLoop(true)
-			nuevaMusica.volume(0.2)
-			nuevaMusica.play()
-			musicaActual = new PistaEnCurso(archivo = archivoAudio, sonido = nuevaMusica)
-		}
+	method cambiarMusica(pista) {
+		musicaActual = musicaActual.cambiarA(pista)
 	}
 
 	method detenerMusica() {

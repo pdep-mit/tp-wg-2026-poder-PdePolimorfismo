@@ -5,7 +5,6 @@ import soles.*
 
 object dia {
 	method imagenEscenario() = "escenarioDia.jpg"
-	method imagenCasilla() = "casillaDia.png"
 
 	method activarEn(unPatio) {
 		unPatio.aplicarMomento(self)
@@ -22,7 +21,6 @@ object dia {
 
 object noche {
 	method imagenEscenario() = "escenarioNoche.jpg"
-	method imagenCasilla() = "casillaDia.png"
 
 	method activarEn(unPatio) {
 		unPatio.aplicarMomento(self)
@@ -43,7 +41,6 @@ object patio {
 	const plantas = []
 	const podadoras = []
 	const proyectiles = []
-	const casillas = []
 	var momentoDelDia = dia
 
 	method momentoDelDia() = momentoDelDia
@@ -67,7 +64,6 @@ object patio {
 	method quitarPodadora(podadora)    { podadoras.remove(podadora) }
 	method agregarProyectil(proyectil) { proyectiles.add(proyectil) }
 	method quitarProyectil(proyectil)  { proyectiles.remove(proyectil) }
-	method agregarCasilla(casilla)     { casillas.add(casilla) }
  	 
 	method entidades() = soles + plantas + zoombies + podadoras + proyectiles 
 
@@ -87,7 +83,6 @@ object patio {
 
 	method limpiarTablero() {
 		self.entidades().forEach({ entidad => entidad.desaparecer() })
-		casillas.forEach({ casilla => game.removeVisual(casilla) })
 	}
  	 
 	method plantasEnCasilla(pos) = plantas.filter({ pla => pla.position() == pos })

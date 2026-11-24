@@ -12,23 +12,16 @@ import cartaPlanta.*
 import nivel.*
 import zoombie.*
 
-class Casilla {
-	var property position
-	method image() = patio.momentoDelDia().imagenCasilla()
-}
-
 object juego {
 	method iniciarJuego() {
 		self.configurarVentana()
-		self.crearTablero()
 		self.crearPodadoras()
 		self.configurarInterfaz()
 		self.configurarControles()
 		
-		sonido.reproducirMusica("oleada1.wav")
 		generadorDeSoles.programarLluviaDeSoles()
 		directorDeOleadas.iniciar()
-		game.onTick(500, "relojJuego", { patio.pasarTiempo(500) })
+		game.onTick(400, "relojJuego", { patio.pasarTiempo(400) })
 		
 		game.start()
 	}
@@ -39,16 +32,6 @@ object juego {
 		game.height(7)
 		game.width(12)
 		game.boardGround("escenarioDia.jpg")
-	}
-
-	method crearTablero() {
-		(3 .. (game.width() - 2)).forEach({ x =>
-			(1 .. (game.height() - 2)).forEach({ y =>
-				const casilla = new Casilla(position = game.at(x, y))
-				patio.agregarCasilla(casilla)
-				game.addVisual(casilla)
-			})
-		})
 	}
 
 	method crearPodadoras() {
