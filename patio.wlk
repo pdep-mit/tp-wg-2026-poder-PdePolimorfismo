@@ -82,7 +82,7 @@ object patio {
 	}
 
 	method limpiarTablero() {
-		self.entidades().forEach({ entidad => entidad.desaparecer() })
+		(self.entidades() + []).forEach({ entidad => entidad.desaparecer() })
 	}
  	 
 	method plantasEnCasilla(pos) = plantas.filter({ pla => pla.position() == pos })

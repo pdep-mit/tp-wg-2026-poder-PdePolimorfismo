@@ -1,18 +1,17 @@
-import wollok.game.*
+import entidades.*
 
 object sinAnimacion {
 	method iniciar() {}
 	method detener() {}
+	method pasarTiempo(ms) {}
 	method imagenActual() = ""
 }
 
 class Animacion {
 	const frames
-	const intervalo
+	const temporizador
 	var indiceActual = 0
 	var estado = animacionDetenida
-
-	method nombreTick() = "animacion_" + self.identity().toString()
 
 	method cambiarEstado(nuevoEstado) {
 		estado = nuevoEstado
@@ -26,15 +25,22 @@ class Animacion {
 		estado.detener(self)
 	}
 
-	method arrancarTick() {
-		indiceActual = 0
-		game.onTick(intervalo, self.nombreTick(), {
-			indiceActual = (indiceActual + 1) % frames.size()
-		})
+	method pasarTiempo(ms) {
+		estado.pasarTiempo(ms, self)
 	}
 
-	method frenarTick() {
-		game.removeTickEvent(self.nombreTick())
+	method avanzar() {
+		temporizador.avanzar(self.pasoPorTick(), self)
+	}
+
+	method pasoPorTick() = temporizador.intervalo()
+
+	method actuar() {
+		indiceActual = (indiceActual + 1) % frames.size()
+	}
+
+	method reiniciarCiclo() {
+		temporizador.reiniciar()
 		indiceActual = 0
 	}
 
@@ -43,18 +49,23 @@ class Animacion {
 
 object animacionDetenida {
 	method iniciar(animacion) {
-		animacion.arrancarTick()
+		animacion.reiniciarCiclo()
 		animacion.cambiarEstado(animacionActiva)
 	}
 
 	method detener(animacion) {}
+	method pasarTiempo(ms, animacion) {}
 }
 
 object animacionActiva {
 	method iniciar(animacion) {}
 
 	method detener(animacion) {
-		animacion.frenarTick()
+		animacion.reiniciarCiclo()
 		animacion.cambiarEstado(animacionDetenida)
+	}
+
+	method pasarTiempo(ms, animacion) {
+		animacion.avanzar()
 	}
 }

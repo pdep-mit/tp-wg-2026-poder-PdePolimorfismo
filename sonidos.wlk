@@ -43,6 +43,13 @@ object sonido {
 		musicaActual = sinMusica
 	}
 
+	method detenerEfectos() {
+		(sonidosActivos + []).forEach({ efecto =>
+			efecto.stop()
+			sonidosActivos.remove(efecto)
+		})
+	}
+
 	method sonidoMordisco() {
 		estadoMordisco.reproducir(self)
 	}

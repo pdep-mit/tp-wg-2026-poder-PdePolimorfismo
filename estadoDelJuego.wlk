@@ -6,6 +6,7 @@ import patio.*
 import cartaPlanta.*
 import cursor.*
 import zoombie.*
+import nivel.*
 
 object finDelJuego {
 	var estado = partidaEnCurso
@@ -40,6 +41,7 @@ object partidaEnCurso {
 	method avanzarTiempo(ms, entidades) {
 		entidades.forEach({ entidad => entidad.pasarTiempo(ms) })
 	}
+
 	method plantar(carta) { jugador.plantar(carta) }
 	method equipar(herramienta) { jugador.equipar(herramienta) }
 	method finalizarCon(nuevoEstado) { finDelJuego.cambiarEstado(nuevoEstado) }
@@ -112,14 +114,18 @@ object derrota {
 	method finalizarCon(nuevoEstado) {}
 
 	method activar() {
+		game.removeTickEvent("relojJuego")
 		directorDeOleadas.detener()
 		generadorDeSoles.detenerGeneracion()
+		sonido.detenerMusica()
+		sonido.detenerEfectos()
+
 		patio.limpiarTablero()
 		game.removeVisual(jugador)
 		game.removeVisual(contadorDeSoles)
+		game.removeVisual(indicadorDeOleada)
 		cartas.forEach({ carta => game.removeVisual(carta) })
 
-		sonido.detenerMusica()
 		game.boardGround("gameOver.png")
 		game.schedule(1000, { game.stop() })
 	}

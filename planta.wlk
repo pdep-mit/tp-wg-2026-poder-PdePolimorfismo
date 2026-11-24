@@ -44,13 +44,16 @@ class Nuez inherits Planta (
 }
 
 class BonkChoi inherits Planta (
-	habilidad = golpeCuerpoACuerpo,  
-	daño = 30, 
-	vida = 300, 
+	habilidad = golpeCuerpoACuerpo,
+	daño = 30,
+	vida = 300,
 	position = jugador.position(),
 	temporizador = new Temporizador(intervalo = 500)
 ) {
-	const animacionReposo = new Animacion(frames = ["bonkChoi.png"], intervalo = 1000)
+	const animacionReposo = new Animacion(
+		frames = ["bonkChoi.png"],
+		temporizador = new Temporizador(intervalo = 1000)
+	)
 	const animacionAtaque = new Animacion(
 		frames = [
 			"bonkChoiFrame2.png",
@@ -59,7 +62,7 @@ class BonkChoi inherits Planta (
 			"bonkChoiFrame5.png",
 			"bonkChoiFrame6.png"
 		],
-		intervalo = 80
+		temporizador = new Temporizador(intervalo = 400)
 	)
 
 	override method initialize() {

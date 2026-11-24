@@ -3,7 +3,7 @@ import entidades.*
 import movimientos.*
 import patio.*
 
-class Podadora inherits Entidad (temporizador = new Temporizador(intervalo = 200)) {
+class Podadora inherits Entidad (temporizador = new Temporizador(intervalo = 500)) {
 	var estado = apagada
 	const property daño = 9999
 
@@ -11,6 +11,7 @@ class Podadora inherits Entidad (temporizador = new Temporizador(intervalo = 200
 
 	method activar() {
 		estado = activada
+		temporizador = new Temporizador(intervalo = 300)
 	}
 
 	override method actuar() {
@@ -18,30 +19,20 @@ class Podadora inherits Entidad (temporizador = new Temporizador(intervalo = 200
 	}
 
 	method arrancarSiHayZoombie() {
-		patio.zoombiesEnCasilla(position).take(1).forEach({ zombie =>
+		if (not patio.zoombiesEnCasilla(position).isEmpty()) {
 			self.activar()
-			self.limpiarFilaRecursivo()
-		})
-	}
-
-	method daniarZoombiesASuPaso() {
-		patio.daniarZoombiesEnCasilla(position, self.daño())
-	}
-
-	method limpiarFilaRecursivo() {
-		self.daniarZoombiesASuPaso()
-		if (position.x() < game.width() - 1) {
-			self.programarSiguientePaso()
-		} else {
-			game.schedule(300, { self.desaparecer() })
+			self.avanzarYLimpiar()
 		}
 	}
 
-	method programarSiguientePaso() {
-		game.schedule(300, {
+	method avanzarYLimpiar() {
+		patio.daniarZoombiesEnCasilla(position, self.daño())
+		if (position.x() < game.width() - 1) {
 			position = derecha.desde(position)
-			self.limpiarFilaRecursivo()
-		})
+			patio.daniarZoombiesEnCasilla(position, self.daño())
+		} else {
+			self.desaparecer()
+		}
 	}
 
 	override method desaparecer() {
@@ -57,5 +48,7 @@ object apagada {
 }
 
 object activada {
-	method actuar(podadora) {}
+	method actuar(podadora) {
+		podadora.avanzarYLimpiar()
+	}
 }

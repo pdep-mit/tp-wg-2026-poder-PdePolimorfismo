@@ -5,13 +5,13 @@ class Entidad {
 	var property position
 	var temporizador = sinTemporizador
 	var animacion = sinAnimacion
-	
+
 	method image() = animacion.imagenActual()
 
 	method aparecer() {
 		game.addVisual(self)
 	}
-	
+
 	method actuar()
 
 	method cambiarAnimacion(nuevaAnimacion) {
@@ -20,13 +20,14 @@ class Entidad {
 
 	method pasarTiempo(ms) {
 		temporizador.avanzar(ms, self)
+		animacion.pasarTiempo(ms)
 	}
 
 	method reiniciarTemporizador() {
 		temporizador.reiniciar()
 	}
 
-method ocultarVisual() {
+	method ocultarVisual() {
 		animacion.detener()
 		game.removeVisual(self)
 	}
@@ -42,7 +43,7 @@ object sinTemporizador {
 }
 
 class Temporizador {
-	const intervalo = 1000
+	const property intervalo = 1000
 	var tiempoAcumulado = 0
 
 	method avanzar(ms, entidad) {
