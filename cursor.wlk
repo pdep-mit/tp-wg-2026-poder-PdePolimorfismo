@@ -1,27 +1,22 @@
 import wollok.game.*
 import patio.*
-import entidades.*
-import movimientos.*
-import pala.*
 import jugador.*
-import soles.*
+import estadoDelJuego.*
 
-object cursor{
-	
-    method image() = "cursor.png"
-    
-    method position() = jugador.position()
-    
-    method siguiente() = pala
+object cursor {
+	method image() = "cursor.png"
+	method position() = jugador.position()
 
-    method plantar(cartaPlanta) {
-    cartaPlanta.intentarPlantar(self.position())
-}
+	method plantar(cartaPlanta) {
+		if (patio.hayPlantaEnCasilla(self.position())) {
+			self.error("Ya hay una planta en esta casilla")
+		}
+		const nuevaPlanta = cartaPlanta.usar(self.position())
+		patio.colocarPlanta(nuevaPlanta)
+	}
 
-    method accionar(posicion) {
-        if (patio.haySolEnCasilla(posicion)) {
-            const sol = patio.solEnCasilla(posicion)
-            sol.recolectar()
-        }
-    }
+	method accionar(posicion) {
+		patio.recolectarSolEn(posicion)
+		trofeo.recolectarSiEstaEn(posicion)
+	}
 }

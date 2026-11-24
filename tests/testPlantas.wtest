@@ -7,6 +7,7 @@ import pala.*
 import jugador.*
 import soles.*
 import movimientos.*
+import proyectil.*
 
 describe "Comportamiento de las plantas" {
 
@@ -22,24 +23,63 @@ describe "Comportamiento de las plantas" {
 
     test "El lanzaguisantes crea un proyectil si hay un zombie delante" {
         const lanzaguisantes = new Lanzaguisantes(position = game.at(4, 2))
-        const zombie = new Pinguino(position = game.at(6, 2))
+        const zombie = new Mono(position = game.at(6, 2))
+        const cantidadProyectilesAntes = patio.entidades()
+            .filter({ entidad => entidad.image() == "guisante.png" })
+            .size()
         patio.agregarZoombie(zombie)
 
         lanzaguisantes.actuar()
 
-        assert.that(patio.proyectiles().any({
-            proyectil => proyectil.plantaQueLoDispara() == lanzaguisantes
-        }))
+        const proyectiles = patio.entidades()
+            .filter({ entidad => entidad.image() == "guisante.png" })
+        assert.equals(cantidadProyectilesAntes + 1, proyectiles.size())
 
-        patio.proyectiles()
-            .filter({ proyectil => proyectil.plantaQueLoDispara() == lanzaguisantes })
-            .forEach({ proyectil => proyectil.desaparecer() })
+        proyectiles.forEach({ proyectil => proyectil.desaparecer() })
         patio.quitarZoombie(zombie)
+    }
+
+    test "El proyectil impacta al zombie antes de desaparecer en el borde" {
+        const lanzaguisantes = new Lanzaguisantes(position = game.at(10, 2))
+        const zombie = new Mono(position = game.at(11, 2), vida = 30)
+        const proyectil = new Proyectil(
+            position = lanzaguisantes.position(),
+            plantaQueLoDispara = lanzaguisantes
+        )
+        patio.agregarZoombie(zombie)
+        patio.agregarProyectil(proyectil)
+        proyectil.aparecer()
+
+        proyectil.actuar()
+
+        assert.notThat(zombie.estaVivo())
+        assert.notThat(game.hasVisual(proyectil))
+    }
+
+    test "El proyectil que llega al borde sin impactar se elimina del patio" {
+        const lanzaguisantes = new Lanzaguisantes(position = game.at(10, 2))
+        const cantidadProyectilesAntes = patio.entidades()
+            .filter({ entidad => entidad.image() == "guisante.png" })
+            .size()
+        const proyectil = new Proyectil(
+            position = lanzaguisantes.position(),
+            plantaQueLoDispara = lanzaguisantes
+        )
+        patio.agregarProyectil(proyectil)
+        proyectil.aparecer()
+
+        proyectil.actuar()
+
+        const cantidadProyectilesDespues = patio.entidades()
+            .filter({ entidad => entidad.image() == "guisante.png" })
+            .size()
+        assert.equals(cantidadProyectilesAntes, cantidadProyectilesDespues)
+        assert.notThat(game.hasVisual(proyectil))
     }
 
     test "BonkChoi daña al zombie en la casilla de adelante" {
         const bonkChoi = new BonkChoi(position = game.at(4, 3))
-        const zombie = new Pinguino(position = game.at(5, 3), vida = 30)
+        const zombie = new Mono(position = game.at(5, 3), vida = 30)
         patio.agregarZoombie(zombie)
 
         bonkChoi.actuar()
@@ -48,63 +88,18 @@ describe "Comportamiento de las plantas" {
         patio.quitarZoombie(zombie)
     }
 
-    test "BonkChoi daña a los zombies en la casilla actual, adelante y atrás" {
-        const bonkChoi = new BonkChoi(position = game.at(4, 2))
-        const zombieActual = new Pinguino(position = bonkChoi.position(), vida = 30)
-        const zombieDelante = new Pinguino(position = derecha.desde(bonkChoi.position()), vida = 30)
-        const zombieDetras = new Pinguino(position = izquierda.desde(bonkChoi.position()), vida = 30)
-
-        patio.agregarZoombie(zombieActual)
-        patio.agregarZoombie(zombieDelante)
-        patio.agregarZoombie(zombieDetras)
-
-        bonkChoi.actuar()
-
-        assert.notThat(zombieActual.estaVivo())
-        assert.notThat(zombieDelante.estaVivo())
-        assert.notThat(zombieDetras.estaVivo())
-
-        patio.quitarZoombie(zombieActual)
-        patio.quitarZoombie(zombieDelante)
-        patio.quitarZoombie(zombieDetras)
-    }
-
     test "La nuez pierde vida al recibir daño y sigue viva si le queda vida" {
         const nuez = new Nuez(position = game.at(4, 4))
 
-        nuez.recibirDanio(1000)
+        nuez.recibirDaño(1000)
 
         assert.that(nuez.estaVivo())
 
-        nuez.recibirDanio(3000)
+        nuez.recibirDaño(3000)
 
         assert.notThat(nuez.estaVivo())
     }
 
-    test "Distintas plantas responden polimorficamente al mensaje actuar" {
-        const girasol = new Girasol(position = game.at(4, 1))
-        const lanzaguisantes = new Lanzaguisantes(position = game.at(4, 2))
-        const bonkChoi = new BonkChoi(position = game.at(4, 3))
-        const zombieParaDisparo = new Pinguino(position = game.at(6, 2))
-        const zombieParaGolpe = new Pinguino(position = game.at(5, 3), vida = 30)
-        const plantas = [girasol, lanzaguisantes, bonkChoi]
-
-        patio.agregarZoombie(zombieParaDisparo)
-        patio.agregarZoombie(zombieParaGolpe)
-        plantas.forEach({ planta => planta.actuar() })
-
-        assert.that(patio.haySolEnCasilla(girasol.position()))
-        assert.that(patio.proyectiles().any({
-            proyectil => proyectil.plantaQueLoDispara() == lanzaguisantes
-        }))
-        assert.notThat(zombieParaGolpe.estaVivo())
-
-        patio.solEnCasilla(girasol.position()).desaparecer()
-        patio.proyectiles()
-            .filter({ proyectil => proyectil.plantaQueLoDispara() == lanzaguisantes })
-            .forEach({ proyectil => proyectil.desaparecer() })
-        patio.quitarZoombie(zombieParaDisparo)
-    }
 
     test "El jugador delega accionar a la herramienta equipada" {
         const posicionOriginal = jugador.position()

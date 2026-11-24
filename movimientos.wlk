@@ -1,6 +1,5 @@
 import wollok.game.*
 
-// bueno este objeto es para que los zoombies se muevan a la izquierda
 object izquierda {
     method desde(posicion) = posicion.left(1)
 }

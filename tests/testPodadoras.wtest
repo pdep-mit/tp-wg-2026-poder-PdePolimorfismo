@@ -1,0 +1,28 @@
+import wollok.game.*
+import patio.*
+import podadoras.*
+import zoombie.*
+
+describe "Comportamiento de las podadoras" {
+
+    test "Solo una podadora activada queda en marcha" {
+        const podadora = new Podadora(position = game.at(3, 1))
+
+        assert.notThat(podadora.estaEnMarcha())
+
+        podadora.activar()
+
+        assert.that(podadora.estaEnMarcha())
+    }
+
+    test "La podadora daña a un zombie cuando lo alcanza" {
+        const posicion = game.at(4, 2)
+        const podadora = new Podadora(position = posicion)
+        const pinguino = new Pinguino(position = posicion, vida = 200)
+        patio.agregarZoombie(pinguino)
+
+        podadora.actuar()
+
+        assert.notThat(pinguino.estaVivo())
+    }
+}

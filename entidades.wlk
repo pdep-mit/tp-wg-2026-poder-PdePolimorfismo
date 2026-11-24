@@ -1,24 +1,59 @@
 import wollok.game.*
+import animacion.*
 
-class Entidad{
-
+class Entidad {
 	var property position
+	var temporizador = sinTemporizador
+	var animacion = sinAnimacion
 	
-	method image()
-	
-	method aparecer(){
+	method image() = animacion.imagenActual()
+
+	method aparecer() {
 		game.addVisual(self)
 	}
 	
-	method avanzar() {}
-	
 	method actuar()
-	
-	method desaparecer() {
-		if(game.hasVisual(self)) 
-			game.removeVisual(self)
-	}
-	
-	method detenerse() {}
 
+	method cambiarAnimacion(nuevaAnimacion) {
+		animacion = nuevaAnimacion
+	}
+
+	method pasarTiempo(ms) {
+		temporizador.avanzar(ms, self)
+	}
+
+	method reiniciarTemporizador() {
+		temporizador.reiniciar()
+	}
+
+method ocultarVisual() {
+		animacion.detener()
+		game.removeVisual(self)
+	}
+
+	method desaparecer() {
+		self.ocultarVisual()
+	}
+}
+
+object sinTemporizador {
+	method avanzar(ms, entidad) {}
+	method reiniciar() {}
+}
+
+class Temporizador {
+	const intervalo = 1000
+	var tiempoAcumulado = 0
+
+	method avanzar(ms, entidad) {
+		tiempoAcumulado += ms
+		if (tiempoAcumulado >= intervalo) {
+			tiempoAcumulado -= intervalo
+			entidad.actuar()
+		}
+	}
+
+	method reiniciar() {
+		tiempoAcumulado = 0
+	}
 }

@@ -1,64 +1,171 @@
 import wollok.game.*
+import estadoDelJuego.*
+import movimientos.*
 import soles.*
 
-object patio{
-	 const property soles = []
-     const property zoombies = []
-     const property plantas = []
-     const property podadoras = []
-     const property proyectiles = []
-     const property casillas = []
+object dia {
+	method imagenEscenario() = "escenarioDia.jpg"
+	method imagenCasilla() = "casillaDia.png"
+
+	method activarEn(unPatio) {
+		unPatio.aplicarMomento(self)
+		generadorDeSoles.activarGeneracion()
+	}
+
+	method cambiarA(nuevoMomento, unPatio) {
+		nuevoMomento.activarDesdeDia(unPatio)
+	}
+
+	method activarDesdeDia(unPatio) {}
+	method activarDesdeNoche(unPatio) { self.activarEn(unPatio) }
+}
+
+object noche {
+	method imagenEscenario() = "escenarioNoche.jpg"
+	method imagenCasilla() = "casillaDia.png"
+
+	method activarEn(unPatio) {
+		unPatio.aplicarMomento(self)
+		generadorDeSoles.detenerGeneracion()
+	}
+
+	method cambiarA(nuevoMomento, unPatio) {
+		nuevoMomento.activarDesdeNoche(unPatio)
+	}
+
+	method activarDesdeNoche(unPatio) {}
+	method activarDesdeDia(unPatio) { self.activarEn(unPatio) }
+}
+
+object patio {
+	const soles = []
+	const zoombies = []
+	const plantas = []
+	const podadoras = []
+	const proyectiles = []
+	const casillas = []
+	var momentoDelDia = dia
+
+	method momentoDelDia() = momentoDelDia
+
+	method cambiarMomentoDelDia(nuevoMomento) {
+		momentoDelDia.cambiarA(nuevoMomento, self)
+	}
+
+	method aplicarMomento(nuevoMomento) {
+		momentoDelDia = nuevoMomento
+		game.boardGround(momentoDelDia.imagenEscenario())
+	}
  
-	 method agregarSol(sol)           { soles.add(sol) }
-     method quitarSol(sol)            { soles.remove(sol) }
-     method agregarZoombie(zombie)     { zoombies.add(zombie) }
-     method quitarZoombie(zombie)      { zoombies.remove(zombie) }
-     method agregarPlanta(planta)     { plantas.add(planta) }
-     method quitarPlanta(planta)      { plantas.remove(planta) }
-     method agregarPodadora(podadora) { podadoras.add(podadora) }
- 	 method quitarPodadora(podadora)  { podadoras.remove(podadora) }
- 	 method agregarProyectil(proyectil) {proyectiles.add(proyectil)}
- 	 method quitarProyectil(proyectil) {proyectiles.remove(proyectil)}
-     method agregarCasilla(casilla) { casillas.add(casilla) }
+	method agregarSol(sol)             { soles.add(sol) }
+	method quitarSol(sol)              { soles.remove(sol) }
+	method agregarZoombie(zombie)      { zoombies.add(zombie) }
+	method quitarZoombie(zombie)       { zoombies.remove(zombie) }
+	method agregarPlanta(planta)       { plantas.add(planta) }
+	method quitarPlanta(planta)        { plantas.remove(planta) }
+	method agregarPodadora(podadora)   { podadoras.add(podadora) }
+	method quitarPodadora(podadora)    { podadoras.remove(podadora) }
+	method agregarProyectil(proyectil) { proyectiles.add(proyectil) }
+	method quitarProyectil(proyectil)  { proyectiles.remove(proyectil) }
+	method agregarCasilla(casilla)     { casillas.add(casilla) }
  	 
- 	 method entidades() = soles + plantas + zoombies + podadoras + proyectiles 
- 	 
- 	 method hayPlantaEnCasilla(pos) = plantas.any({pla => 
- 	 		pla.position() == pos
- 	 })
- 	 
- 	 method plantaEnCasilla(pos) = plantas.find({pla => 
- 	 		pla.position() == pos
- 	 })
- 	 
- 	 method hayZoombieDelanteDe(planta) = zoombies.any({zoo => 
- 	 		zoo.position().y() == planta.position().y() &&
- 	 		zoo.position().x() > planta.position().x()
- 	 })
+	method entidades() = soles + plantas + zoombies + podadoras + proyectiles 
 
-	 method zoombieDelanteDe(planta) = zoombies.find({ zoo => 
-        zoo.position().y() == planta.position().y() &&
-        zoo.position().x() >= planta.position().x()
-    })
+	method haySolEnCasilla(pos) = soles.any({ sol => sol.position() == pos })
 
-	method hayPlantaEnFilaAdelanteDe(zoombie) = plantas.any({ p => 
-    	p.position().y() == zoombie.position().y() && 
-    	p.position().x() <= zoombie.position().x()
+	method solEnCasilla(pos) = soles.find({ sol => sol.position() == pos })
+
+	method cantidadDeZoombies() = zoombies.size()
+
+	method pasarTiempo(ms) {
+		finDelJuego.avanzarTiempo(ms, self.entidades())
+	}
+
+	method limpiarSoles() {
+		(soles + []).forEach({ sol => sol.desaparecer() })
+	}
+
+	method limpiarTablero() {
+		self.entidades().forEach({ entidad => entidad.desaparecer() })
+		casillas.forEach({ casilla => game.removeVisual(casilla) })
+	}
+ 	 
+	method plantasEnCasilla(pos) = plantas.filter({ pla => pla.position() == pos })
+
+	method hayPlantaEnCasilla(pos) = plantas.any({ pla => pla.position() == pos })
+
+	method hayPlantaEnCasillaOEnFrenteDe(zoombie) =
+		self.hayPlantaEnCasilla(zoombie.position()) ||
+		self.hayPlantaEnCasilla(izquierda.desde(zoombie.position()))
+
+	method plantasEnRangoAdelanteDe(entidad, distanciaMaxima) = plantas.filter({ p =>
+		p.position().y() == entidad.position().y() &&
+		(entidad.position().x() - p.position().x()).between(0, distanciaMaxima)
 	})
 
-    method zombiesEnCasilla(pos) = zoombies.filter({zoo => 
- 	 		zoo.position() == pos
-     })
+	method plantasEnFila(fila) = plantas.filter({ p => p.position().y() == fila })
 
-    method hayZoombieEnCasilla(pos) = not self.zombiesEnCasilla(pos).isEmpty()
+	method removerPlantaEn(pos) {
+		self.plantasEnCasilla(pos).forEach({ planta => planta.desaparecer() })
+	}
 
-     method zoombieEnCasilla(pos) = self.zombiesEnCasilla(pos).first()
+	method colocarPlanta(planta) {
+		self.agregarPlanta(planta)
+		planta.aparecer()
+	}
  	 
- 	 method haySolEnCasilla(pos) = soles.any({sol => 
- 	 		sol.position() == pos
- 	 })
+	method hayZoombieDelanteDe(planta) = zoombies.any({ zoo => 
+		zoo.position().y() == planta.position().y() &&
+		zoo.position().x() > planta.position().x()
+	})
 
-     method solEnCasilla(pos) = soles.find({sol => 
- 	 		sol.position() == pos
-     })
+	method hayPlantaEnFilaAdelanteDe(zoombie) = plantas.any({ p => 
+		p.position().y() == zoombie.position().y() && 
+		p.position().x() <= zoombie.position().x()
+	})
+
+	method zoombiEnRangoDeExplosion(centro) = zoombies.filter({ zoo => 
+		self.estaEnArea3x3(zoo.position(), centro) 
+	})
+
+	method estaEnArea3x3(pos, centro) = 
+		(pos.x() - centro.x()).abs() <= 1 && 
+		(pos.y() - centro.y()).abs() <= 1 
+
+	method daniarZoombiesEnRangoDeExplosion(centro, cantidadDanio) {
+		self.zoombiEnRangoDeExplosion(centro).forEach({ zoombie =>
+			zoombie.recibirDaño(cantidadDanio)
+		})
+	}
+
+	method zombiesCuerpoACuerpoDe(posicion) = zoombies.filter({ zoo =>
+		zoo.position().y() == posicion.y() &&
+		(zoo.position().x() - posicion.x()).abs() <= 1
+	})
+
+	method daniarZoombiesCuerpoACuerpoDe(posicion, cantidadDanio) {
+		self.zombiesCuerpoACuerpoDe(posicion).forEach({ zoombie =>
+			zoombie.recibirDaño(cantidadDanio)
+		})
+	}
+
+	method daniarZoombiesEnCasilla(pos, cantidadDanio) {
+		self.zoombiesEnCasilla(pos).forEach({ zoombie =>
+			zoombie.recibirDaño(cantidadDanio)
+		})
+	}
+
+	method potenciarVelocidadZoombies(factor, duracionMs) {
+		zoombies.forEach({ z => z.acelerarMovimiento(factor, duracionMs) })
+	}
+
+	method hayZoombiEnCasa(pos) = pos.x() == 1
+ 	 
+	method recolectarSolEn(pos) {
+		soles.filter({ sol => sol.position() == pos }).take(1).forEach({ sol =>
+			sol.recolectar()
+		})
+	}
+
+	method zoombiesEnCasilla(pos) = zoombies.filter({ z => z.position() == pos })
 }

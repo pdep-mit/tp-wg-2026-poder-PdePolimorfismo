@@ -5,145 +5,328 @@ import patio.*
 import movimientos.*
 import habilidades.*
 import estadoDelJuego.*
-import rinoZoombie.*
+import nivel.*
 
 object generarZoombis {
-    const tipos = [
-        { pos => new Pinguino(position = pos) },
-        { pos => new Rinoceronte(position = pos) },
-        { pos => new Buitre(position = pos) },
-        { pos => new Jirafa(position = pos) },
-        { pos => new Mono(position = pos) }
-    ]
-    const tickId = "generarZoombis"
+	method generarZombieAleatorio(tiposDisponibles) {
+		const posicionAparicion = game.at(game.width() - 1, (1 .. game.height() - 2).anyOne())
+		const nuevoZombie = tiposDisponibles.anyOne().apply(posicionAparicion)
+		patio.agregarZoombie(nuevoZombie)
+		nuevoZombie.aparecer()
+	}
+}
 
-	method generarZombieAleatorio() {
-        
-        const filaAleatoria = (1 .. game.height() - 2).anyOne()
-        const posicionAparicion = game.at(game.width() - 1 , filaAleatoria)
-        const nuevoZombie = tipos.anyOne().apply(posicionAparicion)
+object directorDeOleadas {
+	var estado = directorInactivo
+	var oleadaActual = configuracionDeOleadas.inicial()
 
-        patio.agregarZoombie(nuevoZombie)
-        nuevoZombie.aparecer()
-    }
-  
-  method programarAparicion() {
-    game.removeTickEvent(tickId)
-    game.onTick((10000 .. 16000).anyOne(), tickId, {
-      self.generarZombieAleatorio()
-      self.programarAparicion()
-    })
-  }
+	method iniciar() {
+		estado.iniciar(self)
+	}
+
+	method detener() {
+		estado = directorDetenido
+	}
+
+	method activarSpawneo(oleada) {
+		oleadaActual = oleada
+		estado = spawneandoOleada
+		self.programarSiguienteZombie()
+	}
+
+	method programarSiguienteZombie() {
+		if (not oleadaActual.aparecieronTodos()) {
+			game.schedule(oleadaActual.esperarEntreSpawns(), {
+				estado.ejecutarSpawn(self, oleadaActual)
+			})
+		}
+	}
+
+	method revisarProgreso() {
+		estado.revisarProgreso(oleadaActual)
+	}
+
+	method esperarYArrancar(siguienteOleada) {
+		estado = esperandoCambioDeOleada
+		game.schedule(5000, { estado.iniciarOleada(siguienteOleada) })
+	}
+
+	method finalizarVictoria() {
+		self.detener()
+		finDelJuego.mostrarVictoria()
+	}
+}
+
+object directorInactivo {
+	method iniciar(director) {
+		configuracionDeOleadas.inicial().iniciar()
+	}
+	method ejecutarSpawn(director, oleada) {}
+	method revisarProgreso(oleada) {}
+	method iniciarOleada(oleada) {}
+}
+
+object spawneandoOleada {
+	method iniciar(director) {}
+	method ejecutarSpawn(director, oleada) {
+		generarZoombis.generarZombieAleatorio(oleada.constructoresDeZoombis())
+		oleada.registrarAparicion()
+		director.revisarProgreso()
+		director.programarSiguienteZombie()
+	}
+	method revisarProgreso(oleada) {
+		oleada.avanzarSiTermino()
+	}
+	method iniciarOleada(oleada) {}
+}
+
+object esperandoCambioDeOleada {
+	method iniciar(director) {}
+	method ejecutarSpawn(director, oleada) {}
+	method revisarProgreso(oleada) {}
+	method iniciarOleada(oleada) {
+		oleada.iniciar()
+	}
+}
+
+object directorDetenido {
+	method iniciar(director) {}
+	method ejecutarSpawn(director, oleada) {}
+	method revisarProgreso(oleada) {}
+	method iniciarOleada(oleada) {}
 }
 
 class Zoombie inherits SerVivo {
+	var velocidadDeMovimiento
+	const imagen = ""
 
-    var property velocidadDeMovimiento
+	override method image() = imagen
 
-    const tickId = self.identity().toString()
-
-    override method aparecer() {
-        super()
-        game.onTick(velocidadDeMovimiento,tickId,{ self.actuar() })
-    }
-
-    override method avanzar() {
-        position = izquierda.desde(position)
-        if (position.x() == 1) finDelJuego.mostrarDerrota()
-    }
-
-    override method desaparecer() {
-        game.removeTickEvent(tickId)
-        super()
-        patio.quitarZoombie(self)
-    }
-
-    method cambiarVelocidad(nuevoIntervalo) {
-        velocidadDeMovimiento = nuevoIntervalo
-        game.removeTickEvent(tickId)
-        game.onTick(velocidadDeMovimiento, tickId, { self.actuar() })
-    }
-}
-
-class Pinguino inherits Zoombie (
-  habilidad = comer,  
-  danio = 100, 
-  vida = 200,
-  velocidadDeMovimiento = 2000)
-{
-	
-	override method image() = "pinguinoZoombie.png"
-	
-}
-
-class Buitre inherits Zoombie (
-  habilidad = volar,  
-  danio = 100, 
-  vida = 540,
-  velocidadDeMovimiento = 2000)
-{
-	
-	var plantasSobrevoladas = 0
-
-    method vuela() {
-        if(patio.hayPlantaEnCasilla(position)) {
-            self.registrarPlantaSobrevolada()
-        }
-    }
-	
-	method registrarPlantaSobrevolada(){
-		plantasSobrevoladas += 1
-		
-		if(plantasSobrevoladas >= 2) habilidad = comer
+	override method initialize() {
+		super()
+		self.cambiarVelocidad(velocidadDeMovimiento)
 	}
-	
-	override method image() = "buitreVolando.png"
-	
-}
 
-class Jirafa inherits Zoombie (
-  habilidad = comer,  
-  danio = 100, 
-  vida = 540,
-  velocidadDeMovimiento = 2000)
-{
-    
-    override method image() = "jirafaZoombi.png"
-    
+	method avanzar() {
+		position = izquierda.desde(position)
+		if (patio.hayZoombiEnCasa(self.position())) {
+			finDelJuego.mostrarDerrota()
+		}
+	}
+
+	override method desaparecer() {
+		super()
+		patio.quitarZoombie(self)
+		directorDeOleadas.revisarProgreso()
+	}
+
+	method cambiarVelocidad(nuevoIntervalo) {
+		velocidadDeMovimiento = nuevoIntervalo
+		temporizador = new Temporizador(intervalo = nuevoIntervalo)
+	}
+
+	method acelerarMovimiento(factor, duracionMs) {
+		const velocidadOriginal = velocidadDeMovimiento
+		self.cambiarVelocidad((velocidadOriginal * factor).roundUp())
+		game.schedule(duracionMs, {
+			if (self.estaVivo()) {
+				self.cambiarVelocidad(velocidadOriginal)
+			}
+		})
+	}
 }
 
 class Mono inherits Zoombie (
-  habilidad = comer,  
-  danio = 100, 
-  vida = 300,
-  velocidadDeMovimiento = 2000)
-{
-    
-    override method image() = "monoZoombi.png"
-    
+	habilidad = comer,  
+	daño = 40, 
+	vida = 300,
+	velocidadDeMovimiento = 800 
+) {
+	var estado = monoColumpiandoPrimerVez
+
+	override method image() = estado.imagen()
+
+	override method actuar() {
+		estado.actuar(self)
+	}
+
+	method cambiarEstado(nuevoEstado) {
+		estado = nuevoEstado
+	}
+
+	method mitadDelPatio() = (game.width() + 4).div(2) 
+
+	method volverAlBordeDerecho() {
+		position = game.at(game.width() - 1, position.y())
+	}
+
+	method soltarSoga() {
+		self.cambiarVelocidad(3000) 
+		self.cambiarEstado(monoCaminando)
+	}
 }
 
-/*class PerroSalchicha inherits Zoombie (
-  habilidad = ???,  
-  danio = 150, 
-  vida = 10000,
-  velocidadDeMovimiento = 900)
-{
-    
-    override method image() = "perroSalchichaZoombie.png"
-    
+object monoColumpiandoPrimerVez {
+	method imagen() = "monoColumpiando.png"
+
+	method actuar(mono) {
+		mono.avanzar()
+		if (mono.position().x() <= mono.mitadDelPatio()) {
+			mono.volverAlBordeDerecho()
+			mono.cambiarEstado(monoColumpiandoSegundaVez)
+		}
+	}
 }
-Perro salchicha gordo bachicha
 
-1-revisar todos los ticks, arreglarlos o buscarles la vuelta para evitar el lag
+object monoColumpiandoSegundaVez {
+	method imagen() = "monoColumpiando.png"
 
-2-llamar a podadora en caso recursivo que elimine los zoombies de la casilla actual.
+	method actuar(mono) {
+		mono.avanzar()
+		if (mono.position().x() <= mono.mitadDelPatio()) {
+			mono.soltarSoga()
+		}
+	}
+}
 
-3-objects y clases en general delegarles más comportamientos.
+object monoCaminando {
+	method imagen() = "monoZoombi.png"
 
-4-Revisar los forEach y delegar algunos existentes
+	method actuar(mono) {
+		comer.ejecutar(mono)
+	}
+}
 
-5-Bonkchoi tiene que pegar para adelante y para detras, aún manteniendose en si misma casilla, inclyendo al zoombie que la ocupe.
+const invocarPinguinoRobot = new Invocar(
+	constructorZoombie = { pos => new Zoombie(
+		position = pos,
+		habilidad = comer,
+		daño = 80,
+		vida = 150,
+		velocidadDeMovimiento = 3500,
+		imagen = "pinguinoRobot.png"
+	)}
+)
 
-6-Por favor, hacerlo.
-*/
+class MonoMaquinista inherits Zoombie (
+	habilidad = invocarPinguinoRobot,
+	daño = 100,
+	vida = 3000,
+	velocidadDeMovimiento = 3000
+) {
+	var estado = maquinistaPosicionandose
+
+	override method image() = estado.imagen()
+
+	override method actuar() {
+		estado.actuar(self)
+	}
+
+	method cambiarEstado(nuevoEstado) {
+		estado = nuevoEstado
+	}
+
+	method iniciarProduccion() {
+		self.cambiarVelocidad(18000)
+		self.cambiarEstado(maquinistaGenerando)
+	}
+}
+
+object maquinistaPosicionandose {
+	method imagen() = "monoMaquinista.png"
+	method actuar(maquinista) {
+		if (maquinista.position().x() > game.width() - 3) {
+			maquinista.avanzar()
+		} else {
+			maquinista.iniciarProduccion()
+		}
+	}
+}
+
+object maquinistaGenerando {
+	method imagen() = "monoMaquinista.png"
+	method actuar(maquinista) {
+		invocarPinguinoRobot.ejecutar(maquinista)
+	}
+}
+class PerroSalchicha inherits Zoombie (
+	habilidad = comer,
+	daño = 150,
+	vida = 10000,
+	velocidadDeMovimiento = 1500
+) {
+	var estado = perroEntrando
+
+	override method image() = estado.imagen()
+
+	override method actuar() {
+		estado.actuar(self)
+	}
+
+	method cambiarEstado(nuevoEstado) {
+		estado = nuevoEstado
+	}
+
+	method posicionarse() {
+		self.cambiarVelocidad(5000)
+		self.cambiarEstado(perroRugiendo)
+	}
+
+	method rugir() {
+		patio.potenciarVelocidadZoombies(0.5, 4000)
+		self.cambiarEstado(perroAullando)
+	}
+
+	method aullar() {
+		self.invocarMaquinistaEnFila(1)
+		self.invocarMaquinistaEnFila(game.height() - 2)
+		self.cambiarEstado(perroLadrando)
+	}
+
+	method invocarMaquinistaEnFila(fila) {
+		const maquinista = new MonoMaquinista(position = game.at(game.width() - 1, fila))
+		patio.agregarZoombie(maquinista)
+		maquinista.aparecer()
+	}
+
+	method ladridoEnFila() {
+		patio.plantasEnFila(position.y()).forEach({ p => p.recibirDaño(80) })
+		self.cambiarEstado(perroRugiendo)
+	}
+}
+
+object perroEntrando {
+	method imagen() = "perroSalchicha.png"
+
+	method actuar(boss) {
+		if (boss.position().x() > game.width() - 3) {
+			boss.avanzar()
+		} else {
+			boss.posicionarse()
+		}
+	}
+}
+
+object perroRugiendo {
+	method imagen() = "perroSalchichaRugiendo.png"
+
+	method actuar(boss) {
+		boss.rugir()
+	}
+}
+
+object perroAullando {
+	method imagen() = "perroSalchichaAullando.png"
+
+	method actuar(boss) {
+		boss.aullar()
+	}
+}
+
+object perroLadrando {
+	method imagen() = "perroSalchichaLadrando.png"
+
+	method actuar(boss) {
+		boss.ladridoEnFila()
+	}
+}

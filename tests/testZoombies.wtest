@@ -20,7 +20,7 @@ describe "Comportamiento de los zoombies" {
         rinoceronte.actuar()
 
         assert.equals(game.at(5, 3), rinoceronte.position())
-        assert.equals(rinoBuscando, rinoceronte.estado())
+        assert.equals("rinoCaminando.png", rinoceronte.image())
     }
 
     test "La embestida daña la planta alcanzada y aturde al rinoceronte" {
@@ -32,21 +32,40 @@ describe "Comportamiento de los zoombies" {
 
         assert.equals(game.at(5, 4), rinoceronte.position())
         assert.notThat(nuez.estaVivo())
-        assert.equals(rinoAturdido, rinoceronte.estado())
+        assert.equals("rinoAturdido.png", rinoceronte.image())
     }
 
     test "La embestida cuadruplica la velocidad y luego recupera el intervalo normal" {
         const rinoceronte = new Rinoceronte(position = game.at(8, 5))
-        rinoceronte.aparecer()
+        const nuez = new Nuez(position = game.at(7, 5))
+        patio.agregarPlanta(nuez)
 
         rinoceronte.iniciarEmbestida()
 
-        assert.equals(875, rinoceronte.velocidadDeMovimiento())
-        assert.equals(rinoCargando, rinoceronte.estado())
+        rinoceronte.pasarTiempo(874)
+        assert.equals(game.at(8, 5), rinoceronte.position())
 
-        rinoAturdido.actuar(rinoceronte)
+        rinoceronte.pasarTiempo(1)
+        assert.equals(game.at(7, 5), rinoceronte.position())
+        assert.equals("rinoAturdido.png", rinoceronte.image())
 
-        assert.equals(3500, rinoceronte.velocidadDeMovimiento())
-        rinoceronte.desaparecer()
+        rinoceronte.volverACaminar()
+        rinoceronte.pasarTiempo(3499)
+        assert.equals(game.at(7, 5), rinoceronte.position())
+
+        rinoceronte.pasarTiempo(1)
+        assert.equals(game.at(6, 5), rinoceronte.position())
+    }
+
+    test "El mono maquinista genera un pinguino robot al comenzar la produccion" {
+        const maquinista = new MonoMaquinista(position = game.at(10, 2))
+        const cantidadInicial = patio.cantidadDeZoombies()
+
+        maquinista.iniciarProduccion()
+        maquinista.pasarTiempo(5999)
+        assert.equals(cantidadInicial, patio.cantidadDeZoombies())
+
+        maquinista.pasarTiempo(1)
+        assert.equals(cantidadInicial + 1, patio.cantidadDeZoombies())
     }
 }

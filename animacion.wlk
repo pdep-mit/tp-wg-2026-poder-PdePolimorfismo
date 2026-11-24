@@ -1,16 +1,60 @@
 import wollok.game.*
 
+object sinAnimacion {
+	method iniciar() {}
+	method detener() {}
+	method imagenActual() = ""
+}
+
 class Animacion {
-    const frames
-    var indice = 0
+	const frames
+	const intervalo
+	var indiceActual = 0
+	var estado = animacionDetenida
 
-    method imagenActual() = frames.get(indice)
+	method nombreTick() = "animacion_" + self.identity().toString()
 
-    method avanzarFrame() { 
-        indice = (indice + 1) % frames.size()
-    }
+	method cambiarEstado(nuevoEstado) {
+		estado = nuevoEstado
+	}
 
-    method reiniciar() {
-        indice = 0
-    }
+	method iniciar() {
+		estado.iniciar(self)
+	}
+
+	method detener() {
+		estado.detener(self)
+	}
+
+	method arrancarTick() {
+		indiceActual = 0
+		game.onTick(intervalo, self.nombreTick(), {
+			indiceActual = (indiceActual + 1) % frames.size()
+		})
+	}
+
+	method frenarTick() {
+		game.removeTickEvent(self.nombreTick())
+		indiceActual = 0
+	}
+
+	method imagenActual() = frames.get(indiceActual)
+}
+
+object animacionDetenida {
+	method iniciar(animacion) {
+		animacion.arrancarTick()
+		animacion.cambiarEstado(animacionActiva)
+	}
+
+	method detener(animacion) {}
+}
+
+object animacionActiva {
+	method iniciar(animacion) {}
+
+	method detener(animacion) {
+		animacion.frenarTick()
+		animacion.cambiarEstado(animacionDetenida)
+	}
 }

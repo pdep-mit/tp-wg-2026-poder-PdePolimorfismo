@@ -1,0 +1,27 @@
+import nivel.*
+import zoombie.*
+import wollok.game.*
+
+describe "Oleadas" {
+
+    test "Una oleada termina de aparecer luego de registrar todos sus zombis" {
+        const oleada = new Oleada(
+            numeroDeOleada = 1,
+            cantidadDeZoombis = 2,
+            intervaloMinimo = 10000,
+            intervaloMaximo = 15000,
+            constructoresDeZoombis = []
+        )
+
+        oleada.iniciar()
+
+        assert.notThat(oleada.aparecieronTodos())
+
+        oleada.registrarAparicion()
+        assert.notThat(oleada.aparecieronTodos())
+
+        oleada.registrarAparicion()
+        assert.that(oleada.aparecieronTodos())
+    }
+
+}
