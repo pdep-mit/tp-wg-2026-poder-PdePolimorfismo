@@ -316,15 +316,18 @@ class PerroSalchicha inherits Zoombie (
 	}
 	
 	method posicionarse() {
-		self.cambiarVelocidad((10000 .. 20000).anyOne())
-		self.cambiarEstado(perroPosicionado)
+		self.volverAPosicionado()
 	}
 	
 	method volverAPosicionado() {
+		self.cambiarVelocidad((20000 .. 25000).anyOne())
+		// Espera 20 a 25s para la próxima acción
 		self.cambiarEstado(perroPosicionado)
 	}
 	
 	method siguienteAccion() {
+		self.cambiarVelocidad(2000)
+		// Muestra la imagen de la acción durante 2s antes de ejecutarla
 		self.cambiarEstado(acciones.anyOne())
 	}
 	
@@ -355,6 +358,11 @@ class PerroSalchicha inherits Zoombie (
 	
 	method ladridoEnFila() {
 		patio.plantasEnFila(position.y()).forEach({ p => p.recibirDaño(80) })
+		8.times(
+			{ i => generarZoombis.generarZombieAleatorio(
+					configuracionDeOleadas.constructoresDeZoombisAleatorios()
+				) }
+		)
 		self.volverAPosicionado()
 	}
 }

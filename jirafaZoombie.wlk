@@ -25,11 +25,16 @@ class Jirafa inherits Zoombie (
 
 	method ejecutarAtaqueEspecial() {
 		if (self.estaVivo()) {
+			estado = jirafaAplastando
 			const objetivos = self.plantasEnRangoDeAtaque()
 				.sortedBy({ p1, p2 => p1.position().x() > p2.position().x() })
 				.take(2)
 			objetivos.forEach({ planta => planta.recibirDaño(9999) })
-			estado = jirafaBuscando
+			game.schedule(1000, {
+				if (self.estaVivo()) {
+					estado = jirafaBuscando
+				}
+			})
 		}
 	}
 	
@@ -53,6 +58,12 @@ object jirafaBuscando {
 
 object jirafaPreparandoAtaque {
 	method imagen() = "jirafaPreparada.png" 
+
+	method actuar(jirafa) {}
+}
+
+object jirafaAplastando {
+	method imagen() = "jirafaAplastando.png"
 
 	method actuar(jirafa) {}
 }

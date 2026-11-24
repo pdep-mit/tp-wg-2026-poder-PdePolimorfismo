@@ -107,7 +107,7 @@ object generacionInactiva {
 
 object contadorDeSoles {
 	var cantidad = 50 
-	const property position = game.at(1, game.height() + 1)
+	const property position = game.at(2, game.height() + 1)
 
 	method cantidad() = cantidad
 
