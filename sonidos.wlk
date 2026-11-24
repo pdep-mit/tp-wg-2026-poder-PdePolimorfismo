@@ -1,75 +1,86 @@
 import wollok.game.*
 
 object sinMusica {
-    method cambiarA(pista) = pista.reproducir()
-    method detener() {}
+	method cambiarA(pista) = pista.reproducir()
+	
+	method detener() {
+		
+	}
 }
 
 class PistaEnCurso {
-    const audio
-
-    method cambiarA(pista) {
-        self.detener()
-        return pista.reproducir()
-    }
-
-    method detener() {
-        audio.stop()
-    }
+	const audio
+	
+	method cambiarA(pista) {
+		self.detener()
+		return pista.reproducir()
+	}
+	
+	method detener() {
+		audio.stop()
+	}
 }
 
 class PistaMusical {
-    const archivo
-
-    method reproducir() {
-        const audio = game.sound(archivo)
-        audio.shouldLoop(true)
-        audio.volume(0.2)
-        audio.play()
-        return new PistaEnCurso(audio = audio)
-    }
+	const archivo
+	
+	method reproducir() {
+		const audio = game.sound(archivo)
+		audio.shouldLoop(true)
+		audio.volume(0.2)
+		audio.play()
+		return new PistaEnCurso(audio = audio)
+	}
 }
+
 object sonido {
 	var musicaActual = sinMusica
 	const sonidosActivos = []
 	var estadoMordisco = canalMordiscoLibre
-
+	
 	method cambiarMusica(pista) {
 		musicaActual = musicaActual.cambiarA(pista)
 	}
-
+	
 	method detenerMusica() {
 		musicaActual.detener()
 		musicaActual = sinMusica
 	}
-
+	
 	method detenerEfectos() {
-		(sonidosActivos + []).forEach({ efecto =>
-			efecto.stop()
-			sonidosActivos.remove(efecto)
-		})
+		(sonidosActivos + []).forEach(
+			{ efecto =>
+				efecto.stop()
+				return sonidosActivos.remove(efecto)
+			}
+		)
 	}
-
+	
 	method sonidoMordisco() {
 		estadoMordisco.reproducir(self)
 	}
-
+	
+	method sonidoRugido() {
+		const rugido = game.sound("Roar.wav")
+		sonidosActivos.add(rugido)
+		rugido.volume(0.8)
+		rugido.play()
+		game.schedule(2500, { sonidosActivos.remove(rugido) })
+	}
+	
 	method ejecutarMordisco() {
 		const mordisco = game.sound("zoombiComiendo.wav")
 		sonidosActivos.add(mordisco)
 		mordisco.shouldLoop(true)
 		mordisco.volume(0.7)
 		mordisco.play()
-		game.schedule(6000, { 
-			mordisco.stop()
-			sonidosActivos.remove(mordisco) 
-		})
+		game.schedule(6000, { 	mordisco.stop()return sonidosActivos.remove(mordisco)})
 	}
-
+	
 	method cambiarEstadoMordisco(nuevoEstado) {
 		estadoMordisco = nuevoEstado
 	}
-
+	
 	method sonidoEmbestida() {
 		const embestida = game.sound("embestidaRinoceronte.wav")
 		sonidosActivos.add(embestida)
@@ -77,7 +88,7 @@ object sonido {
 		embestida.play()
 		game.schedule(2000, { sonidosActivos.remove(embestida) })
 	}
-
+	
 	method sonidoExplosion() {
 		const explosion = game.sound("explosion.wav")
 		sonidosActivos.add(explosion)
@@ -96,5 +107,7 @@ object canalMordiscoLibre {
 }
 
 object canalMordiscoOcupado {
-	method reproducir(gestor) {}
+	method reproducir(gestor) {
+		
+	}
 }

@@ -138,7 +138,8 @@ object configuracionDeOleadas {
         siguienteOleada = oleada2,
         soundtrack = new PistaMusical(archivo = "oleada1.wav"),
         constructoresDeZoombis = [
-            { pos => new Jirafa(position = pos)}
+            { pos => new Mono(position = pos)},
+            { pos => self.crearPinguino(pos)}
         ]
     )
 }

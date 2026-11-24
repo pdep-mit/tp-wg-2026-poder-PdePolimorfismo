@@ -51,17 +51,17 @@ Las plantas deben impedir que los zoombies avancen hasta el extremo izquierdo de
 |--------|-------------|
 | ![Girasol](./assets/girasol.png) | Coste = 50<br>Vida = 300<br> |
 | ![Lanzaguisantes](./assets/lanzaguisantes.png) | Coste = 100<br>Daño = 30<br>Vida = 300<br>Ataque = cuerpo a cuerpo |
-| ![Bonkchoi](./assets/bonkChoiFrame1.png) | Coste = 150<br>Daño = 30<br>Vida = 300<br>Ataque = larga distancia|
+| ![Bonkchoi](./assets/bonkChoi.png) | Coste = 150<br>Daño = 30<br>Vida = 300<br>Ataque = larga distancia|
 | ![Nuez](./assets/nuez.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
-| ![Cereza](./assets/cereza1.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
-| ![Planta Carnivora](./assets/plantaCarnivora1.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
+| ![Cereza](./assets/cereza.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
+| ![Planta Carnivora](./assets/plantaCarnivora.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
 ### Zoombis
 
 | Imagen | Descripción |
 |--------|-------------|
 | ![Pinguino Zoombi](./assets/pinguinoZoombie.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
 | ![Mono Zoombi](./assets/monoZoombi.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
-| ![Buitre Zoombi](./assets/buitreVolando.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
+| ![Buitre Zoombi](./assets/buitreCaminando.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
 | ![Jirafa Zoombi](./assets/jirafaZoombi.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
 | ![Rinoceronte Zoombi](./assets/rinoCaminando.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
 | ![Oso Zoombi](./assets/osoZoombie.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
