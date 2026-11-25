@@ -10,6 +10,14 @@ import nivel.*
 
 object finDelJuego {
 	var estado = partidaEnCurso
+	const cartas = [
+		cartaGirasol,
+		cartaLanzaguisantes,
+		cartaNuez,
+		cartaBonkChoi,
+		cartaCereza,
+		cartaPlantaCarnivora
+	]
 
 	method avanzarTiempo(ms, entidades) {
 		estado.avanzarTiempo(ms, entidades)
@@ -34,6 +42,14 @@ object finDelJuego {
 	method cambiarEstado(nuevoEstado) {
 		estado = nuevoEstado
 		estado.activar()
+	}
+
+	method limpiarPantalla() {
+		patio.limpiarTablero()
+		game.removeVisual(jugador)
+		game.removeVisual(contadorDeSoles)
+		game.removeVisual(indicadorDeOleada)
+		cartas.forEach({ carta => game.removeVisual(carta) })
 	}
 }
 
@@ -72,8 +88,11 @@ object trofeoDisponible {
 
 	method recolectar(unTrofeo) {
 		unTrofeo.cambiarEstado(trofeoRecolectado)
-		game.say(unTrofeo, "¡Felicitaciones, defendiste el jardín!")
-		game.schedule(2000, { game.stop() })
+		finDelJuego.limpiarPantalla()
+		game.removeVisual(unTrofeo)
+		game.boardGround("victoria.png")
+		sonido.cambiarMusica(new PistaMusical(archivo = "victoria.wav"))
+		game.schedule(4000, { game.stop() })
 	}
 }
 
@@ -99,15 +118,6 @@ object victoria {
 }
 
 object derrota {
-	const cartas = [
-		cartaGirasol,
-		cartaLanzaguisantes,
-		cartaNuez,
-		cartaBonkChoi,
-		cartaCereza,
-		cartaPlantaCarnivora
-	]
-
 	method avanzarTiempo(ms, entidades) { game.removeTickEvent("relojJuego") }
 	method plantar(carta) {}
 	method equipar(herramienta) {}
@@ -120,11 +130,7 @@ object derrota {
 		sonido.detenerMusica()
 		sonido.detenerEfectos()
 
-		patio.limpiarTablero()
-		game.removeVisual(jugador)
-		game.removeVisual(contadorDeSoles)
-		game.removeVisual(indicadorDeOleada)
-		cartas.forEach({ carta => game.removeVisual(carta) })
+		finDelJuego.limpiarPantalla()
 
 		game.boardGround("gameOver.png")
 		game.schedule(1000, { game.stop() })

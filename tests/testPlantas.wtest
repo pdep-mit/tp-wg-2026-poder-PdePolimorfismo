@@ -9,6 +9,8 @@ import jugador.*
 import soles.*
 import movimientos.*
 import proyectil.*
+import osoZoombie.*
+import perroSalchichaZoombie.*
 
 describe "Comportamiento de las plantas" {
 
@@ -149,12 +151,57 @@ describe "Comportamiento de las plantas" {
         patio.agregarZoombie(zombie)
 
         carnivora.actuar()
+        assert.equals("plantaCarnivoraAbriendoBoca.png", carnivora.image())
 
+        carnivora.pasarTiempo(500)
         assert.notThat(zombie.estaVivo())
         assert.equals("plantaCarnivoraMasticando.png", carnivora.image())
 
         carnivora.cambiarEstado(carnivoraLista, 500)
         patio.quitarZoombie(zombie)
+    }
+
+    test "La carnivora hace 50 de daño por mordisco al perro, al oso y al maquinista" {
+        const perro = new PerroSalchicha(position = game.at(4, 1), vida = 100)
+        const oso = new Oso(position = game.at(4, 2), vida = 100)
+        const maquinista = new MonoMaquinista(position = game.at(4, 3), vida = 100)
+        const carnivoraPerro = new PlantaCarnivora(position = game.at(4, 1))
+        const carnivoraOso = new PlantaCarnivora(position = game.at(4, 2))
+        const carnivoraMaquinista = new PlantaCarnivora(position = game.at(4, 3))
+        perro.position(game.at(4, 1))
+        patio.agregarZoombie(perro)
+        patio.agregarZoombie(oso)
+        patio.agregarZoombie(maquinista)
+
+        carnivoraPerro.devorar()
+        carnivoraOso.devorar()
+        carnivoraMaquinista.devorar()
+        assert.that(perro.estaVivo())
+        assert.that(oso.estaVivo())
+        assert.that(maquinista.estaVivo())
+        patio.quitarZoombie(perro)
+        patio.quitarZoombie(oso)
+        patio.quitarZoombie(maquinista)
+    }
+
+    test "La carnivora sigue mordiendo al perro hasta matarlo y recién entonces mastica" {
+        const posicion = game.at(4, 1)
+        const perro = new PerroSalchicha(position = posicion, vida = 60)
+        const carnivora = new PlantaCarnivora(position = posicion)
+        perro.position(posicion)
+        patio.agregarZoombie(perro)
+
+        carnivora.actuar()
+        carnivora.pasarTiempo(500)
+        assert.that(perro.estaVivo())
+        assert.equals("plantaCarnivora.png", carnivora.image())
+
+        carnivora.pasarTiempo(500)
+        assert.equals("plantaCarnivoraAbriendoBoca.png", carnivora.image())
+
+        carnivora.pasarTiempo(500)
+        assert.notThat(perro.estaVivo())
+        assert.equals("plantaCarnivoraMasticando.png", carnivora.image())
     }
 
     test "El proyectil avanza una casilla mientras no encuentre un objetivo" {

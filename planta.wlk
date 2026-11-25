@@ -6,6 +6,7 @@ import jugador.*
 import habilidades.*
 import movimientos.*
 import animacion.*
+import explocion.*
 
 class Planta inherits SerVivo {
 	const imagen = ""
@@ -20,7 +21,7 @@ class Planta inherits SerVivo {
 
 class BonkChoi inherits Planta (
 	habilidad = golpeCuerpoACuerpo,
-	daño = 30,
+	daño = 15,
 	vida = 300,
 	position = jugador.position(),
 	temporizador = new Temporizador(intervalo = 500)
@@ -41,7 +42,7 @@ class BonkChoi inherits Planta (
 	)
 	
 	override method image() = animacion.imagenActual()
-
+	
 	override method initialize() {
 		super()
 		animacion = animacionReposo
@@ -77,49 +78,13 @@ class Cereza inherits Planta (
 		super()
 		game.schedule(1000, { self.explotar() })
 	}
-
+	
+	// Primero daña (habilidad) y después muestra el efecto
 	method explotar() {
 		self.actuar()
-		self.generarExplosiones3x3()
+		new EfectoDeExplosion(centro = position).reproducir()
 		self.desaparecer()
 	}
-
-	method generarExplosiones3x3() {
-		const animacionExplosion = new Animacion(
-			frames = [
-				"secuenciaExplocion-frame1.png",
-				"secuenciaExplocion-frame2.png",
-				"secuenciaExplocion-frame3.png",
-				"secuenciaExplocion-frame4.png",
-				"secuenciaExplocion-frame5.png",
-				"secuenciaExplocion-frame6.png",
-				"secuenciaExplocion-frame7.png"
-			],
-			temporizador = sinTemporizador
-		)
-		const explosiones = []
-		(-1 .. 1).forEach({ dx =>
-			(-1 .. 1).forEach({ dy =>
-				const pos = game.at(position.x() + dx, position.y() + dy)
-				if (pos.x().between(2, game.width() - 1) && pos.y().between(1, game.height() - 2)) {
-					const nuevaExplosion = new Explosion(position = pos, animacion = animacionExplosion)
-					explosiones.add(nuevaExplosion)
-					nuevaExplosion.aparecer()
-				}
-			})
-		})
-		animacionExplosion.iniciar()
-		(1 .. 6).forEach({ paso =>
-			game.schedule(paso * 100, { animacionExplosion.actuar() })
-		})
-		game.schedule(700, {
-			explosiones.forEach({ e => e.desaparecer() })
-		})
-	}
-}
-
-class Explosion inherits Entidad {
-	override method actuar() {}
 }
 
 class PlantaCarnivora inherits Planta (
@@ -143,16 +108,30 @@ class PlantaCarnivora inherits Planta (
 	}
 	
 	method intentarDevorar() {
-		const objetivos = patio.zoombiesEnCasilla(position) + patio.zoombiesEnCasilla(
-			derecha.desde(position)
-		)
-		objetivos.take(1).forEach(
-			{ zoombie =>
-				zoombie.recibirDaño(daño)
-				return self.cambiarEstado(carnivoraMasticando, 12000)
-			}
-		)
+		if (not self.objetivosCerca().isEmpty()) self.cambiarEstado(
+				carnivoraAbriendoBoca,
+				500
+			)
 	}
+	
+	method devorar() {
+		const objetivos = self.objetivosCerca()
+		if (objetivos.isEmpty()) self.cambiarEstado(carnivoraLista, 500)
+		else objetivos.take(1).forEach(
+				{ zoombie =>
+					zoombie.serDevorado(daño)
+					if (zoombie.estaVivo()) self.cambiarEstado(
+							carnivoraLista,
+							500
+						)
+					else self.cambiarEstado(carnivoraMasticando, 12000)
+				}
+			)
+	}
+	
+	method objetivosCerca() = patio.zoombiesEnCasilla(
+		position
+	) + patio.zoombiesEnCasilla(derecha.desde(position))
 }
 
 object carnivoraLista {
@@ -160,6 +139,14 @@ object carnivoraLista {
 	
 	method actuar(planta) {
 		planta.intentarDevorar()
+	}
+}
+
+object carnivoraAbriendoBoca {
+	method imagen() = "plantaCarnivoraAbriendoBoca.png"
+	
+	method actuar(planta) {
+		planta.devorar()
 	}
 }
 

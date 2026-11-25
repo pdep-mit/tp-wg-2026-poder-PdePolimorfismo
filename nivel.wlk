@@ -124,7 +124,7 @@ object configuracionDeOleadas {
     const oleada2 = new Oleada(
         numeroDeOleada = 2,
         cantidadDeZoombis = 10,
-        intervaloMinimo = 8000,
+        intervaloMinimo = 10000,
         intervaloMaximo = 15000,
         siguienteOleada = oleada3,
         soundtrack = new PistaMusical(archivo = "oleada2.wav"),
@@ -138,13 +138,13 @@ object configuracionDeOleadas {
     const property inicial = new Oleada(
         numeroDeOleada = 1,
         cantidadDeZoombis = 5,
-        intervaloMinimo = 8000,
-        intervaloMaximo = 15000,
+        intervaloMinimo = 16000,
+        intervaloMaximo = 20000,
         siguienteOleada = oleada2,
         soundtrack = new PistaMusical(archivo = "oleada1.wav"),
         constructoresDeZoombis = [
             { pos => new Mono(position = pos)},
-            { pos => self.crearPinguino(pos)} 
+            { pos => self.crearPinguino(pos)}
         ]
     )
 }

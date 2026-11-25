@@ -19,17 +19,23 @@ class Podadora inherits Entidad (temporizador = new Temporizador(intervalo = 500
 	}
 
 	method arrancarSiHayZoombie() {
-		if (not patio.zoombiesEnCasilla(position).isEmpty()) {
-			self.activar()
-			self.avanzarYLimpiar()
-		}
+		patio.zoombiesEnCasilla(position).forEach(
+			{ zoombie => zoombie.activarPodadora(self) }
+		)
+		estado.avanzarSiCorresponde(self)
+	}
+
+	method atropellarZoombiesEnCasilla(posicion) {
+		patio.zoombiesEnCasilla(posicion).forEach(
+			{ zoombie => zoombie.serAtropellado(self.daño()) }
+		)
 	}
 
 	method avanzarYLimpiar() {
-		patio.daniarZoombiesEnCasilla(position, self.daño())
+		self.atropellarZoombiesEnCasilla(position)
 		if (position.x() < game.width() - 1) {
 			position = derecha.desde(position)
-			patio.daniarZoombiesEnCasilla(position, self.daño())
+			self.atropellarZoombiesEnCasilla(position)
 		} else {
 			self.desaparecer()
 		}
@@ -45,10 +51,16 @@ object apagada {
 	method actuar(podadora) {
 		podadora.arrancarSiHayZoombie()
 	}
+
+	method avanzarSiCorresponde(podadora) {}
 }
 
 object activada {
 	method actuar(podadora) {
+		podadora.avanzarYLimpiar()
+	}
+
+	method avanzarSiCorresponde(podadora) {
 		podadora.avanzarYLimpiar()
 	}
 }

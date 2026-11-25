@@ -2,6 +2,7 @@ import wollok.game.*
 import patio.*
 import podadoras.*
 import zoombie.*
+import perroSalchichaZoombie.*
 
 describe "Comportamiento de las podadoras" {
 
@@ -26,5 +27,34 @@ describe "Comportamiento de las podadoras" {
         podadora.actuar()
 
         assert.notThat(pinguino.estaVivo())
+    }
+
+    test "La podadora no daña al perro cuando pasa por su casilla" {
+        const posicion = game.at(4, 2)
+        const podadora = new Podadora(position = game.at(3, 2))
+        const perro = new PerroSalchicha(position = posicion, vida = 1)
+        perro.position(posicion)
+        patio.agregarZoombie(perro)
+
+        podadora.activar()
+        podadora.actuar()
+
+        assert.that(perro.estaVivo())
+        assert.equals(posicion, podadora.position())
+        patio.quitarZoombie(perro)
+    }
+
+    test "La podadora no se activa si solo está el perro en su casilla" {
+        const posicion = game.at(3, 2)
+        const podadora = new Podadora(position = posicion)
+        const perro = new PerroSalchicha(position = posicion, vida = 1)
+        perro.position(posicion)
+        patio.agregarZoombie(perro)
+
+        podadora.actuar()
+
+        assert.equals(posicion, podadora.position())
+        assert.that(perro.estaVivo())
+        patio.quitarZoombie(perro)
     }
 }

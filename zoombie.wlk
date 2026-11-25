@@ -43,6 +43,18 @@ class Zoombie inherits SerVivo {
 			{ if (self.estaVivo()) self.cambiarVelocidad(velocidadOriginal) }
 		)
 	}
+	
+	method serDevorado(danioPlanta) {
+		self.recibirDaño(danioPlanta)
+	}
+
+	method serAtropellado(danioPodadora) {
+		self.recibirDaño(danioPodadora)
+	}
+
+	method activarPodadora(podadora) {
+		podadora.activar()
+	}
 }
 
 object generarZoombis {
@@ -176,7 +188,7 @@ class Mono inherits Zoombie (
 	habilidad = comer,
 	daño = 40,
 	vida = 300,
-	velocidadDeMovimiento = 800
+	velocidadDeMovimiento = 500
 ) {
 	var estado = monoColumpiandoPrimerVez
 	
@@ -190,7 +202,7 @@ class Mono inherits Zoombie (
 		estado = nuevoEstado
 	}
 	
-	method mitadDelPatio() = (game.width() + 4).div(2)
+	method mitadDelPatio() = (game.width()).div(2)
 	
 	method volverAlBordeDerecho() {
 		position = game.at(game.width() - 1, position.y())
@@ -267,6 +279,10 @@ class MonoMaquinista inherits Zoombie (
 	
 	override method acelerarMovimiento(factor, duracionMs) {
 		
+	}
+	
+	override method serDevorado(danioPlanta) {
+		self.recibirDaño(30)
 	}
 }
 

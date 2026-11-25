@@ -48,7 +48,7 @@ object cartaGirasol inherits CartaPlanta (costeDeSoles = 50, cooldown = 8000) {
 		daño = 0,
 		vida = 300,
 		position = posicion,
-		temporizador = new Temporizador(intervalo = 18000),
+		temporizador = new Temporizador(intervalo = 15000),
 		imagen = "girasol.png"
 	)
 	
@@ -63,7 +63,7 @@ object cartaLanzaguisantes inherits CartaPlanta (
 ) {
 	override method crearPlanta(posicion) = new Planta(
 		habilidad = disparo,
-		daño = 30,
+		daño = 15,
 		vida = 300,
 		position = posicion,
 		temporizador = new Temporizador(intervalo = 1500),
@@ -89,7 +89,10 @@ object cartaNuez inherits CartaPlanta (costeDeSoles = 50, cooldown = 16000) {
 	override method position() = game.at(0, 4)
 }
 
-object cartaBonkChoi inherits CartaPlanta (costeDeSoles = 50, cooldown = 8000) {
+object cartaBonkChoi inherits CartaPlanta (
+	costeDeSoles = 150,
+	cooldown = 8000
+) {
 	override method crearPlanta(posicion) = new BonkChoi(position = posicion)
 	
 	override method image() = "cartaBonkChoi.png"
@@ -97,7 +100,7 @@ object cartaBonkChoi inherits CartaPlanta (costeDeSoles = 50, cooldown = 8000) {
 	override method position() = game.at(0, 3)
 }
 
-object cartaCereza inherits CartaPlanta (costeDeSoles = 50, cooldown = 8000) {
+object cartaCereza inherits CartaPlanta (costeDeSoles = 150, cooldown = 8000) {
 	override method crearPlanta(posicion) = new Cereza(position = posicion)
 	
 	override method image() = "cartaCereza.png"
@@ -106,7 +109,7 @@ object cartaCereza inherits CartaPlanta (costeDeSoles = 50, cooldown = 8000) {
 }
 
 object cartaPlantaCarnivora inherits CartaPlanta (
-	costeDeSoles = 10,
+	costeDeSoles = 150,
 	cooldown = 8000
 ) {
 	override method crearPlanta(posicion) = new PlantaCarnivora(
