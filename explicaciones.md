@@ -40,25 +40,4 @@ Entidad, que es la clase abstracta de todo lo que vive en el tablero. Define lo 
 
 # Diagramas
 
-*Incluír al menos un diagrama para comunicar su solución*
-
-Zoombie
-   |
-   | comer(planta)
-   v
-Planta
-   |
-   | recibirDaño(daño)
-   v
-dañoInflingido
-   |
-   | procesarDaño(planta, daño)
-   v
-Planta
-   |
-   | si corresponde
-   v
-morir()
-   |
-   v
-game.removeVisual(self)
+![alt text](<assets/Diagrama Estático de Wollok - Plants vs Zoombies_page-0001.jpg>)
