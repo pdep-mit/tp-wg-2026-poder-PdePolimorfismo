@@ -7,37 +7,23 @@ class Entidad {
 	var animacion = sinAnimacion
 
 	method image() = animacion.imagenActual()
-
-	method aparecer() {
-		game.addVisual(self)
-	}
-
+	method aparecer() {game.addVisual(self)}
 	method actuar()
-
-	method cambiarAnimacion(nuevaAnimacion) {
-		animacion = nuevaAnimacion
+	
+	method desaparecer() {
+		self.ocultarVisual()
 	}
-
-	method cambiarTemporizador(nuevoTemporizador) {
-		temporizador = nuevoTemporizador
-	}
-
+	
+	method cambiarAnimacion(nuevaAnimacion) {animacion = nuevaAnimacion}
+	method cambiarTemporizador(nuevoTemporizador) {temporizador = nuevoTemporizador}
 	method pasarTiempo(ms) {
 		temporizador.avanzar(ms, self)
 		animacion.pasarTiempo(ms)
 	}
-
-	method reiniciarTemporizador() {
-		temporizador.reiniciar()
-	}
-
+	method reiniciarTemporizador() {temporizador.reiniciar()}
 	method ocultarVisual() {
 		animacion.detener()
 		game.removeVisual(self)
-	}
-
-	method desaparecer() {
-		self.ocultarVisual()
 	}
 }
 

@@ -54,7 +54,7 @@ El objetivo del juego es defender el laboratorio, que pertenece a los cuidadores
 | ![Nuez](./assets/nuez.png) | Coste = 50 <br> Vida: 4000 <br>Daño: 0 <br>Ataque = no tiene ningún ataque en especial <br> |
 | ![Cereza](./assets/cereza.png) | Coste = 50 <br> Vida: 9999 <br>Daño: 1800 <br> Ataque = explota y daña a lo que esté a su alrededor <br> |
 | ![Planta Carnivora](./assets/plantaCarnivora.png) | Coste = 10 <br> Vida: 300 <br> Daño: 9999 <br> Ataque = va comiendo de a poco al zoombie que tiene en frente <br> |
-### Zoombis
+### Zoombies
 
 | Imagen | Descripción |
 |--------|-------------|
@@ -64,8 +64,7 @@ El objetivo del juego es defender el laboratorio, que pertenece a los cuidadores
 | ![Jirafa Zoombi](./assets/jirafaZoombi.png) | Vida: 540 <br>Daño: 100 <br>Velocidad de movimiento: 3500 <br> |
 | ![Rinoceronte Zoombi](./assets/rinoCaminando.png) | Vida: 1400 <br>Daño: 150 <br>Velocidad de movimiento: 3500 <br> |
 | ![Oso Zoombi](./assets/osoZoombie.png) | Vida: 4000 <br>Daño: 9999 <br>Velocidad de movimiento: 6000 <br> |
-| ![Perro Salchicha Zoombi](./assets/perroSalchicha.png) | Vida : 10000 <br>Daño : 150 <br>Velocidad de movimiento : 1500 media<br> |
-
+| ![Perro Salchicha Zoombi](./assets/perroSalchicha.png) | Vida : 10000 <br>Daño : 150 <br>Velocidad de movimiento : 1500 <br> |
 
 
 
