@@ -40,6 +40,8 @@ class BonkChoi inherits Planta (
 		temporizador = new Temporizador(intervalo = 400)
 	)
 	
+	override method image() = animacion.imagenActual()
+
 	override method initialize() {
 		super()
 		animacion = animacionReposo
