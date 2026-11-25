@@ -73,6 +73,7 @@ class PerroSalchicha inherits Zoombie (
   }
   
   method ladridoEnFila() {
+    sonido.sonidoRugido()
     patio.plantasEnFila(position.y()).forEach({ p => p.recibirDaño(80) })
     8.times(
       { i => generarZoombis.generarZombieAleatorio(

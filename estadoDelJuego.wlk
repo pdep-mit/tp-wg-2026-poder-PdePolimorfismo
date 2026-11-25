@@ -133,6 +133,6 @@ object derrota {
 		finDelJuego.limpiarPantalla()
 
 		game.boardGround("gameOver.png")
-		game.schedule(1000, { game.stop() })
+		game.schedule(4000, { game.stop() })
 	}
 }

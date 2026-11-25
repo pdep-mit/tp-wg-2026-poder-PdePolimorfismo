@@ -73,4 +73,4 @@ object juego {
 
 program principal {
 	juego.iniciarJuego()
-}
+} 
