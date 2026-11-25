@@ -90,7 +90,7 @@ object trofeoDisponible {
 		unTrofeo.cambiarEstado(trofeoRecolectado)
 		finDelJuego.limpiarPantalla()
 		game.removeVisual(unTrofeo)
-		game.boardGround("victoria.png")
+		game.boardGround("victoria.jpg")
 		sonido.cambiarMusica(new PistaMusical(archivo = "victoria.wav"))
 		game.schedule(4000, { game.stop() })
 	}

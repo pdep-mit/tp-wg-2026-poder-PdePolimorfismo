@@ -6,6 +6,7 @@ import habilidades.*
 import zoombie.*
 import rinoZoombie.*
 import jirafaZoombie.*
+import osoZoombie.*
 
 describe "Comportamiento de los zoombies" {
 
@@ -97,5 +98,21 @@ describe "Comportamiento de los zoombies" {
 
         assert.notThat(nuez.estaVivo())
         assert.equals("jirafaZoombi.png", jirafa.image())
+    }
+
+    test "El oso muestra preparación y aplastamiento antes de volver a caminar" {
+        const oso = new Oso(position = game.at(8, 3))
+        const nuez = cartaNuez.crearPlanta(game.at(8, 3))
+        patio.agregarPlanta(nuez)
+
+        oso.actuar()
+        assert.equals("osoPreparado.png", oso.image())
+
+        oso.ejecutarAplastar()
+        assert.equals("osoAplastando.png", oso.image())
+        assert.notThat(nuez.estaVivo())
+
+        oso.volverACaminar()
+        assert.equals("osoCaminando.png", oso.image())
     }
 }

@@ -30,11 +30,16 @@ class Oso inherits Zoombie (
 	
 	method ejecutarAplastar() {
 		if (self.estaVivo()) {
+			self.cambiarEstado(osoAplastando)
 			self.aplastarPlantaObjetivo()
-			self.cambiarEstado(osoCaminando)
+			game.schedule(1000, { self.volverACaminar() })
 		}
 	}
 	
+	method volverACaminar() {
+		if (self.estaVivo()) self.cambiarEstado(osoCaminando)
+	}
+
 	method aplastarPlantaObjetivo() {
 		const objetivos = patio.plantasEnCasilla(position) + patio.plantasEnCasilla(
 			izquierda.desde(position)
@@ -48,7 +53,7 @@ class Oso inherits Zoombie (
 }
 
 object osoCaminando {
-	method imagen() = "osoZoombie.png"
+	method imagen() = "osoCaminando.png"
 	
 	method actuar(oso) {
 		if (not patio.hayPlantaEnCasillaOEnFrenteDe(oso)) oso.avanzar()
@@ -57,9 +62,11 @@ object osoCaminando {
 }
 
 object osoPreparandoAplastar {
+	method imagen() = "osoPreparado.png"
+	method actuar(oso) {}
+}
+
+object osoAplastando {
 	method imagen() = "osoAplastando.png"
-	
-	method actuar(oso) {
-		
-	}
+	method actuar(oso) {}
 }

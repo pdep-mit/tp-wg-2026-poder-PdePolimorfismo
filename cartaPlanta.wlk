@@ -63,7 +63,7 @@ object cartaLanzaguisantes inherits CartaPlanta (
 ) {
 	override method crearPlanta(posicion) = new Planta(
 		habilidad = disparo,
-		daño = 15,
+		daño = 20,
 		vida = 300,
 		position = posicion,
 		temporizador = new Temporizador(intervalo = 1500),
