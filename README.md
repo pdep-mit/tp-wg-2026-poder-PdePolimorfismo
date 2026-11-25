@@ -49,12 +49,12 @@ Las plantas deben impedir que los zoombies avancen hasta el extremo izquierdo de
 
 | Imagen | Descripción |
 |--------|-------------|
-| ![Girasol](./assets/girasol.png) | Coste = 50<br>Vida = 300<br> |
-| ![Lanzaguisantes](./assets/lanzaguisantes.png) | Coste = 100<br>Daño = 30<br>Vida = 300<br>Ataque = cuerpo a cuerpo |
-| ![Bonkchoi](./assets/bonkChoi.png) | Coste = 150<br>Daño = 30<br>Vida = 300<br>Ataque = larga distancia|
-| ![Nuez](./assets/nuez.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
-| ![Cereza](./assets/cereza.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
-| ![Planta Carnivora](./assets/plantaCarnivora.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
+| ![Girasol](./assets/girasol.png) | Coste = 50<br>Vida = 300<br> Ataque = producir soles |
+| ![Lanzaguisantes](./assets/lanzaguisantes.png) | Coste = 100<br>Daño = 30<br>Vida = 300<br>Ataque = disparo a larga distancia |
+| ![Bonkchoi](./assets/bonkChoi.png) | Coste = 150<br>Daño = 30<br>Vida = 300<br>Ataque = cuerpo a cuerpo |
+| ![Nuez](./assets/nuez.png) | Coste = 50 <br> Vida: 4000 <br>Daño: 0 <br>Ataque = no tiene ningún ataque en especial <br> |
+| ![Cereza](./assets/cereza.png) | Coste = 50 <br> Vida: 9999 <br>Daño: 1800 <br> Ataque = explota y daña a lo que esté a su alrededor <br> |
+| ![Planta Carnivora](./assets/plantaCarnivora.png) | Coste = 10 <br> Vida: 300 <br> Daño: 9999 <br> Ataque = va comiendo de a poco al zoombie que tiene en frente <br> |
 ### Zoombis
 
 | Imagen | Descripción |
