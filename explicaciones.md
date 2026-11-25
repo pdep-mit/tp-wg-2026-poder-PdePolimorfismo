@@ -14,7 +14,7 @@ SerVivo esconde su vida, por eso vemos que el var va sin "property" -> no hay ge
 Delegar es que un objeto, en lugar de resolver un pedido por sí mismo, se lo encarga a otro objeto que sabe hacerlo mejor. El objeto que delega conoce al otro (tiene una referencia) y le envía un mensaje.
 
 ### *Dónde lo usamos*
-![alt text](image-2.png)
+![alt text](assets/image-2.png)
 
 
 ## Polimorfismo: 
@@ -26,8 +26,8 @@ No hace falta que los objetos tengan la misma clase ni una superclase en común,
 ### *Dónde lo usamos*
 Las habilidades. TODAS las habilidades entienden ejecutar(...), pero cada una hace algo completamente distinto ante ese mismo mensaje. 
 
-![alt text](image.png)
-![alt text](image-1.png)
+![alt text](assets/imagee.png)
+![alt text](assets/image-1.png)
 
 
 ## Herencia: 
@@ -36,7 +36,7 @@ La herencia relaciona una clase con otra más general (su superclase). La subcla
 
 ### *Dónde lo usamos*
 Entidad, que es la clase abstracta de todo lo que vive en el tablero. Define lo común (posición, aparecer, desaparecer) y obliga a las subclases a definir image() y actuar(). Además deja métodos vacíos por defecto (avanzar, detenerse) que solo redefine quien los necesita.
-![alt text](image-3.png)
+![alt text](assets/image-3.png)
 
 # Diagramas
 
