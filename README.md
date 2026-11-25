@@ -23,21 +23,20 @@ Recuerden que para cada checkpoint hay [expectativas mínimas](https://docs.goog
 # Cómo jugar
 Moviendo el cursor con las flechas del teclado, podés seleccionar el lugar donde vas a colocar las plantas y también podés recolectar los soles que van cayendo al tablero. Los soles te van a ayudar a poder plantarlas, dado que cada una tiene un costo medido en soles. 
 
-Para plantar las plantes tenés que utilizar las teclas de sus iniciales:
-    - para plantar un girasol, pulsás el numero "1",
-    - para plantar un lanzaguisantes, pulsás el numero "2",
-    - para plantar una nuez, pulsás el numero "3",
-    - para plantar un bonkchoi, pulsás el numero "4",
-    - para plantar una cereza, pulsás el numero "5",
-    - para plantar una plantacarnivora, pulsás el numero "6".
+Para plantar las plantes tenés que utilizar las teclas numéricas:
+
+    - para plantar un girasol, pulsás el número "1",
+    - para plantar un lanzaguisantes, pulsás el número "2",
+    - para plantar una nuez, pulsás el número "3",
+    - para plantar un bonkchoi, pulsás el número "4",
+    - para plantar una cereza, pulsás el número "5",
+    - para plantar una plantacarnivora, pulsás el número "6".
 
 
 ## Objetivo
 
-El objetivo del juego es defender la casa de los cuidadores del zoológico de los zoombies que quieren atacarla para vengarse, y esto se hará mediante el uso de plantas. 
-Las plantas deben impedir que los zoombies avancen hasta el extremo izquierdo del tablero. Para lograrlo, hay que utilizar los recursos disponibles y aprovechar las características que ofrece cada tipo de planta.
+El objetivo del juego es defender el laboratorio, que pertenece a los cuidadores del zoológico, de los zoombies que quieren atacarlo para vengarse por haber experimentado con ellos.
 
-## Almanaque
 
 ###  Herramientas
 
