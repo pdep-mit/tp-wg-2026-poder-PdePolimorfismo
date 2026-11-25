@@ -59,13 +59,13 @@ Las plantas deben impedir que los zoombies avancen hasta el extremo izquierdo de
 
 | Imagen | Descripción |
 |--------|-------------|
-| ![Pinguino Zoombi](./assets/pinguinoZoombie.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
-| ![Mono Zoombi](./assets/monoZoombi.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
-| ![Buitre Zoombi](./assets/buitreCaminando.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
-| ![Jirafa Zoombi](./assets/jirafaZoombi.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
-| ![Rinoceronte Zoombi](./assets/rinoCaminando.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
-| ![Oso Zoombi](./assets/osoZoombie.png) | Vida<br>Daño<br>Velocidad de movimiento<br> |
-| ![Perro Salchicha Zoombi](./assets/perroSalchicha.png) | Vida : ???<br>Daño : ???<br>Velocidad de movimiento : media<br> |
+| ![Pinguino Zoombi](./assets/pinguinoZoombie.png) | Vida: 150 <br>Daño: 80 <br>Velocidad de movimiento: 3500 <br> |
+| ![Mono Zoombi](./assets/monoZoombi.png) | Vida: 300 <br>Daño: 40 <br>Velocidad de movimiento: 800 <br> |
+| ![Buitre Zoombi](./assets/buitreCaminando.png) | Vida: 540 <br>Daño: 100 <br>Velocidad de movimiento: 3000 <br> |
+| ![Jirafa Zoombi](./assets/jirafaZoombi.png) | Vida: 540 <br>Daño: 100 <br>Velocidad de movimiento: 3500 <br> |
+| ![Rinoceronte Zoombi](./assets/rinoCaminando.png) | Vida: 1400 <br>Daño: 150 <br>Velocidad de movimiento: 3500 <br> |
+| ![Oso Zoombi](./assets/osoZoombie.png) | Vida: 4000 <br>Daño: 9999 <br>Velocidad de movimiento: 6000 <br> |
+| ![Perro Salchicha Zoombi](./assets/perroSalchicha.png) | Vida : 10000 <br>Daño : 150 <br>Velocidad de movimiento : 1500 media<br> |
 
 
 
