@@ -37,6 +37,8 @@ object sonido {
 	var musicaActual = sinMusica
 	const sonidosActivos = []
 	var estadoMordisco = canalMordiscoLibre
+	var mordiscoActual = sinMordisco
+	var zoombieMordiendo = ningunZoombie
 	
 	method cambiarMusica(pista) {
 		musicaActual = musicaActual.cambiarA(pista)
@@ -56,8 +58,8 @@ object sonido {
 		)
 	}
 	
-	method sonidoMordisco() {
-		estadoMordisco.reproducir(self)
+	method sonidoMordisco(zoombie) {
+		estadoMordisco.reproducir(self, zoombie)
 	}
 	
 	method sonidoGeneracionPinguino() {
@@ -76,13 +78,29 @@ object sonido {
 		game.schedule(2500, { sonidosActivos.remove(rugido) })
 	}
 	
-	method ejecutarMordisco() {
+	method ejecutarMordisco(zoombie) {
 		const mordisco = game.sound("zoombiComiendo.wav")
+		mordiscoActual = mordisco
+		zoombieMordiendo = zoombie
 		sonidosActivos.add(mordisco)
 		mordisco.shouldLoop(true)
 		mordisco.volume(0.7)
 		mordisco.play()
-		game.schedule(6000, { 	mordisco.stop()return sonidosActivos.remove(mordisco)})
+		game.schedule(6000, { self.finalizarMordisco(mordisco) })
+	}
+
+	method detenerMordisco(zoombie) {
+		if (zoombieMordiendo == zoombie) self.finalizarMordisco(mordiscoActual)
+	}
+
+	method finalizarMordisco(mordisco) {
+		if (mordiscoActual == mordisco) {
+			mordisco.stop()
+			sonidosActivos.remove(mordisco)
+			mordiscoActual = sinMordisco
+			zoombieMordiendo = ningunZoombie
+			self.cambiarEstadoMordisco(canalMordiscoLibre)
+		}
 	}
 	
 	method cambiarEstadoMordisco(nuevoEstado) {
@@ -107,15 +125,18 @@ object sonido {
 }
 
 object canalMordiscoLibre {
-	method reproducir(gestor) {
-		gestor.ejecutarMordisco()
+	method reproducir(gestor, zoombie) {
+		gestor.ejecutarMordisco(zoombie)
 		gestor.cambiarEstadoMordisco(canalMordiscoOcupado)
-		game.schedule(6000, { gestor.cambiarEstadoMordisco(self) })
 	}
 }
 
 object canalMordiscoOcupado {
-	method reproducir(gestor) {
+	method reproducir(gestor, zoombie) {
 		
 	}
 }
+
+object sinMordisco {}
+
+object ningunZoombie {}

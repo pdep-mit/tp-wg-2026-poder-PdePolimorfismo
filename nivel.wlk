@@ -138,7 +138,7 @@ object configuracionDeOleadas {
     const property inicial = new Oleada(
         numeroDeOleada = 1,
         cantidadDeZoombis = 5,
-        intervaloMinimo = 16000,
+        intervaloMinimo = 18000,
         intervaloMaximo = 20000,
         siguienteOleada = oleada2,
         soundtrack = new PistaMusical(archivo = "oleada1.wav"),

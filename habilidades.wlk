@@ -63,7 +63,7 @@ object comer {
 		patio.plantasEnCasilla(zoombie.position()).take(1).findOrElse(
 			{ planta => 
 				planta.recibirDaño(zoombie.daño()) 
-				sonido.sonidoMordisco()
+				sonido.sonidoMordisco(zoombie)
 				return true
 			},
 			{ zoombie.avanzar() }

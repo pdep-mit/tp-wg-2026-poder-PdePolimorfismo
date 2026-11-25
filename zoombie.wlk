@@ -25,6 +25,7 @@ class Zoombie inherits SerVivo {
 	}
 	
 	override method desaparecer() {
+		sonido.detenerMordisco(self)
 		super()
 		patio.quitarZoombie(self)
 		directorDeOleadas.revisarProgreso()

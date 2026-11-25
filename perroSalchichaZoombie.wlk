@@ -8,7 +8,7 @@ import habilidades.*
 class PerroSalchicha inherits Zoombie (
   habilidad = comer,
   daño = 150,
-  vida = 7000,
+  vida = 8000,
   velocidadDeMovimiento = 1500
 ) {
   var estado = perroEntrando
@@ -36,7 +36,7 @@ class PerroSalchicha inherits Zoombie (
   }
   
   method volverAPosicionado() {
-    self.cambiarVelocidad((20000 .. 25000).anyOne())
+    self.cambiarVelocidad((18000 .. 25000).anyOne())
     // Espera 20 a 25s para la próxima acción
     self.cambiarEstado(perroPosicionado)
   }
@@ -85,10 +85,14 @@ class PerroSalchicha inherits Zoombie (
   override method serDevorado(danioPlanta) {
     self.recibirDaño(30)
   }
-
-  override method serAtropellado(danioPodadora) {}
-
-  override method activarPodadora(podadora) {}
+  
+  override method serAtropellado(danioPodadora) {
+    
+  }
+  
+  override method activarPodadora(podadora) {
+    
+  }
 }
 
 object perroEntrando {
