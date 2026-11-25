@@ -5,6 +5,7 @@ import rinoZoombie.*
 import jirafaZoombie.*
 import buitreZoombie.*
 import osoZoombie.*
+import perroSalchichaZoombie.*
 import habilidades.*
 import sonidos.*
 
@@ -143,7 +144,7 @@ object configuracionDeOleadas {
         soundtrack = new PistaMusical(archivo = "oleada1.wav"),
         constructoresDeZoombis = [
             { pos => new Mono(position = pos)},
-            { pos => self.crearPinguino(pos)}
+            { pos => self.crearPinguino(pos)} 
         ]
     )
 }

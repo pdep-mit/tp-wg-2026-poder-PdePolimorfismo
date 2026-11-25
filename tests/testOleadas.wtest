@@ -1,6 +1,7 @@
 import nivel.*
 import zoombie.*
 import wollok.game.*
+import sonidos.*
 
 describe "Oleadas" {
 
@@ -10,6 +11,7 @@ describe "Oleadas" {
             cantidadDeZoombis = 2,
             intervaloMinimo = 10000,
             intervaloMaximo = 15000,
+            soundtrack = new PistaMusical(archivo = "oleada1.wav"),
             constructoresDeZoombis = []
         )
 

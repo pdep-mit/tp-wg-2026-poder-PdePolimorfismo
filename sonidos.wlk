@@ -27,7 +27,7 @@ class PistaMusical {
 	method reproducir() {
 		const audio = game.sound(archivo)
 		audio.shouldLoop(true)
-		audio.volume(0.2)
+		audio.volume(0.8)
 		audio.play()
 		return new PistaEnCurso(audio = audio)
 	}
@@ -58,6 +58,14 @@ object sonido {
 	
 	method sonidoMordisco() {
 		estadoMordisco.reproducir(self)
+	}
+	
+	method sonidoGeneracionPinguino() {
+		const generacion = game.sound("monoMaquinistaVoz.wav")
+		sonidosActivos.add(generacion)
+		generacion.volume(0.8)
+		generacion.play()
+		game.schedule(1500, { sonidosActivos.remove(generacion) })
 	}
 	
 	method sonidoRugido() {

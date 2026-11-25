@@ -1,6 +1,8 @@
 import wollok.game.*
 import soles.*
 import planta.*
+import habilidades.*
+import entidades.*
 
 class CartaPlanta {
 	const costeDeSoles
@@ -41,7 +43,14 @@ object cartaNoDisponible {
 }
 
 object cartaGirasol inherits CartaPlanta (costeDeSoles = 50, cooldown = 8000) {
-	override method crearPlanta(posicion) = new Girasol(position = posicion)
+	override method crearPlanta(posicion) = new Planta(
+		habilidad = producirSol,
+		daño = 0,
+		vida = 300,
+		position = posicion,
+		temporizador = new Temporizador(intervalo = 18000),
+		imagen = "girasol.png"
+	)
 	
 	override method image() = "cartaGirasol.png"
 	
@@ -52,7 +61,14 @@ object cartaLanzaguisantes inherits CartaPlanta (
 	costeDeSoles = 100,
 	cooldown = 8000
 ) {
-	override method crearPlanta(posicion) = new Lanzaguisantes(position = posicion)
+	override method crearPlanta(posicion) = new Planta(
+		habilidad = disparo,
+		daño = 30,
+		vida = 300,
+		position = posicion,
+		temporizador = new Temporizador(intervalo = 1500),
+		imagen = "lanzaguisantes.png"
+	)
 	
 	override method image() = "cartaLanzaguisantes.png"
 	
@@ -60,7 +76,13 @@ object cartaLanzaguisantes inherits CartaPlanta (
 }
 
 object cartaNuez inherits CartaPlanta (costeDeSoles = 50, cooldown = 16000) {
-	override method crearPlanta(posicion) = new Nuez(position = posicion)
+	override method crearPlanta(posicion) = new Planta(
+		habilidad = sinAtaque,
+		daño = 0,
+		vida = 4000,
+		position = posicion,
+		imagen = "nuez.png"
+	)
 	
 	override method image() = "cartaNuez.png"
 	
@@ -75,7 +97,7 @@ object cartaBonkChoi inherits CartaPlanta (costeDeSoles = 50, cooldown = 8000) {
 	override method position() = game.at(0, 3)
 }
 
-object cartaCereza inherits CartaPlanta (costeDeSoles = 150, cooldown = 8000) {
+object cartaCereza inherits CartaPlanta (costeDeSoles = 50, cooldown = 8000) {
 	override method crearPlanta(posicion) = new Cereza(position = posicion)
 	
 	override method image() = "cartaCereza.png"

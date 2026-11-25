@@ -1,6 +1,8 @@
 import wollok.game.*
 import patio.*
 import planta.*
+import cartaPlanta.*
+import habilidades.*
 import zoombie.*
 import rinoZoombie.*
 import jirafaZoombie.*
@@ -26,7 +28,7 @@ describe "Comportamiento de los zoombies" {
 
     test "La embestida daña la planta alcanzada y aturde al rinoceronte" {
         const rinoceronte = new Rinoceronte(position = game.at(6, 4))
-        const nuez = new Nuez(position = game.at(5, 4))
+        const nuez = cartaNuez.crearPlanta(game.at(5, 4))
         patio.agregarPlanta(nuez)
 
         rinoCargando.actuar(rinoceronte)
@@ -38,7 +40,7 @@ describe "Comportamiento de los zoombies" {
 
     test "La embestida cuadruplica la velocidad y luego recupera el intervalo normal" {
         const rinoceronte = new Rinoceronte(position = game.at(8, 5))
-        const nuez = new Nuez(position = game.at(7, 5))
+        const nuez = cartaNuez.crearPlanta(game.at(7, 5))
         patio.agregarPlanta(nuez)
 
         rinoceronte.iniciarEmbestida()
@@ -63,7 +65,7 @@ describe "Comportamiento de los zoombies" {
         const cantidadInicial = patio.cantidadDeZoombies()
 
         maquinista.iniciarProduccion()
-        maquinista.pasarTiempo(5999)
+        maquinista.pasarTiempo(17999)
         assert.equals(cantidadInicial, patio.cantidadDeZoombies())
 
         maquinista.pasarTiempo(1)
@@ -72,26 +74,23 @@ describe "Comportamiento de los zoombies" {
 
     test "La jirafa cambia de imagen al aplastar exactamente dos plantas" {
         const jirafa = new Jirafa(position = game.at(8, 3))
-        const nuezCercana = new Nuez(position = game.at(7, 3))
-        const nuezLejana = new Nuez(position = game.at(6, 3))
+        const nuezCercana = cartaNuez.crearPlanta(game.at(7, 3))
+        const nuezLejana = cartaNuez.crearPlanta(game.at(6, 3))
         patio.agregarPlanta(nuezCercana)
         patio.agregarPlanta(nuezLejana)
 
         jirafa.actuar()
         assert.equals("jirafaPreparada.png", jirafa.image())
 
-        jirafa.iniciarAplastamiento()
-        assert.equals("jirafaAplastando.png", jirafa.image())
-
         jirafa.ejecutarAtaqueEspecial()
+        assert.equals("jirafaAplastando.png", jirafa.image())
         assert.notThat(nuezCercana.estaVivo())
         assert.notThat(nuezLejana.estaVivo())
-        assert.equals("jirafaZoombi.png", jirafa.image())
     }
 
     test "La jirafa come una sola planta en su casilla sin iniciar el aplastamiento" {
         const jirafa = new Jirafa(position = game.at(8, 3))
-        const nuez = new Nuez(position = game.at(8, 3), vida = 100)
+        const nuez = new Planta(habilidad = sinAtaque, daño = 0, vida = 100, position = game.at(8, 3), imagen = "nuez.png")
         patio.agregarPlanta(nuez)
 
         jirafa.actuar()

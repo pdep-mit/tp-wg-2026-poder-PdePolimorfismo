@@ -11,7 +11,7 @@ class Podadora inherits Entidad (temporizador = new Temporizador(intervalo = 500
 
 	method activar() {
 		estado = activada
-		temporizador = new Temporizador(intervalo = 300)
+		self.cambiarTemporizador(new Temporizador(intervalo = 300))
 	}
 
 	override method actuar() {

@@ -18,6 +18,10 @@ class Entidad {
 		animacion = nuevaAnimacion
 	}
 
+	method cambiarTemporizador(nuevoTemporizador) {
+		temporizador = nuevoTemporizador
+	}
+
 	method pasarTiempo(ms) {
 		temporizador.avanzar(ms, self)
 		animacion.pasarTiempo(ms)

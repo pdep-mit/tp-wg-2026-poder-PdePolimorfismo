@@ -5,14 +5,16 @@ import zoombie.*
 
 describe "Comportamiento de las podadoras" {
 
-    test "Solo una podadora activada queda en marcha" {
+    test "Una podadora activada avanza y limpia la casilla siguiente" {
         const podadora = new Podadora(position = game.at(3, 1))
-
-        assert.notThat(podadora.estaEnMarcha())
+        const zombi = new Mono(position = game.at(3, 1))
+        patio.agregarZoombie(zombi)
 
         podadora.activar()
+        podadora.actuar()
 
-        assert.that(podadora.estaEnMarcha())
+        assert.equals(game.at(4, 1), podadora.position())
+        assert.notThat(zombi.estaVivo())
     }
 
     test "La podadora daña a un zombie cuando lo alcanza" {

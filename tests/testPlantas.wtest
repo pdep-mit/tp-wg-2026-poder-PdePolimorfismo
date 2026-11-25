@@ -1,4 +1,5 @@
 import planta.*
+import cartaPlanta.*
 import zoombie.*
 import wollok.game.*
 import patio.*
@@ -13,7 +14,7 @@ describe "Comportamiento de las plantas" {
 
     test "El girasol produce un sol al actuar" {
         const posicion = game.at(4, 1)
-        const girasol = new Girasol(position = posicion)
+        const girasol = cartaGirasol.crearPlanta(posicion)
 
         girasol.actuar()
 
@@ -22,7 +23,7 @@ describe "Comportamiento de las plantas" {
     }
 
     test "El lanzaguisantes crea un proyectil si hay un zombie delante" {
-        const lanzaguisantes = new Lanzaguisantes(position = game.at(4, 2))
+        const lanzaguisantes = cartaLanzaguisantes.crearPlanta(game.at(4, 2))
         const zombie = new Mono(position = game.at(6, 2))
         const cantidadProyectilesAntes = patio.entidades()
             .filter({ entidad => entidad.image() == "guisante.png" })
@@ -40,7 +41,7 @@ describe "Comportamiento de las plantas" {
     }
 
     test "El proyectil impacta al zombie antes de desaparecer en el borde" {
-        const lanzaguisantes = new Lanzaguisantes(position = game.at(10, 2))
+        const lanzaguisantes = cartaLanzaguisantes.crearPlanta(game.at(10, 2))
         const zombie = new Mono(position = game.at(11, 2), vida = 30)
         const proyectil = new Proyectil(
             position = lanzaguisantes.position(),
@@ -57,7 +58,7 @@ describe "Comportamiento de las plantas" {
     }
 
     test "El proyectil que llega al borde sin impactar se elimina del patio" {
-        const lanzaguisantes = new Lanzaguisantes(position = game.at(10, 2))
+        const lanzaguisantes = cartaLanzaguisantes.crearPlanta(game.at(10, 2))
         const cantidadProyectilesAntes = patio.entidades()
             .filter({ entidad => entidad.image() == "guisante.png" })
             .size()
@@ -89,7 +90,7 @@ describe "Comportamiento de las plantas" {
     }
 
     test "La nuez pierde vida al recibir daño y sigue viva si le queda vida" {
-        const nuez = new Nuez(position = game.at(4, 4))
+        const nuez = cartaNuez.crearPlanta(game.at(4, 4))
 
         nuez.recibirDaño(1000)
 
@@ -106,7 +107,7 @@ describe "Comportamiento de las plantas" {
         const posicion = game.at(4, 5)
         jugador.position(posicion)
 
-        const nuez = new Nuez(position = posicion)
+        const nuez = cartaNuez.crearPlanta(posicion)
         patio.agregarPlanta(nuez)
         jugador.equipar(pala)
         jugador.accionar()
@@ -121,9 +122,55 @@ describe "Comportamiento de las plantas" {
         jugador.accionar()
 
         assert.notThat(patio.haySolEnCasilla(posicion))
-        assert.equals(solesAntes + sol.valor(), contadorDeSoles.cantidad())
+        assert.equals(solesAntes + 25, contadorDeSoles.cantidad())
 
         jugador.equipar(cursor)
         jugador.position(posicionOriginal)
+    }
+
+    test "El lanzaguisantes no dispara si no hay zombies delante" {
+        const lanzaguisantes = cartaLanzaguisantes.crearPlanta(game.at(4, 2))
+        const cantidadProyectilesAntes = patio.entidades()
+            .filter({ entidad => entidad.image() == "guisante.png" })
+            .size()
+
+        lanzaguisantes.actuar()
+
+        const cantidadProyectilesDespues = patio.entidades()
+            .filter({ entidad => entidad.image() == "guisante.png" })
+            .size()
+        assert.equals(cantidadProyectilesAntes, cantidadProyectilesDespues)
+    }
+
+    test "La planta carnivora devora en su casilla y empieza a masticar" {
+        const posicion = game.at(4, 3)
+        const carnivora = new PlantaCarnivora(position = posicion)
+        const zombie = new Mono(position = posicion, vida = 30)
+        patio.agregarZoombie(zombie)
+
+        carnivora.actuar()
+
+        assert.notThat(zombie.estaVivo())
+        assert.equals("plantaCarnivoraMasticando.png", carnivora.image())
+
+        carnivora.cambiarEstado(carnivoraLista, 500)
+        patio.quitarZoombie(zombie)
+    }
+
+    test "El proyectil avanza una casilla mientras no encuentre un objetivo" {
+        const lanzaguisantes = cartaLanzaguisantes.crearPlanta(game.at(4, 2))
+        const posicionInicial = lanzaguisantes.position()
+        const proyectil = new Proyectil(
+            position = posicionInicial,
+            plantaQueLoDispara = lanzaguisantes
+        )
+        patio.agregarProyectil(proyectil)
+        proyectil.aparecer()
+
+        proyectil.actuar()
+
+        assert.equals(game.at(5, 2), proyectil.position())
+
+        proyectil.desaparecer()
     }
 }
