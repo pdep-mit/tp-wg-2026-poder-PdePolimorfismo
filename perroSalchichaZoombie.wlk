@@ -9,9 +9,10 @@ class PerroSalchicha inherits Zoombie (
   habilidad = comer,
   daño = 150,
   vida = 8000,
-  velocidadDeMovimiento = 1500
+  velocidadDeMovimiento = 1500,
+  estado = perroEntrando
 ) {
-  var estado = perroEntrando
+
   const acciones = [perroAullando, perroLadrando, perroRugiendo]
   
   override method initialize() {
@@ -27,16 +28,12 @@ class PerroSalchicha inherits Zoombie (
     estado.actuar(self)
   }
   
-  method cambiarEstado(nuevoEstado) {
-    estado = nuevoEstado
-  }
-  
   method posicionarse() {
     self.volverAPosicionado()
   }
   
   method volverAPosicionado() {
-    self.cambiarVelocidad((18000 .. 25000).anyOne())
+    self.cambiarVelocidad((10000 .. 25000).anyOne())
     // Espera 20 a 25s para la próxima acción
     self.cambiarEstado(perroPosicionado)
   }
@@ -49,8 +46,9 @@ class PerroSalchicha inherits Zoombie (
   
   method rugir() {
     sonido.sonidoRugido()
-    patio.potenciarVelocidadZoombies(0.5, 4000)
+    // The boost expiration must restore the cooldown, not the action interval.
     self.volverAPosicionado()
+    patio.potenciarVelocidadZoombies(0.5, 4000)
   }
   
   method aullar() {

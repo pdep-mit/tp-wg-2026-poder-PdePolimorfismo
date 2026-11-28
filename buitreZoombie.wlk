@@ -7,19 +7,16 @@ class Buitre inherits Zoombie (
 	habilidad = comer,  
 	daño = 100, 
 	vida = 540,
-	velocidadDeMovimiento = 3000
+	velocidadDeMovimiento = 3000,
+	estado = buitreCaminandoAntesDeVolar
 ) {
-	var estado = buitreCaminandoAntesDeVolar
+
 	var plantasSobrevoladas = 0
 
 	override method image() = estado.imagen()
 
 	override method actuar() {
 		estado.actuar(self)
-	}
-
-	method cambiarEstado(nuevoEstado) {
-		estado = nuevoEstado
 	}
 
 	method despegar() {
@@ -41,15 +38,14 @@ class Buitre inherits Zoombie (
 }
 
 object buitreCaminandoAntesDeVolar {
-	method imagen() = "buitreCaminando.png" 
+	method imagen() = "buitreCaminando.png"
 
 	method actuar(buitre) {
-		if (not patio.hayPlantaEnCasillaOEnFrenteDe(buitre)) {
-			buitre.avanzar()
-		}
 		if (patio.hayPlantaEnCasillaOEnFrenteDe(buitre)) {
 			buitre.despegar()
 			buitreVolando.actuar(buitre)
+		} else {
+			buitre.avanzar()
 		}
 	}
 }

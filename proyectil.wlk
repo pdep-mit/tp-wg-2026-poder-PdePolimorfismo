@@ -13,30 +13,30 @@ class Proyectil inherits Entidad (temporizador = new Temporizador(intervalo = 30
 		estado.actuar(self)
 	}
 
-	method moverEImpactar() {
-		patio.zoombiesEnCasilla(position).take(1).findOrElse(
-			{ zombie =>
-				zombie.recibirDaño(plantaQueLoDispara.daño())
-				self.desaparecer()
-				return true
-			},
-			{
-				self.avanzar()
-				self.impactar()
-				self.verificarLimiteTablero()
-			}
-		)
+method moverEImpactar() {
+		const objetivosEnCasilla = patio.zoombiesEnCasilla(position)
+		if (not objetivosEnCasilla.isEmpty()) {
+			self.impactarA(objetivosEnCasilla.first())
+		} else {
+			self.avanzar()
+			self.impactar()
+			self.verificarLimiteTablero()
+		}
 	}
 
-	method avanzar() {
-		position = derecha.desde(position)
+	method impactarA(zombie) {
+		zombie.recibirDaño(plantaQueLoDispara.daño())
+		self.desaparecer()
 	}
 
 	method impactar() {
 		patio.zoombiesEnCasilla(position).take(1).forEach({ zombie =>
-			zombie.recibirDaño(plantaQueLoDispara.daño())
-			self.desaparecer()
+			self.impactarA(zombie)
 		})
+	}
+
+	method avanzar() {
+		position = derecha.desde(position)
 	}
 
 	method verificarLimiteTablero() {

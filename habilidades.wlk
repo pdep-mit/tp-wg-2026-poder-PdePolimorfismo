@@ -58,16 +58,19 @@ object embestir {
 	}
 }
 
-object comer { 
+object comer {
 	method ejecutar(zoombie) {
-		patio.plantasEnCasilla(zoombie.position()).take(1).findOrElse(
-			{ planta => 
-				planta.recibirDaño(zoombie.daño()) 
-				sonido.sonidoMordisco(zoombie)
-				return true
-			},
-			{ zoombie.avanzar() }
-		)
+		const presas = patio.plantasEnCasilla(zoombie.position())
+		if (presas.isEmpty()) {
+			zoombie.avanzar()
+		} else {
+			self.morder(presas.first(), zoombie)
+		}
+	}
+
+	method morder(planta, zoombie) {
+		planta.recibirDaño(zoombie.daño())
+		sonido.sonidoMordisco(zoombie)
 	}
 }
 

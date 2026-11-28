@@ -176,17 +176,6 @@ object patio {
 		)
 	}
 	
-	method zombiesCuerpoACuerpoDe(posicion) = zoombies.filter(
-		{ zoo =>
-			(zoo.position().y() == posicion.y()) && ((zoo.position().x() - posicion.x()).abs() <= 1) }
-	)
-	
-	method daniarZoombiesCuerpoACuerpoDe(posicion, cantidadDanio) {
-		self.zombiesCuerpoACuerpoDe(posicion).forEach(
-			{ zoombie => zoombie.recibirDaño(cantidadDanio) }
-		)
-	}
-	
 	method daniarZoombiesEnCasilla(pos, cantidadDanio) {
 		self.zoombiesEnCasilla(pos).forEach(
 			{ zoombie => zoombie.recibirDaño(cantidadDanio) }

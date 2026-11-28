@@ -23,7 +23,6 @@ class BonkChoi inherits Planta (
 	habilidad = golpeCuerpoACuerpo,
 	daño = 15,
 	vida = 300,
-	position = jugador.position(),
 	temporizador = new Temporizador(intervalo = 500)
 ) {
 	const animacionReposo = new Animacion(
@@ -69,8 +68,7 @@ class BonkChoi inherits Planta (
 class Cereza inherits Planta (
 	habilidad = explosion,
 	daño = 1800,
-	vida = 9999,
-	position = jugador.position()
+	vida = 9999
 ) {
 	override method image() = "cereza.png"
 	
@@ -91,7 +89,6 @@ class PlantaCarnivora inherits Planta (
 	habilidad = sinAtaque,
 	daño = 9999,
 	vida = 300,
-	position = jugador.position(),
 	temporizador = new Temporizador(intervalo = 500)
 ) {
 	var estado = carnivoraLista
@@ -124,7 +121,7 @@ class PlantaCarnivora inherits Planta (
 							carnivoraLista,
 							500
 						)
-					else self.cambiarEstado(carnivoraMasticando, 12000)
+					else self.cambiarEstado(carnivoraMasticando, 30000)
 				}
 			)
 	}

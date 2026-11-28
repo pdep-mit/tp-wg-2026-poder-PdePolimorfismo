@@ -84,7 +84,7 @@ object generacionActiva {
 	method activar(generador) {}
 
 	method programarLluviaDeSoles(generador) {
-		game.schedule((10000 .. 15000).anyOne(), {
+		game.schedule((8000 .. 18000).anyOne(), {
 			generador.intentarGenerarSolDeLluvia()
 		})
 	}

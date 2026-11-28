@@ -42,9 +42,8 @@ object juego {
 		})
 	}
 
-	method configurarInterfaz() {
-		[cartaGirasol, cartaLanzaguisantes, cartaNuez, cartaBonkChoi, cartaCereza, cartaPlantaCarnivora]
-			.forEach({ carta => game.addVisual(carta) })
+method configurarInterfaz() {
+		mazoDeCartas.todas().forEach({ carta => game.addVisual(carta) })
 		game.addVisual(jugador)
 		game.addVisual(contadorDeSoles)
 		game.addVisual(indicadorDeOleada)
@@ -72,5 +71,5 @@ object juego {
 }
 
 program principal {
-	juego.iniciarJuego()
+	juego.iniciarJuego() 
 } 

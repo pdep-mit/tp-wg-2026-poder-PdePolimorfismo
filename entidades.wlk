@@ -20,7 +20,6 @@ class Entidad {
 		temporizador.avanzar(ms, self)
 		animacion.pasarTiempo(ms)
 	}
-	method reiniciarTemporizador() {temporizador.reiniciar()}
 	method ocultarVisual() {
 		animacion.detener()
 		game.removeVisual(self)

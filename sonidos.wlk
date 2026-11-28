@@ -57,25 +57,33 @@ object sonido {
 			}
 		)
 	}
+
+	method reproducirEfecto(archivo, volumen, duracion) {
+		const efecto = game.sound(archivo)
+		sonidosActivos.add(efecto)
+		efecto.volume(volumen)
+		efecto.play()
+		game.schedule(duracion, { sonidosActivos.remove(efecto) })
+	}
+
+	method sonidoGeneracionPinguino() {
+		self.reproducirEfecto("monoMaquinistaVoz.wav", 0.8, 1500)
+	}
+
+	method sonidoRugido() {
+		self.reproducirEfecto("Roar.wav", 0.8, 2500)
+	}
+
+	method sonidoEmbestida() {
+		self.reproducirEfecto("embestidaRinoceronte.wav", 0.8, 2000)
+	}
+
+	method sonidoExplosion() {
+		self.reproducirEfecto("explosion.wav", 0.8, 2500)
+	}
 	
 	method sonidoMordisco(zoombie) {
 		estadoMordisco.reproducir(self, zoombie)
-	}
-	
-	method sonidoGeneracionPinguino() {
-		const generacion = game.sound("monoMaquinistaVoz.wav")
-		sonidosActivos.add(generacion)
-		generacion.volume(0.8)
-		generacion.play()
-		game.schedule(1500, { sonidosActivos.remove(generacion) })
-	}
-	
-	method sonidoRugido() {
-		const rugido = game.sound("Roar.wav")
-		sonidosActivos.add(rugido)
-		rugido.volume(0.8)
-		rugido.play()
-		game.schedule(2500, { sonidosActivos.remove(rugido) })
 	}
 	
 	method ejecutarMordisco(zoombie) {
@@ -105,22 +113,6 @@ object sonido {
 	
 	method cambiarEstadoMordisco(nuevoEstado) {
 		estadoMordisco = nuevoEstado
-	}
-	
-	method sonidoEmbestida() {
-		const embestida = game.sound("embestidaRinoceronte.wav")
-		sonidosActivos.add(embestida)
-		embestida.volume(0.8)
-		embestida.play()
-		game.schedule(2000, { sonidosActivos.remove(embestida) })
-	}
-	
-	method sonidoExplosion() {
-		const explosion = game.sound("explosion.wav")
-		sonidosActivos.add(explosion)
-		explosion.volume(0.8)
-		explosion.play()
-		game.schedule(2500, { sonidosActivos.remove(explosion) })
 	}
 }
 

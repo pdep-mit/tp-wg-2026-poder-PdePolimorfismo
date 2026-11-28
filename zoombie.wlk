@@ -10,6 +10,7 @@ import sonidos.*
 
 class Zoombie inherits SerVivo {
 	var velocidadDeMovimiento
+	var estado
 	const imagen = ""
 	
 	override method image() = imagen
@@ -22,6 +23,10 @@ class Zoombie inherits SerVivo {
 	method avanzar() {
 		position = izquierda.desde(position)
 		if (patio.hayZoombiEnCasa(self.position())) finDelJuego.mostrarDerrota()
+	}
+
+	method cambiarEstado(nuevoEstado) {
+		estado = nuevoEstado
 	}
 	
 	override method desaparecer() {
@@ -189,18 +194,15 @@ class Mono inherits Zoombie (
 	habilidad = comer,
 	daño = 40,
 	vida = 300,
-	velocidadDeMovimiento = 500
+	velocidadDeMovimiento = 500,
+	estado = monoColumpiandoPrimerVez
 ) {
-	var estado = monoColumpiandoPrimerVez
+	
 	
 	override method image() = estado.imagen()
 	
 	override method actuar() {
 		estado.actuar(self)
-	}
-	
-	method cambiarEstado(nuevoEstado) {
-		estado = nuevoEstado
 	}
 	
 	method mitadDelPatio() = (game.width()).div(2)
@@ -244,13 +246,22 @@ object monoCaminando {
 	}
 }
 
+object pinguinoCaminando {
+	method imagen() = "pinguinoZoombie.png"
+
+	method actuar(pinguino) {
+		comer.ejecutar(pinguino)
+	}
+}
+
 const invocarPinguinoRobot = new Invocar(
 	constructorZoombie = { pos => new Zoombie(
 			position = pos,
 			habilidad = comer,
 			daño = 80,
-			vida = 150,
-			velocidadDeMovimiento = 3500,
+			vida = 650,
+			velocidadDeMovimiento = 3000,
+			estado = pinguinoCaminando,
 			imagen = "pinguinoRobot.png"
 		) }
 )
@@ -258,23 +269,19 @@ const invocarPinguinoRobot = new Invocar(
 class MonoMaquinista inherits Zoombie (
 	habilidad = invocarPinguinoRobot,
 	daño = 100,
-	vida = 3000,
-	velocidadDeMovimiento = 3000
+	vida = 3500,
+	velocidadDeMovimiento = 3000,
+	estado = maquinistaPosicionandose
 ) {
-	var estado = maquinistaPosicionandose
-	
+ 
 	override method image() = estado.imagen()
 	
 	override method actuar() {
 		estado.actuar(self)
 	}
 	
-	method cambiarEstado(nuevoEstado) {
-		estado = nuevoEstado
-	}
-	
 	method iniciarProduccion() {
-		self.cambiarVelocidad(18000)
+		self.cambiarVelocidad((12000..18000).anyOne())
 		self.cambiarEstado(maquinistaGenerando)
 	}
 	

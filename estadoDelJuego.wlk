@@ -49,7 +49,7 @@ object finDelJuego {
 		game.removeVisual(jugador)
 		game.removeVisual(contadorDeSoles)
 		game.removeVisual(indicadorDeOleada)
-		cartas.forEach({ carta => game.removeVisual(carta) })
+		mazoDeCartas.todas().forEach({ carta => game.removeVisual(carta) })
 	}
 }
 

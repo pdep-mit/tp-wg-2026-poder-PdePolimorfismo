@@ -8,9 +8,9 @@ class Rinoceronte inherits Zoombie (
 	habilidad = embestir,  
 	daño = 150, 
 	vida = 1400,
-	velocidadDeMovimiento = 3500
-) {
-	var estado = rinoBuscando 
+	velocidadDeMovimiento = 3500,
+	estado = rinoBuscando
+) { 
 
 	override method image() = estado.imagen()
     
@@ -19,25 +19,25 @@ class Rinoceronte inherits Zoombie (
 	}
 
 	method prepararEmbestida() {
-		estado = rinoPreparando
+		self.cambiarEstado(rinoPreparando)
 		game.schedule(2500, { self.iniciarEmbestida() })
 	}
 
 	method iniciarEmbestida() {
 		self.cambiarVelocidad(velocidadDeMovimiento / 4)
-		estado = rinoCargando
+		self.cambiarEstado(rinoCargando)
 	}
     
 	method embestirPlanta(planta) {
 		sonido.sonidoEmbestida()
 		planta.recibirDaño(9999)
 		self.cambiarVelocidad(3500)
-		estado = rinoAturdido
+		self.cambiarEstado(rinoAturdido)
 		game.schedule(2000, { self.volverACaminar() })
 	}
 
 	method volverACaminar() {
-		estado = rinoCaminando
+		self.cambiarEstado(rinoCaminando)
 	}
 }
 

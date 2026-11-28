@@ -18,6 +18,22 @@ describe "Comportamiento de los zoombies" {
         assert.equals(game.at(5, 2), pinguino.position())
     }
 
+    test "El estado del pinguino caminando avanza si no tiene una planta adelante" {
+        const pinguino = new Zoombie(
+            position = game.at(6, 2),
+            habilidad = comer,
+            daño = 80,
+            vida = 150,
+            velocidadDeMovimiento = 3500,
+            estado = pinguinoCaminando,
+            imagen = pinguinoCaminando.imagen()
+        )
+
+        pinguinoCaminando.actuar(pinguino)
+
+        assert.equals(game.at(5, 2), pinguino.position())
+    }
+
     test "Un rinoceronte buscando avanza una casilla si no encuentra plantas" {
         const rinoceronte = new Rinoceronte(position = game.at(6, 3))
 

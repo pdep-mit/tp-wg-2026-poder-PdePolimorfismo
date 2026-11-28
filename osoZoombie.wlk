@@ -9,18 +9,14 @@ class Oso inherits Zoombie (
 	habilidad = comer,
 	daño = 9999,
 	vida = 4000,
-	velocidadDeMovimiento = 8000
-) {
-	var estado = osoCaminando
+	velocidadDeMovimiento = 8000,
+	estado = osoCaminando
+) { 
 	
 	override method image() = estado.imagen()
 	
 	override method actuar() {
 		estado.actuar(self)
-	}
-	
-	method cambiarEstado(nuevoEstado) {
-		estado = nuevoEstado
 	}
 	
 	method prepararAplastar() {
@@ -54,10 +50,13 @@ class Oso inherits Zoombie (
 
 object osoCaminando {
 	method imagen() = "osoCaminando.png"
-	
+
 	method actuar(oso) {
-		if (not patio.hayPlantaEnCasillaOEnFrenteDe(oso)) oso.avanzar()
-		if (patio.hayPlantaEnCasillaOEnFrenteDe(oso)) oso.prepararAplastar()
+		if (patio.hayPlantaEnCasillaOEnFrenteDe(oso)) {
+			oso.prepararAplastar()
+		} else {
+			oso.avanzar()
+		}
 	}
 }
 

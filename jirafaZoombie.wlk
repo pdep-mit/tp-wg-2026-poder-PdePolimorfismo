@@ -8,9 +8,9 @@ class Jirafa inherits Zoombie (
 	habilidad = comer,  
 	daño = 100, 
 	vida = 540,
-	velocidadDeMovimiento = 3500
+	velocidadDeMovimiento = 3500,
+	estado = jirafaBuscando
 ) {
-	var estado = jirafaBuscando
 
 	override method image() = estado.imagen()
 
@@ -19,20 +19,20 @@ class Jirafa inherits Zoombie (
 	}
 
 	method prepararAtaqueEspecial() {
-		estado = jirafaPreparandoAtaque
+		self.cambiarEstado(jirafaPreparandoAtaque)
 		game.schedule(2500, { self.ejecutarAtaqueEspecial() })
 	}
 
 	method ejecutarAtaqueEspecial() {
 		if (self.estaVivo()) {
-			estado = jirafaAplastando
+			self.cambiarEstado(jirafaAplastando)
 			const objetivos = self.plantasEnRangoDeAtaque()
 				.sortedBy({ p1, p2 => p1.position().x() > p2.position().x() })
 				.take(2)
 			objetivos.forEach({ planta => planta.recibirDaño(9999) })
 			game.schedule(1000, {
 				if (self.estaVivo()) {
-					estado = jirafaBuscando
+					self.cambiarEstado(jirafaBuscando)
 				}
 			})
 		}
